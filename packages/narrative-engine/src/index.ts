@@ -1,3 +1,5 @@
+export * from './ink-adapter';
+
 import type { Choice, Condition, Effect, Scene, SceneGraph, TimelineState } from '@fractureline/shared-types';
 
 export function evaluateCondition(condition: Condition, state: TimelineState): boolean {
