@@ -10,3 +10,6 @@ coverage
 playwright-report
 test-results
 storybook-static
+apps/web/public/sw.js
+apps/web/public/workbox-*.js
+apps/web/public/fallback-*.js
