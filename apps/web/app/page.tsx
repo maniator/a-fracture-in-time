@@ -1,29 +1,38 @@
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { SiteNav } from '@/components/site-nav';
 import { PwaRegister } from '@/components/pwa-register';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen text-ink">
+    <Box component="main" sx={{ minHeight: '100vh', color: 'text.primary' }}>
       <PwaRegister />
       <SiteNav />
-      <section className="mx-auto flex min-h-[calc(100vh-88px)] w-full max-w-5xl flex-col justify-center px-6 py-16">
-        <p className="text-sm uppercase tracking-[0.4em] text-ember">Dual timeline narrative game</p>
-        <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-tight md:text-7xl">
-          Two choices. Two futures. One fractureline.
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/75 md:text-xl">
-          Alternate between the Protector and the Dissenter as each choice reshapes the other timeline. Preserve the beautiful lie, uncover the hidden truth, or find a third path forward.
-        </p>
-        <div className="mt-10 flex flex-wrap gap-4">
-          <Link href="/play" className="rounded-full bg-ember px-6 py-3 font-semibold text-void shadow-lg shadow-ember/20">
-            Start Chapter 1
-          </Link>
-          <Link href="/help" className="rounded-full border border-white/20 px-6 py-3 font-semibold text-ink hover:border-ember">
-            How it works
-          </Link>
-        </div>
-      </section>
-    </main>
+      <Container maxWidth="lg" sx={{ minHeight: 'calc(100vh - 88px)', display: 'flex', alignItems: 'center', py: 10 }}>
+        <Box sx={{ maxWidth: 900 }}>
+          <Typography variant="overline" color="secondary" sx={{ letterSpacing: '0.35em' }}>
+            Dual timeline narrative game
+          </Typography>
+          <Typography component="h1" variant="h1" sx={{ mt: 2, fontSize: { xs: '3rem', md: '5.5rem' }, lineHeight: 0.95 }}>
+            Two choices. Two futures. One fractureline.
+          </Typography>
+          <Typography sx={{ mt: 4, maxWidth: 720, color: 'text.secondary', fontSize: { xs: '1.125rem', md: '1.35rem' }, lineHeight: 1.7 }}>
+            Alternate between the Protector and the Dissenter as each choice reshapes the other timeline. Preserve the beautiful lie, uncover the hidden truth, or find a third path forward.
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 6 }}>
+            <Button component={Link} href="/play" color="secondary" variant="contained" size="large">
+              Start Chapter 1
+            </Button>
+            <Button component={Link} href="/help" color="inherit" variant="outlined" size="large">
+              How it works
+            </Button>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 }
