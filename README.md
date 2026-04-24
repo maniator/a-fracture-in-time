@@ -29,7 +29,7 @@ Playwright also captures generated screenshots during CI and uploads them as the
 - Playwright
 - Storybook
 - Vercel
-- PWA install and offline shell
+- PWA install and offline shell powered by `@ducanh2912/next-pwa` and Workbox
 
 ## Repository Structure
 
@@ -61,11 +61,11 @@ pnpm build-storybook
 The app currently includes:
 
 - `/` landing page
-- `/play` playable Chapter 1 vertical slice
+- `/play` playable Chapter 1 vertical slice with local save/load
 - `/help` gameplay, PWA, and testing help page
 - Material UI theme provider
 - installable PWA manifest
-- service worker
+- generated Workbox service worker in production builds
 - offline fallback page
 
 ## BMAD Method
@@ -90,14 +90,16 @@ Initial agents include:
 
 ## Testing
 
-Unit tests live in package-level test files, especially `packages/narrative-engine/src/index.test.ts`.
+Unit tests live in package-level test files, especially `packages/narrative-engine/src/index.test.ts` and `apps/web/content/chapter-one.test.ts`.
 
 End-to-end tests live in `apps/web/tests/e2e` and cover:
 
 - home page navigation
 - play flow from Protector to Dissenter
+- local save/load behavior
+- deterministic Chapter 1 completion
 - help page content
-- PWA manifest and service worker availability
+- static PWA assets in development
 - screenshot capture for documentation
 
 ## GitHub Workflows
@@ -119,29 +121,29 @@ The repository includes `vercel.json` for monorepo deployment.
 Recommended project settings:
 
 - Framework preset: Next.js
-- Install command: `pnpm install --frozen-lockfile=false`
+- Install command: `pnpm install --frozen-lockfile`
 - Build command: `pnpm build`
-- Output directory: `apps/web/.next`
 
 See `docs/DEPLOYMENT.md` for details.
 
 ## PWA / Offline
 
-The app includes:
+The app uses `@ducanh2912/next-pwa` to generate Workbox service-worker artifacts during production builds. The generated files are ignored because they are build artifacts.
+
+Checked-in PWA assets include:
 
 - `apps/web/public/manifest.webmanifest`
-- `apps/web/public/sw.js`
 - `apps/web/public/offline.html`
 - `apps/web/public/icons/icon.svg`
 
-The service worker caches the app shell in production.
+The app registers the generated service worker with `workbox-window` and shows an update prompt when a new version is waiting.
 
 ## Storybook
 
-Storybook is configured in `apps/web/.storybook` and includes an initial Material UI style guide story in `apps/web/stories/StyleGuide.stories.tsx`.
+Storybook is configured in `apps/web/.storybook` and includes Material UI style-guide stories in `apps/web/stories`.
 
 See `docs/STORYBOOK.md` for next style-guide tasks.
 
 ## Next Steps
 
-See `docs/NEXT_STEPS.md` for the follow-up roadmap. Immediate priorities are CI/Vercel verification, local save/load, expanded Chapter 1 QA coverage, PWA hardening, Storybook expansion, and Supabase planning.
+See `docs/NEXT_STEPS.md` for the follow-up roadmap. Immediate priorities are CI/Vercel verification, PWA production validation, Storybook expansion, narrative expansion, and Supabase planning.
