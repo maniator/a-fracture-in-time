@@ -16,7 +16,7 @@ import { chapterOne } from '@/content/chapter-one';
 import { useGameStore } from '@/store/game-store';
 
 export function SceneRenderer() {
-  const { state, choose, reset } = useGameStore();
+  const { state, choose, save, load, reset } = useGameStore();
   const scene = chapterOne[state.currentSceneId];
 
   const choices = useMemo(() => {
@@ -43,6 +43,12 @@ export function SceneRenderer() {
         <Stack direction="row" spacing={1.5} sx={{ mb: 4, flexWrap: 'wrap' }}>
           <Chip label={`Chapter ${scene.chapter}`} variant="outlined" />
           <Chip label={scene.pov} color="primary" variant="outlined" />
+        </Stack>
+
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 4 }}>
+          <Button variant="contained" color="secondary" onClick={save}>Save progress</Button>
+          <Button variant="outlined" color="inherit" onClick={() => load()}>Load progress</Button>
+          <Button variant="text" color="inherit" onClick={reset}>Restart chapter</Button>
         </Stack>
 
         <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
@@ -104,7 +110,7 @@ export function SceneRenderer() {
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <Grid size={{ xs: 6, md: 2.4 }} component="div">
+    <Grid size={{ xs: 6, md: 2 }} component="div">
       <Card variant="outlined" sx={{ background: 'rgba(8,7,11,0.32)' }}>
         <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
           <Typography component="dt" variant="caption" sx={{ letterSpacing: '0.16em', textTransform: 'uppercase', color: 'text.secondary' }}>
