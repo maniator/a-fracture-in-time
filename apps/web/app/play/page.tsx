@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { AmbienceControl } from '@/components/ambience-control';
 import { SceneRenderer } from '@/components/scene-renderer';
 import { SiteNav } from '@/components/site-nav';
 import { PwaRegister } from '@/components/pwa-register';
@@ -16,7 +17,7 @@ export default function PlayPage() {
     <Box component="main" sx={{ minHeight: '100vh', color: 'text.primary' }}>
       <PwaRegister />
       <SiteNav />
-      <Container maxWidth="lg" sx={{ py: 5 }}>
+      <Container maxWidth="lg" sx={{ py: 5, pb: { xs: 20, sm: 16 } }}>
         <Card component="section" aria-labelledby="briefing-title" sx={{ mb: 4, border: '1px solid rgba(255,255,255,0.14)' }}>
           <CardContent sx={{ p: { xs: 3, md: 5 } }}>
             <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap' }}>
@@ -49,6 +50,7 @@ export default function PlayPage() {
           <SceneRenderer />
         </Box>
       </Container>
+      <AmbienceControl />
     </Box>
   );
 }
