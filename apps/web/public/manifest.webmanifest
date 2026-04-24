@@ -1,0 +1,33 @@
+{
+  "name": "Fractureline",
+  "short_name": "Fractureline",
+  "description": "A dual-perspective narrative web game where choices reshape time.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#08070b",
+  "theme_color": "#08070b",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Play",
+      "short_name": "Play",
+      "description": "Continue the first chapter.",
+      "url": "/play"
+    },
+    {
+      "name": "Help",
+      "short_name": "Help",
+      "description": "Learn how Fractureline works.",
+      "url": "/help"
+    }
+  ]
+}
