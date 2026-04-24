@@ -5,42 +5,129 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  validate:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile=false
-
-      - name: Lint
+      - name: Run lint
         run: pnpm lint
 
-      - name: Unit tests
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+      - name: Run unit tests
         run: pnpm test
 
-      - name: Build
+  build:
+    name: Build app
+    runs-on: ubuntu-latest
+    needs: [lint, unit-tests]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+      - name: Build Next.js app
         run: pnpm build
+      - name: Upload Next.js build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: apps/web/.next
+          retention-days: 3
 
+  storybook:
+    name: Build Storybook style guide
+    runs-on: ubuntu-latest
+    needs: [lint, unit-tests]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+      - name: Build Storybook
+        run: pnpm build-storybook
+      - name: Upload Storybook static build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: apps/web/storybook-static
+          retention-days: 7
+
+  e2e:
+    name: Playwright e2e
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
       - name: Install Playwright browsers
         run: pnpm --filter web exec playwright install --with-deps chromium
-
-      - name: Playwright e2e
-        run: pnpm --filter web test:e2e
-
+      - name: Run Playwright e2e
+        run: pnpm test:e2e
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,7 +135,6 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report
           retention-days: 7
-
       - name: Upload generated screenshots
         if: always()
         uses: actions/upload-artifact@v4
