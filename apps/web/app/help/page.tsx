@@ -1,3 +1,9 @@
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import { SiteNav } from '@/components/site-nav';
 import { PwaRegister } from '@/components/pwa-register';
 
@@ -22,21 +28,33 @@ const sections = [
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen text-ink">
+    <Box component="main" sx={{ minHeight: '100vh', color: 'text.primary' }}>
       <PwaRegister />
       <SiteNav />
-      <section className="mx-auto w-full max-w-5xl px-6 py-12">
-        <p className="text-sm uppercase tracking-[0.4em] text-ember">Help</p>
-        <h1 className="mt-4 text-4xl font-semibold md:text-6xl">Playing Fractureline</h1>
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Typography variant="overline" color="secondary" sx={{ letterSpacing: '0.35em' }}>
+          Help
+        </Typography>
+        <Typography component="h1" variant="h2" sx={{ mt: 2, fontSize: { xs: '2.75rem', md: '4.5rem' } }}>
+          Playing Fractureline
+        </Typography>
+        <Grid container spacing={3} sx={{ mt: 5 }}>
           {sections.map((section) => (
-            <article key={section.title} className="rounded-3xl border border-white/10 bg-white/[0.06] p-6">
-              <h2 className="text-2xl font-semibold">{section.title}</h2>
-              <p className="mt-3 leading-7 text-ink/75">{section.body}</p>
-            </article>
+            <Grid key={section.title} size={{ xs: 12, md: 6 }}>
+              <Card sx={{ height: '100%' }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Typography component="h2" variant="h5" sx={{ fontWeight: 700 }}>
+                    {section.title}
+                  </Typography>
+                  <Typography sx={{ mt: 2, color: 'text.secondary', lineHeight: 1.8 }}>
+                    {section.body}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </div>
-      </section>
-    </main>
+        </Grid>
+      </Container>
+    </Box>
   );
 }
