@@ -1,9 +1,11 @@
 import withPWAInit from '@ducanh2912/next-pwa';
 import type { NextConfig } from 'next';
 
+const isStorybook = process.env.STORYBOOK === 'true' || process.env.npm_lifecycle_event === 'build-storybook' || process.env.npm_lifecycle_event === 'storybook';
+
 const withPWA = withPWAInit({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
+  disable: process.env.NODE_ENV === 'development' || isStorybook,
   register: false,
 });
 
