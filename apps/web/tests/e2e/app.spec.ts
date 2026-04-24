@@ -14,12 +14,17 @@ test('play flow advances from Protector to Dissenter', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Dissenter' })).toBeVisible();
 });
 
-test('save and load restores progress', async ({ page }) => {
+test('save and load restores progress from IndexedDB', async ({ page }) => {
   await page.goto('/play');
+  await expect(page.getByText(/local save ready/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /load progress/i })).toBeDisabled();
+
   await page.getByRole('button', { name: /study the crowd/i }).click();
   await expect(page.getByRole('heading', { name: 'Dissenter' })).toBeVisible();
 
   await page.getByRole('button', { name: /save progress/i }).click();
+  await expect(page.getByRole('button', { name: /load progress/i })).toBeEnabled();
+
   await page.getByRole('button', { name: /restart chapter/i }).click();
   await expect(page.getByRole('heading', { name: 'Protector' })).toBeVisible();
 
