@@ -4,38 +4,46 @@ import { create } from 'zustand';
 import { initialTimelineState, type TimelineState } from '@fractureline/shared-types';
 import { resolveChoice } from '@fractureline/narrative-engine';
 import { chapterOne } from '@/content/chapter-one';
-import { browserSaveService } from '@/lib/persistence/save-service';
+import { indexedDbSaveService } from '@/lib/persistence/save-service';
 
 type GameStore = {
   state: TimelineState;
   hasSave: boolean;
+  isPersistenceReady: boolean;
   choose: (choiceId: string) => void;
-  save: () => void;
-  load: () => boolean;
-  reset: () => void;
+  hydrateSaveStatus: () => Promise<void>;
+  save: () => Promise<void>;
+  load: () => Promise<boolean>;
+  reset: () => Promise<void>;
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
   state: initialTimelineState,
   hasSave: false,
+  isPersistenceReady: false,
   choose: (choiceId) => {
     const current = get().state;
     const next = resolveChoice(chapterOne, current, choiceId);
     set({ state: next });
   },
-  save: () => {
-    browserSaveService.write(get().state);
-    set({ hasSave: true });
+  hydrateSaveStatus: async () => {
+    set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
   },
-  load: () => {
-    const saved = browserSaveService.read();
+  save: async () => {
+    await indexedDbSaveService.write(get().state);
+    set({ hasSave: true, isPersistenceReady: true });
+  },
+  load: async () => {
+    const saved = await indexedDbSaveService.read();
     if (!saved) {
-      set({ hasSave: browserSaveService.hasSave() });
+      set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
       return false;
     }
 
-    set({ state: saved, hasSave: true });
+    set({ state: saved, hasSave: true, isPersistenceReady: true });
     return true;
   },
-  reset: () => set({ state: initialTimelineState, hasSave: browserSaveService.hasSave() }),
+  reset: async () => {
+    set({ state: initialTimelineState, hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
+  },
 }));
