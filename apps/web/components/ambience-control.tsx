@@ -2,156 +2,193 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-const INITIAL_VOLUME = 0.055;
+const INITIAL_VOLUME = 0.07;
+const NOTE_SCALE = [196, 220, 246.94, 293.66, 329.63, 392, 440, 493.88, 587.33];
+const BASS_NOTES = [98, 110, 130.81, 146.83];
 
 type SoundscapeNodes = {
   context: AudioContext;
   masterGain: GainNode;
-  oscillators: OscillatorNode[];
-  lfos: OscillatorNode[];
-  noiseSource: AudioBufferSourceNode;
+  textureSource: AudioBufferSourceNode;
+  textureFilter: BiquadFilterNode;
+  delay: DelayNode;
+  delayFeedback: GainNode;
 };
 
 function setGain(gain: GainNode, value: number) {
   const now = gain.context.currentTime;
   gain.gain.cancelScheduledValues(now);
-  gain.gain.setTargetAtTime(value, now, 0.12);
+  gain.gain.setTargetAtTime(value, now, 0.18);
 }
 
 function createNoiseBuffer(context: AudioContext) {
-  const seconds = 4;
+  const seconds = 6;
   const buffer = context.createBuffer(1, context.sampleRate * seconds, context.sampleRate);
   const data = buffer.getChannelData(0);
+  let last = 0;
 
   for (let index = 0; index < data.length; index += 1) {
-    data[index] = (Math.random() * 2 - 1) * 0.22;
+    last = last * 0.985 + (Math.random() * 2 - 1) * 0.015;
+    data[index] = last * 0.42;
   }
 
   return buffer;
 }
 
+function playBell(nodes: SoundscapeNodes, frequency: number, when: number, pan: number) {
+  const { context, delay, masterGain } = nodes;
+  const oscillator = context.createOscillator();
+  const overtone = context.createOscillator();
+  const gain = context.createGain();
+  const toneFilter = context.createBiquadFilter();
+  const panner = context.createStereoPanner();
+
+  oscillator.type = 'sine';
+  overtone.type = 'triangle';
+  oscillator.frequency.setValueAtTime(frequency, when);
+  overtone.frequency.setValueAtTime(frequency * 2.01, when);
+  overtone.detune.setValueAtTime(-7, when);
+
+  toneFilter.type = 'lowpass';
+  toneFilter.frequency.setValueAtTime(1800, when);
+  toneFilter.frequency.exponentialRampToValueAtTime(540, when + 2.8);
+  panner.pan.setValueAtTime(pan, when);
+
+  gain.gain.setValueAtTime(0.0001, when);
+  gain.gain.exponentialRampToValueAtTime(0.105, when + 0.035);
+  gain.gain.exponentialRampToValueAtTime(0.0001, when + 3.4);
+
+  oscillator.connect(toneFilter);
+  overtone.connect(toneFilter);
+  toneFilter.connect(gain);
+  gain.connect(panner);
+  panner.connect(delay);
+  panner.connect(masterGain);
+
+  oscillator.start(when);
+  overtone.start(when);
+  oscillator.stop(when + 3.6);
+  overtone.stop(when + 3.6);
+}
+
+function playBassPulse(nodes: SoundscapeNodes, frequency: number, when: number) {
+  const { context, masterGain } = nodes;
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  const filter = context.createBiquadFilter();
+
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(frequency, when);
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(220, when);
+  gain.gain.setValueAtTime(0.0001, when);
+  gain.gain.exponentialRampToValueAtTime(0.05, when + 0.22);
+  gain.gain.exponentialRampToValueAtTime(0.0001, when + 5.5);
+
+  oscillator.connect(filter);
+  filter.connect(gain);
+  gain.connect(masterGain);
+  oscillator.start(when);
+  oscillator.stop(when + 5.7);
+}
+
 function createSoundscape(volume: number): SoundscapeNodes {
   const context = new AudioContext();
   const masterGain = context.createGain();
-  const padGain = context.createGain();
-  const shimmerGain = context.createGain();
-  const noiseGain = context.createGain();
-  const masterFilter = context.createBiquadFilter();
+  const limiter = context.createDynamicsCompressor();
+  const delay = context.createDelay(4);
+  const delayFeedback = context.createGain();
+  const delayFilter = context.createBiquadFilter();
+  const textureGain = context.createGain();
+  const textureFilter = context.createBiquadFilter();
+  const textureSource = context.createBufferSource();
 
   masterGain.gain.value = 0;
-  padGain.gain.value = 0.045;
-  shimmerGain.gain.value = 0.012;
-  noiseGain.gain.value = 0.028;
-  masterFilter.type = 'lowpass';
-  masterFilter.frequency.value = 1550;
-  masterFilter.Q.value = 0.4;
+  limiter.threshold.value = -24;
+  limiter.knee.value = 18;
+  limiter.ratio.value = 6;
+  limiter.attack.value = 0.04;
+  limiter.release.value = 0.4;
 
-  padGain.connect(masterFilter);
-  shimmerGain.connect(masterFilter);
-  noiseGain.connect(masterFilter);
-  masterFilter.connect(masterGain);
-  masterGain.connect(context.destination);
+  delay.delayTime.value = 0.72;
+  delayFeedback.gain.value = 0.28;
+  delayFilter.type = 'lowpass';
+  delayFilter.frequency.value = 1450;
+  delay.connect(delayFilter);
+  delayFilter.connect(delayFeedback);
+  delayFeedback.connect(delay);
+  delay.connect(masterGain);
 
-  const chord = [110, 164.81, 220, 277.18];
-  const oscillators = chord.flatMap((frequency, index) => {
-    const left = context.createOscillator();
-    const right = context.createOscillator();
-    const leftGain = context.createGain();
-    const rightGain = context.createGain();
-    const stereo = context.createStereoPanner();
+  textureSource.buffer = createNoiseBuffer(context);
+  textureSource.loop = true;
+  textureFilter.type = 'lowpass';
+  textureFilter.frequency.value = 260;
+  textureFilter.Q.value = 0.45;
+  textureGain.gain.value = 0.025;
+  textureSource.connect(textureFilter);
+  textureFilter.connect(textureGain);
+  textureGain.connect(masterGain);
+  textureSource.start();
 
-    left.type = 'sine';
-    right.type = 'sine';
-    left.frequency.value = frequency;
-    right.frequency.value = frequency;
-    left.detune.value = -5 - index * 1.2;
-    right.detune.value = 6 + index * 1.1;
-    leftGain.gain.value = 0.15;
-    rightGain.gain.value = 0.15;
-    stereo.pan.value = index % 2 === 0 ? -0.32 : 0.32;
-
-    left.connect(leftGain);
-    right.connect(rightGain);
-    leftGain.connect(stereo);
-    rightGain.connect(stereo);
-    stereo.connect(padGain);
-    left.start();
-    right.start();
-
-    return [left, right];
-  });
-
-  const shimmer = context.createOscillator();
-  const shimmerFilter = context.createBiquadFilter();
-  shimmer.type = 'triangle';
-  shimmer.frequency.value = 659.25;
-  shimmer.detune.value = -8;
-  shimmerFilter.type = 'bandpass';
-  shimmerFilter.frequency.value = 880;
-  shimmerFilter.Q.value = 0.55;
-  shimmer.connect(shimmerFilter);
-  shimmerFilter.connect(shimmerGain);
-  shimmer.start();
-  oscillators.push(shimmer);
-
-  const noiseSource = context.createBufferSource();
-  const noiseFilter = context.createBiquadFilter();
-  noiseSource.buffer = createNoiseBuffer(context);
-  noiseSource.loop = true;
-  noiseFilter.type = 'lowpass';
-  noiseFilter.frequency.value = 380;
-  noiseFilter.Q.value = 0.7;
-  noiseSource.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseSource.start();
-
-  const padLfo = context.createOscillator();
-  const padLfoGain = context.createGain();
-  padLfo.type = 'sine';
-  padLfo.frequency.value = 0.035;
-  padLfoGain.gain.value = 0.018;
-  padLfo.connect(padLfoGain);
-  padLfoGain.connect(padGain.gain);
-  padLfo.start();
-
-  const filterLfo = context.createOscillator();
-  const filterLfoGain = context.createGain();
-  filterLfo.type = 'sine';
-  filterLfo.frequency.value = 0.016;
-  filterLfoGain.gain.value = 320;
-  filterLfo.connect(filterLfoGain);
-  filterLfoGain.connect(masterFilter.frequency);
-  filterLfo.start();
-
+  masterGain.connect(limiter);
+  limiter.connect(context.destination);
   setGain(masterGain, volume);
 
-  return {
-    context,
-    masterGain,
-    oscillators,
-    lfos: [padLfo, filterLfo],
-    noiseSource,
-  };
+  return { context, masterGain, textureSource, textureFilter, delay, delayFeedback };
+}
+
+function scheduleMusic(nodes: SoundscapeNodes, step: number) {
+  const now = nodes.context.currentTime + 0.08;
+  const noteIndex = (step * 2 + Math.floor(Math.random() * 3)) % NOTE_SCALE.length;
+  const frequency = NOTE_SCALE[noteIndex] * (Math.random() > 0.82 ? 2 : 1);
+  const pan = (Math.random() - 0.5) * 1.2;
+
+  playBell(nodes, frequency, now, pan);
+
+  if (step % 4 === 0) {
+    playBassPulse(nodes, BASS_NOTES[(step / 4) % BASS_NOTES.length], now);
+  }
+
+  nodes.textureFilter.frequency.setTargetAtTime(220 + Math.random() * 190, now, 1.8);
+  nodes.delay.delayTime.setTargetAtTime(0.58 + Math.random() * 0.42, now, 0.8);
+  nodes.delayFeedback.gain.setTargetAtTime(0.2 + Math.random() * 0.14, now, 0.9);
 }
 
 export function AmbienceControl() {
   const nodesRef = useRef<SoundscapeNodes | null>(null);
+  const schedulerRef = useRef<number | null>(null);
+  const stepRef = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [needsGesture, setNeedsGesture] = useState(false);
   const [volume, setVolume] = useState(INITIAL_VOLUME);
+
+  const startScheduler = () => {
+    if (schedulerRef.current !== null || !nodesRef.current) return;
+
+    scheduleMusic(nodesRef.current, stepRef.current);
+    stepRef.current += 1;
+
+    schedulerRef.current = window.setInterval(() => {
+      if (!nodesRef.current || nodesRef.current.context.state !== 'running') return;
+      scheduleMusic(nodesRef.current, stepRef.current);
+      stepRef.current += 1;
+    }, 2800);
+  };
 
   useEffect(() => {
     const startAutomatically = async () => {
       try {
         nodesRef.current = createSoundscape(INITIAL_VOLUME);
         await nodesRef.current.context.resume();
-        setNeedsGesture(nodesRef.current.context.state !== 'running');
+        const running = nodesRef.current.context.state === 'running';
+        setNeedsGesture(!running);
+        if (running) startScheduler();
       } catch {
         setNeedsGesture(true);
       }
@@ -160,11 +197,12 @@ export function AmbienceControl() {
     void startAutomatically();
 
     return () => {
+      if (schedulerRef.current !== null) {
+        window.clearInterval(schedulerRef.current);
+      }
       const nodes = nodesRef.current;
       if (!nodes) return;
-      nodes.oscillators.forEach((oscillator) => oscillator.stop());
-      nodes.lfos.forEach((lfo) => lfo.stop());
-      nodes.noiseSource.stop();
+      nodes.textureSource.stop();
       void nodes.context.close();
     };
   }, []);
@@ -175,7 +213,9 @@ export function AmbienceControl() {
     }
     await nodesRef.current.context.resume();
     setGain(nodesRef.current.masterGain, isMuted ? 0 : volume);
-    setNeedsGesture(nodesRef.current.context.state !== 'running');
+    const running = nodesRef.current.context.state === 'running';
+    setNeedsGesture(!running);
+    if (running) startScheduler();
   };
 
   const toggleMute = async () => {
@@ -205,48 +245,46 @@ export function AmbienceControl() {
       aria-label="Ambience controls"
       sx={{
         position: 'fixed',
-        right: { xs: 12, sm: 24 },
-        bottom: { xs: 12, sm: 24 },
+        left: '50%',
+        bottom: { xs: 12, sm: 20 },
         zIndex: 30,
-        maxWidth: 'calc(100vw - 24px)',
+        width: { xs: 'calc(100vw - 24px)', sm: 420 },
+        transform: 'translateX(-50%)',
       }}
     >
       <Stack
-        spacing={isOpen ? 1.25 : 0}
+        spacing={isOpen ? 1 : 0}
         sx={{
-          width: isOpen ? { xs: 270, sm: 310 } : 'auto',
           border: '1px solid rgba(255,255,255,0.16)',
-          borderRadius: 999,
-          p: isOpen ? 1.35 : 0.75,
-          background: 'rgba(8,7,11,0.72)',
+          borderRadius: 4,
+          px: 1.25,
+          py: 1,
+          background: 'rgba(8,7,11,0.78)',
           backdropFilter: 'blur(18px)',
           boxShadow: '0 18px 55px rgba(0,0,0,0.38)',
         }}
       >
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <IconButton
+        <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
+          <Button
             size="small"
-            aria-label={needsGesture ? 'Enable ambience' : isMuted ? 'Unmute ambience' : 'Mute ambience'}
+            variant="outlined"
+            color={needsGesture ? 'secondary' : 'inherit'}
             onClick={() => void toggleMute()}
-            sx={{
-              color: needsGesture ? 'secondary.main' : 'text.primary',
-              border: '1px solid rgba(255,255,255,0.16)',
-              background: 'rgba(255,255,255,0.06)',
-            }}
+            sx={{ borderRadius: 999, minWidth: 104, whiteSpace: 'nowrap' }}
           >
-            {needsGesture ? '▶' : isMuted ? '🔇' : '♪'}
-          </IconButton>
-          <Typography variant="caption" sx={{ flex: 1, color: 'text.secondary' }}>
-            {needsGesture ? 'Tap to enable sound' : isMuted ? 'Ambience muted' : 'Ambience on'}
-          </Typography>
-          <IconButton
-            size="small"
-            aria-label={isOpen ? 'Collapse ambience controls' : 'Expand ambience controls'}
-            onClick={() => setIsOpen((value) => !value)}
-            sx={{ color: 'text.secondary' }}
-          >
-            {isOpen ? '−' : '⋯'}
-          </IconButton>
+            {needsGesture ? 'Enable sound' : isMuted ? 'Unmute' : 'Mute'}
+          </Button>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', lineHeight: 1.2 }}>
+              {needsGesture ? 'Browser blocked autoplay' : isMuted ? 'Soundscape muted' : 'Generative ambience'}
+            </Typography>
+            <Typography variant="caption" sx={{ display: { xs: 'none', sm: 'block' }, color: 'text.disabled', lineHeight: 1.2 }}>
+              Bell notes, soft delay, filtered texture
+            </Typography>
+          </Box>
+          <Button size="small" color="inherit" onClick={() => setIsOpen((value) => !value)} sx={{ borderRadius: 999, minWidth: 74 }}>
+            {isOpen ? 'Close' : 'Volume'}
+          </Button>
         </Stack>
 
         {isOpen ? (
@@ -254,7 +292,7 @@ export function AmbienceControl() {
             <Slider
               aria-label="Ambience volume"
               min={0}
-              max={0.18}
+              max={0.22}
               step={0.005}
               value={volume}
               onChange={updateVolume}
