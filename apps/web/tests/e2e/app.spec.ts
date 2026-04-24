@@ -56,12 +56,13 @@ test('help page documents the PWA and testing strategy', async ({ page }) => {
   await expect(page.getByText(/playwright e2e tests/i)).toBeVisible();
 });
 
-test('PWA assets are available', async ({ page }) => {
+test('static PWA assets are available in dev', async ({ page }) => {
   const manifestResponse = await page.goto('/manifest.webmanifest');
   expect(manifestResponse?.ok()).toBeTruthy();
   const manifest = await page.locator('body').textContent();
   expect(manifest).toContain('Fractureline');
 
-  const serviceWorkerResponse = await page.goto('/sw.js');
-  expect(serviceWorkerResponse?.ok()).toBeTruthy();
+  const offlineResponse = await page.goto('/offline.html');
+  expect(offlineResponse?.ok()).toBeTruthy();
+  await expect(page.getByText(/timeline is offline/i)).toBeVisible();
 });
