@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Analytics } from '@vercel/analytics/react';
+import { AppProviders } from '@/components/app-providers';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -27,9 +28,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-serif antialiased">
-        {children}
-        <Analytics />
+      <body>
+        <AppProviders>
+          {children}
+          <Analytics />
+        </AppProviders>
       </body>
     </html>
   );
