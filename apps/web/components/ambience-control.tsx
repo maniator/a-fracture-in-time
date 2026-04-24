@@ -3,8 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Collapse from '@mui/material/Collapse';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 const INITIAL_VOLUME = 0.07;
@@ -248,59 +252,37 @@ export function AmbienceControl() {
         left: '50%',
         bottom: { xs: 12, sm: 20 },
         zIndex: 30,
-        width: { xs: 'calc(100vw - 24px)', sm: 420 },
+        width: { xs: 'calc(100vw - 24px)', sm: 430 },
         transform: 'translateX(-50%)',
       }}
     >
-      <Stack
-        spacing={isOpen ? 1 : 0}
-        sx={{
-          border: '1px solid rgba(255,255,255,0.16)',
-          borderRadius: 4,
-          px: 1.25,
-          py: 1,
-          background: 'rgba(8,7,11,0.78)',
-          backdropFilter: 'blur(18px)',
-          boxShadow: '0 18px 55px rgba(0,0,0,0.38)',
-        }}
-      >
-        <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
-          <Button
-            size="small"
-            variant="outlined"
-            color={needsGesture ? 'secondary' : 'inherit'}
-            onClick={() => void toggleMute()}
-            sx={{ borderRadius: 999, minWidth: 104, whiteSpace: 'nowrap' }}
-          >
-            {needsGesture ? 'Enable sound' : isMuted ? 'Unmute' : 'Mute'}
-          </Button>
-          <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', lineHeight: 1.2 }}>
-              {needsGesture ? 'Browser blocked autoplay' : isMuted ? 'Soundscape muted' : 'Generative ambience'}
-            </Typography>
-            <Typography variant="caption" sx={{ display: { xs: 'none', sm: 'block' }, color: 'text.disabled', lineHeight: 1.2 }}>
-              Bell notes, soft delay, filtered texture
-            </Typography>
-          </Box>
-          <Button size="small" color="inherit" onClick={() => setIsOpen((value) => !value)} sx={{ borderRadius: 999, minWidth: 74 }}>
-            {isOpen ? 'Close' : 'Volume'}
-          </Button>
-        </Stack>
-
-        {isOpen ? (
-          <Box sx={{ px: 1, pb: 0.5 }}>
-            <Slider
-              aria-label="Ambience volume"
-              min={0}
-              max={0.22}
-              step={0.005}
-              value={volume}
-              onChange={updateVolume}
-              size="small"
-            />
-          </Box>
-        ) : null}
-      </Stack>
+      <Card variant="outlined" sx={{ background: 'rgba(8,7,11,0.82)', backdropFilter: 'blur(18px)', boxShadow: '0 18px 55px rgba(0,0,0,0.38)' }}>
+        <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
+          <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
+            <Tooltip title={needsGesture ? 'Enable ambience' : isMuted ? 'Unmute ambience' : 'Mute ambience'}>
+              <Button size="small" variant={needsGesture ? 'contained' : 'outlined'} color={needsGesture ? 'secondary' : 'inherit'} onClick={() => void toggleMute()} sx={{ minWidth: 96 }}>
+                {needsGesture ? 'Enable' : isMuted ? 'Unmute' : 'Mute'}
+              </Button>
+            </Tooltip>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', lineHeight: 1.2 }}>
+                {needsGesture ? 'Sound needs one tap' : isMuted ? 'Ambience muted' : 'Generative ambience'}
+              </Typography>
+              <Typography variant="caption" sx={{ display: { xs: 'none', sm: 'block' }, color: 'text.disabled', lineHeight: 1.2 }}>
+                Bell notes, soft delay, filtered texture
+              </Typography>
+            </Box>
+            <Button size="small" color="inherit" variant="text" onClick={() => setIsOpen((value) => !value)} sx={{ minWidth: 76 }}>
+              {isOpen ? 'Hide' : 'Volume'}
+            </Button>
+          </Stack>
+          <Collapse in={isOpen} unmountOnExit>
+            <Box sx={{ px: 1, pt: 1.5 }}>
+              <Slider aria-label="Ambience volume" min={0} max={0.22} step={0.005} value={volume} onChange={updateVolume} size="small" />
+            </Box>
+          </Collapse>
+        </CardContent>
+      </Card>
     </Box>
   );
 }
