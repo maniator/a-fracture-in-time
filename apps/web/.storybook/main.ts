@@ -13,6 +13,10 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  webpackFinal: async (webpackConfig) => {
+    webpackConfig.cache = false;
+    return webpackConfig;
+  },
 };
 
 export default config;
