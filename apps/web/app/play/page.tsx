@@ -1,7 +1,8 @@
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
@@ -18,16 +19,23 @@ export default function PlayPage() {
       <PwaRegister />
       <SiteNav />
       <Container maxWidth="lg" sx={{ py: 5, pb: { xs: 20, sm: 16 } }}>
-        <Card component="section" aria-labelledby="briefing-title" sx={{ mb: 4, border: '1px solid rgba(255,255,255,0.14)' }}>
-          <CardContent sx={{ p: { xs: 3, md: 5 } }}>
-            <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap' }}>
-              <Chip label="Before you start" color="secondary" variant="outlined" />
-              <Chip label="Chapter 1" variant="outlined" />
-            </Stack>
-            <Typography id="briefing-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3.25rem' } }}>
-              You are entering Lattice.
-            </Typography>
-            <Typography sx={{ mt: 3, color: 'text.secondary', fontSize: { xs: '1.05rem', md: '1.2rem' }, lineHeight: 1.8 }}>
+        <Accordion defaultExpanded component="section" sx={{ mb: 4, border: '1px solid rgba(255,255,255,0.14)' }}>
+          <AccordionSummary aria-controls="briefing-content" id="briefing-header">
+            <Box sx={{ width: '100%' }}>
+              <Stack direction="row" spacing={1} sx={{ mb: 1.5, flexWrap: 'wrap' }}>
+                <Chip label="Before you start" color="secondary" variant="outlined" />
+                <Chip label="Chapter 1" variant="outlined" />
+              </Stack>
+              <Typography id="briefing-title" component="h1" variant="h3" sx={{ fontSize: { xs: '1.65rem', md: '2.4rem' } }}>
+                You are entering Lattice.
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+                Expand or collapse the setup for the world, characters, and choice system.
+              </Typography>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails id="briefing-content" sx={{ px: { xs: 3, md: 5 }, pb: { xs: 3, md: 5 } }}>
+            <Typography sx={{ color: 'text.secondary', fontSize: { xs: '1.05rem', md: '1.2rem' }, lineHeight: 1.8 }}>
               Lattice is a future city that calls itself peaceful. Hunger is gone. War is gone. Most fear is gone. But the city keeps that peace by correcting memories, rewriting records, and quietly removing choices that might destabilize the future.
             </Typography>
             <Divider sx={{ my: 4 }} />
@@ -44,8 +52,8 @@ export default function PlayPage() {
             <Button sx={{ mt: 4 }} color="secondary" variant="contained" size="large" href="#first-scene">
               Jump to the first scene
             </Button>
-          </CardContent>
-        </Card>
+          </AccordionDetails>
+        </Accordion>
         <Box id="first-scene">
           <SceneRenderer />
         </Box>
