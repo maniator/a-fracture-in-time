@@ -10,7 +10,8 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@fractureline/shared-types": "workspace:*"
+    "@fractureline/shared-types": "workspace:*",
+    "inkjs": "^2.3.2"
   },
   "devDependencies": {
     "typescript": "^5.8.3",
