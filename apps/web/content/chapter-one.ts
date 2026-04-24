@@ -5,15 +5,15 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_p_001',
     chapter: 1,
     pov: 'protector',
-    speaker: 'Protector',
+    speaker: 'Mira Vale',
     text: [
-      'The bells did not ring in Lattice unless something had been corrected.',
-      'Today they rang three times, and everyone in the square smiled at the exact same moment.',
+      'Mira Vale stood at the edge of Bell Square in her blue Protector uniform, one hand resting on the sealed civic record at her side.',
+      'In Lattice, the bells did not ring unless something had been corrected. Today they rang three times, and everyone in the square smiled at the exact same moment.',
     ],
     choices: [
       {
         id: 'study_crowd',
-        label: 'Study the crowd before speaking',
+        label: 'Look for what feels wrong in the crowd',
         effects: [
           { type: 'increment', key: 'stability', value: 1 },
           { type: 'setFlag', key: 'noticed-synchronized-smiles' },
@@ -22,7 +22,7 @@ export const chapterOne: SceneGraph = {
       },
       {
         id: 'approach_dais',
-        label: 'Go directly to the correction dais',
+        label: 'Do your Protector duty and report to the ceremony platform',
         effects: [{ type: 'increment', key: 'controlIndex', value: 1 }],
         nextSceneId: 'ch1_d_001',
       },
@@ -32,15 +32,15 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_d_001',
     chapter: 1,
     pov: 'dissenter',
-    speaker: 'Dissenter',
+    speaker: 'Soren Quill',
     text: [
-      'From beneath the old rail line, the city above sounded almost kind.',
-      'That was how Lattice lied best. It made obedience sound like music.',
+      'Below the old rail line, Soren Quill listened to the city above pretend to be kind.',
+      'He had crossed back through a fractured piece of time to find proof that Lattice was not peace. It was control with better music.',
     ],
     choices: [
       {
         id: 'mark_anchor',
-        label: 'Mark the bell tower as a temporal anchor',
+        label: 'Use the bell tower as a fixed point in time',
         effects: [
           { type: 'increment', key: 'magicEntropy', value: 1 },
           { type: 'appendCodex', entry: 'Temporal anchors hold revised memories in place.' },
@@ -49,7 +49,7 @@ export const chapterOne: SceneGraph = {
       },
       {
         id: 'follow_echo',
-        label: 'Follow the child echo into the service tunnels',
+        label: 'Follow the childlike voice deeper into the tunnels',
         effects: [
           { type: 'increment', key: 'rebellion', value: 1 },
           { type: 'setFlag', key: 'followed-child-echo' },
@@ -62,21 +62,21 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_p_002',
     chapter: 1,
     pov: 'protector',
-    speaker: 'Protector',
+    speaker: 'Mira Vale',
     text: [
-      'The Archivist handed you the corrected record. Your name was already signed at the bottom.',
-      'You had no memory of signing it. The ink was still wet.',
+      'The Archivist handed Mira the corrected record. Her name was already signed at the bottom.',
+      'She had no memory of signing it. The ink was still wet.',
     ],
     choices: [
       {
         id: 'accept_record',
-        label: 'Accept the record and preserve the ceremony',
+        label: 'Accept the record and keep the ceremony moving',
         effects: [{ type: 'increment', key: 'controlIndex', value: 1 }],
         nextSceneId: 'ch1_d_002',
       },
       {
         id: 'pocket_record',
-        label: 'Pocket the record before anyone notices',
+        label: 'Hide the record so you can inspect it later',
         effects: [
           { type: 'increment', key: 'memoryFracture', value: 1 },
           { type: 'setFlag', key: 'stole-corrected-record' },
@@ -89,21 +89,21 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_d_002',
     chapter: 1,
     pov: 'dissenter',
-    speaker: 'Dissenter',
+    speaker: 'Soren Quill',
     text: [
-      'The stolen page appeared in your hand before you stole it from anyone.',
-      'Across the margin, in your own handwriting, were three words: Do not trust me.',
+      'The stolen page appeared in Soren’s hand before Mira had stolen it from anyone.',
+      'Across the margin, in his own handwriting, were three words: Do not trust me.',
     ],
     choices: [
       {
         id: 'burn_margin',
-        label: 'Burn only the warning in the margin',
+        label: 'Destroy the warning before it can change anything',
         effects: [{ type: 'increment', key: 'stability', value: 1 }],
         nextSceneId: 'ch1_p_003',
       },
       {
         id: 'memorize_warning',
-        label: 'Memorize the warning and leave the page intact',
+        label: 'Remember the warning and keep the page intact',
         effects: [
           { type: 'increment', key: 'memoryFracture', value: 1 },
           { type: 'appendCodex', entry: 'Some memories arrive before their causes.' },
@@ -116,21 +116,21 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_p_003',
     chapter: 1,
     pov: 'protector',
-    speaker: 'Protector',
+    speaker: 'Mira Vale',
     text: [
-      'A child in the crowd pointed at you and began to cry.',
-      'When her mother asked why, the child said, "Because they already chose the fire."',
+      'A child in the crowd pointed at Mira and began to cry.',
+      'When her mother asked why, the child said, "Because she already chose the fire."',
     ],
     choices: [
       {
         id: 'comfort_child',
-        label: 'Kneel and comfort the child',
+        label: 'Break protocol and comfort the child yourself',
         effects: [{ type: 'increment', key: 'rebellion', value: 1 }],
         nextSceneId: 'ch1_d_003',
       },
       {
         id: 'call_keeper',
-        label: 'Call a Keeper to correct the child gently',
+        label: 'Call a Keeper to calm and correct the child',
         effects: [{ type: 'increment', key: 'controlIndex', value: 1 }],
         nextSceneId: 'ch1_d_003',
       },
@@ -140,15 +140,15 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_d_003',
     chapter: 1,
     pov: 'dissenter',
-    speaker: 'Dissenter',
+    speaker: 'Soren Quill',
     text: [
       'The tunnel wall split open like glass under pressure.',
-      'Through it, you saw the Protector kneeling before a child you remembered saving years from now.',
+      'Through it, Soren saw Mira kneeling before a child he remembered saving years from now.',
     ],
     choices: [
       {
         id: 'reach_through',
-        label: 'Reach through the fractureline',
+        label: 'Reach through the break in time toward Mira',
         effects: [
           { type: 'increment', key: 'magicEntropy', value: 2 },
           { type: 'setFlag', key: 'touched-fractureline' },
@@ -157,7 +157,7 @@ export const chapterOne: SceneGraph = {
       },
       {
         id: 'seal_fracture',
-        label: 'Seal the fracture before it sees you',
+        label: 'Close the break before Lattice notices you',
         effects: [{ type: 'increment', key: 'stability', value: 2 }],
         nextSceneId: 'ch1_p_004',
       },
@@ -167,15 +167,15 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_p_004',
     chapter: 1,
     pov: 'protector',
-    speaker: 'Protector',
+    speaker: 'Mira Vale',
     text: [
-      'Your palm burned with a memory that was not yours.',
-      'You remembered reaching through a wall. You remembered refusing. You remembered both as if both had already happened.',
+      'Mira’s palm burned with a memory that was not hers.',
+      'She remembered Soren reaching through a wall. She remembered him refusing. She remembered both as if both had already happened.',
     ],
     choices: [
       {
         id: 'name_fracture',
-        label: 'Whisper the word fractureline',
+        label: 'Say the impossible word: fractureline',
         effects: [
           { type: 'increment', key: 'memoryFracture', value: 2 },
           { type: 'appendCodex', entry: 'The fractureline is where incompatible histories touch.' },
@@ -184,7 +184,7 @@ export const chapterOne: SceneGraph = {
       },
       {
         id: 'deny_memory',
-        label: 'Deny the impossible memory',
+        label: 'Tell yourself the memory is only stress',
         effects: [{ type: 'increment', key: 'controlIndex', value: 1 }],
         nextSceneId: 'ch1_d_004',
       },
@@ -194,10 +194,10 @@ export const chapterOne: SceneGraph = {
     id: 'ch1_d_004',
     chapter: 1,
     pov: 'dissenter',
-    speaker: 'Dissenter',
+    speaker: 'Soren Quill',
     text: [
-      'Your device showed a completed choice log.',
-      'The first choice was one you never made: Protect the lie until it learns to speak truth.',
+      'Soren’s device showed a completed choice log.',
+      'The first choice was one he never made: Protect the lie until it learns to speak truth.',
     ],
     choices: [
       {
