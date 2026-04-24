@@ -14,4 +14,4 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@fractureline/shared-types', '@fractureline/narrative-engine'],
 };
 
-export default withPWA(nextConfig);
+export default isStorybook ? nextConfig : withPWA(nextConfig);
