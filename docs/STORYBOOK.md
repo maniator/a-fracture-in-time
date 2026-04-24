@@ -12,6 +12,8 @@ pnpm build-storybook
 ## Current Stories
 
 - `Design System/Style Guide`: Material UI buttons, chips, cards, typography, and choice patterns.
+- `Navigation/SiteNav`: top-level app navigation.
+- `Game/SceneRenderer`: Chapter 1 opening scene rendered through the live game component.
 
 ## Design Direction
 
@@ -28,8 +30,7 @@ Current style goals:
 
 ## Next Storybook Tasks
 
-- Add isolated SceneRenderer stories with mocked state.
-- Add SiteNav story.
-- Add choice button variants.
-- Add metric card variants.
+- Add mocked state variants for SceneRenderer, including codex unlocked, chapter complete, and error states.
+- Add isolated choice button variants if the choice UI is extracted from SceneRenderer.
+- Add metric card variants if the metric UI is extracted from SceneRenderer.
 - Add accessibility notes for typography, contrast, and reduced motion.
