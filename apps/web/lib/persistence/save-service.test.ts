@@ -1,6 +1,7 @@
+import 'fake-indexeddb/auto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { initialTimelineState } from '@fractureline/shared-types';
-import { browserSaveService } from './save-service';
+import { indexedDbSaveService } from './save-service';
 
 const storage = new Map<string, string>();
 
@@ -15,31 +16,43 @@ Object.defineProperty(globalThis, 'window', {
   configurable: true,
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await indexedDbSaveService.clear();
   storage.clear();
   vi.clearAllMocks();
 });
 
-describe('browserSaveService', () => {
-  it('writes and reads a versioned save payload', () => {
+describe('indexedDbSaveService', () => {
+  it('writes and reads a versioned save payload from IndexedDB', async () => {
     const savedState = { ...initialTimelineState, currentSceneId: 'ch1_d_001', memoryFracture: 2 };
 
-    browserSaveService.write(savedState);
+    await indexedDbSaveService.write(savedState);
 
-    expect(browserSaveService.hasSave()).toBe(true);
-    expect(browserSaveService.read()).toEqual(savedState);
+    expect(await indexedDbSaveService.hasSave()).toBe(true);
+    expect(await indexedDbSaveService.read()).toEqual(savedState);
   });
 
-  it('returns null for malformed save data', () => {
+  it('migrates an existing legacy localStorage save into IndexedDB', async () => {
+    const savedState = { ...initialTimelineState, currentSceneId: 'ch1_d_001', rebellion: 2 };
+    window.localStorage.setItem('fractureline:save:v1', JSON.stringify({ version: 1, state: savedState }));
+
+    expect(await indexedDbSaveService.read()).toEqual(savedState);
+    expect(window.localStorage.getItem('fractureline:save:v1')).toBeNull();
+  });
+
+  it('ignores malformed legacy localStorage save data', async () => {
     window.localStorage.setItem('fractureline:save:v1', '{not-json');
 
-    expect(browserSaveService.read()).toBeNull();
+    expect(await indexedDbSaveService.read()).toBeNull();
   });
 
-  it('clears saved state', () => {
-    browserSaveService.write(initialTimelineState);
-    browserSaveService.clear();
+  it('clears saved state from IndexedDB and legacy localStorage', async () => {
+    await indexedDbSaveService.write(initialTimelineState);
+    window.localStorage.setItem('fractureline:save:v1', JSON.stringify({ version: 1, state: initialTimelineState }));
 
-    expect(browserSaveService.hasSave()).toBe(false);
+    await indexedDbSaveService.clear();
+
+    expect(await indexedDbSaveService.hasSave()).toBe(false);
+    expect(window.localStorage.getItem('fractureline:save:v1')).toBeNull();
   });
 });
