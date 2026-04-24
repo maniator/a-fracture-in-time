@@ -7,14 +7,9 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-docs'],
   framework: {
     name: '@storybook/nextjs',
-    options: {
-      nextConfigPath: '../next.config.ts',
-    },
+    options: {},
   },
   staticDirs: ['../public'],
-  typescript: {
-    reactDocgen: 'react-docgen-typescript',
-  },
   docs: {
     autodocs: 'tag',
   },
