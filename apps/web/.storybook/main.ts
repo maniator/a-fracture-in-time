@@ -14,7 +14,10 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
   webpackFinal: async (webpackConfig) => {
-    webpackConfig.cache = false;
+    if (process.env.CI === 'true') {
+      webpackConfig.cache = false;
+    }
+
     return webpackConfig;
   },
 };
