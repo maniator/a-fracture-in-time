@@ -1,6 +1,16 @@
 'use client';
 
 import { useMemo } from 'react';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { getAvailableChoices } from '@fractureline/narrative-engine';
 import { chapterOne } from '@/content/chapter-one';
 import { useGameStore } from '@/store/game-store';
@@ -16,75 +26,95 @@ export function SceneRenderer() {
 
   if (!scene) {
     return (
-      <section className="rounded-3xl border border-red-400/30 bg-red-950/20 p-6">
-        <p className="text-lg text-red-100">Scene not found: {state.currentSceneId}</p>
-        <button className="mt-4 rounded-full bg-ink px-4 py-2 text-void" onClick={reset}>Restart</button>
-      </section>
+      <Alert
+        severity="error"
+        action={<Button color="inherit" onClick={reset}>Restart</Button>}
+      >
+        Scene not found: {state.currentSceneId}
+      </Alert>
     );
   }
 
   const chapterComplete = state.flags['chapter-one-complete'];
 
   return (
-    <section aria-labelledby="scene-title" className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl backdrop-blur md:p-10">
-      <div className="mb-8 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-ink/60">
-        <span>Chapter {scene.chapter}</span>
-        <span className="rounded-full border border-fracture/50 px-3 py-1 text-fracture">{scene.pov}</span>
-      </div>
+    <Card component="section" aria-labelledby="scene-title" sx={{ boxShadow: '0 28px 80px rgba(0,0,0,0.45)' }}>
+      <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+        <Stack direction="row" spacing={1.5} sx={{ mb: 4, flexWrap: 'wrap' }}>
+          <Chip label={`Chapter ${scene.chapter}`} variant="outlined" />
+          <Chip label={scene.pov} color="primary" variant="outlined" />
+        </Stack>
 
-      <h1 id="scene-title" className="text-2xl font-semibold text-ink md:text-4xl">{scene.speaker ?? 'Unknown'}</h1>
+        <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
+          {scene.speaker ?? 'Unknown'}
+        </Typography>
 
-      <div className="mt-6 space-y-5 text-lg leading-8 text-ink/90 md:text-xl md:leading-9">
-        {scene.text.map((paragraph) => (
-          <p key={paragraph} className="motion-safe:animate-[fadeIn_600ms_ease-out]">{paragraph}</p>
-        ))}
-      </div>
+        <Stack spacing={2.5} sx={{ mt: 4 }}>
+          {scene.text.map((paragraph) => (
+            <Typography key={paragraph} sx={{ color: 'text.secondary', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.75 }}>
+              {paragraph}
+            </Typography>
+          ))}
+        </Stack>
 
-      <div className="mt-10 grid gap-3" aria-label="Choices">
-        {choices.map((choice) => (
-          <button
-            key={choice.id}
-            onClick={() => choose(choice.id)}
-            className="rounded-2xl border border-white/15 bg-void/50 px-5 py-4 text-left text-base text-ink transition hover:border-ember hover:bg-ember/10 focus:outline-none focus:ring-2 focus:ring-ember"
-          >
-            {choice.label}
-          </button>
-        ))}
-      </div>
+        <Stack spacing={2} sx={{ mt: 5 }} aria-label="Choices">
+          {choices.map((choice) => (
+            <Button
+              key={choice.id}
+              onClick={() => choose(choice.id)}
+              variant="outlined"
+              color="inherit"
+              size="large"
+              sx={{ justifyContent: 'flex-start', borderRadius: 3, px: 3, py: 2, textAlign: 'left' }}
+            >
+              {choice.label}
+            </Button>
+          ))}
+        </Stack>
 
-      {chapterComplete ? (
-        <div className="mt-8 rounded-2xl border border-ember/40 bg-ember/10 p-5 text-ink">
-          <p className="font-semibold">Chapter 1 complete.</p>
-          <p className="mt-2 text-ink/75">The next chapter will build from this state and the contradiction you exposed.</p>
-          <button className="mt-4 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-void" onClick={reset}>Replay Chapter 1</button>
-        </div>
-      ) : null}
+        {chapterComplete ? (
+          <Alert severity="success" sx={{ mt: 4 }} action={<Button color="inherit" onClick={reset}>Replay</Button>}>
+            <Typography sx={{ fontWeight: 700 }}>Chapter 1 complete.</Typography>
+            <Typography variant="body2">The next chapter will build from this state and the contradiction you exposed.</Typography>
+          </Alert>
+        ) : null}
 
-      <dl className="mt-10 grid grid-cols-2 gap-3 text-sm text-ink/70 md:grid-cols-5">
-        <Metric label="Stability" value={state.stability} />
-        <Metric label="Control" value={state.controlIndex} />
-        <Metric label="Rebellion" value={state.rebellion} />
-        <Metric label="Memory" value={state.memoryFracture} />
-        <Metric label="Entropy" value={state.magicEntropy} />
-      </dl>
+        <Divider sx={{ my: 5 }} />
 
-      {state.codex.length ? (
-        <aside className="mt-8 rounded-2xl border border-white/10 bg-void/40 p-5">
-          <h2 className="text-sm uppercase tracking-[0.25em] text-ink/60">Codex</h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-ink/80">
-            {state.codex.map((entry) => <li key={entry}>{entry}</li>)}
-          </ul>
-        </aside>
-      ) : null}
-    </section>
+        <Grid container spacing={2} component="dl">
+          <Metric label="Stability" value={state.stability} />
+          <Metric label="Control" value={state.controlIndex} />
+          <Metric label="Rebellion" value={state.rebellion} />
+          <Metric label="Memory" value={state.memoryFracture} />
+          <Metric label="Entropy" value={state.magicEntropy} />
+        </Grid>
+
+        {state.codex.length ? (
+          <Box component="aside" sx={{ mt: 5, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, p: 3 }}>
+            <Typography variant="overline" sx={{ letterSpacing: '0.25em', color: 'text.secondary' }}>Codex</Typography>
+            <Stack component="ul" spacing={1} sx={{ mt: 1, pl: 3, color: 'text.secondary' }}>
+              {state.codex.map((entry) => <li key={entry}>{entry}</li>)}
+            </Stack>
+          </Box>
+        ) : null}
+      </CardContent>
+    </Card>
   );
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-void/30 p-3">
-      <dt className="text-xs uppercase tracking-[0.2em]">{label}</dt>
-      <dd className="mt-1 text-2xl text-ink">{value}</dd>
-    </div>
+    <Grid size={{ xs: 6, md: 2.4 }} component="div">
+      <Card variant="outlined" sx={{ background: 'rgba(8,7,11,0.32)' }}>
+        <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+          <Typography component="dt" variant="caption" sx={{ letterSpacing: '0.16em', textTransform: 'uppercase', color: 'text.secondary' }}>
+            {label}
+          </Typography>
+          <Typography component="dd" variant="h5" sx={{ m: 0, mt: 0.5 }}>
+            {value}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 }
