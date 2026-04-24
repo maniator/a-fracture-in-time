@@ -14,10 +14,20 @@ import Typography from '@mui/material/Typography';
 const INITIAL_VOLUME = 0.07;
 const NOTE_SCALE = [196, 220, 246.94, 293.66, 329.63, 392, 440, 493.88, 587.33];
 const BASS_NOTES = [98, 110, 130.81, 146.83];
+const CUE_FREQUENCIES: Record<string, number[]> = {
+  stability: [196, 246.94],
+  control: [146.83, 196, 246.94],
+  rebellion: [220, 293.66, 440],
+  memory: [261.63, 329.63, 493.88],
+  entropy: [185, 277.18, 554.36],
+  ending: [220, 329.63, 440, 659.25],
+  choice: [246.94, 329.63],
+};
 
 type SoundscapeNodes = {
   context: AudioContext;
   masterGain: GainNode;
+  cueGain: GainNode;
   textureSource: AudioBufferSourceNode;
   textureFilter: BiquadFilterNode;
   delay: DelayNode;
@@ -80,6 +90,38 @@ function playBell(nodes: SoundscapeNodes, frequency: number, when: number, pan: 
   overtone.stop(when + 3.6);
 }
 
+function playCue(nodes: SoundscapeNodes, cue: string) {
+  const frequencies = CUE_FREQUENCIES[cue] ?? CUE_FREQUENCIES.choice;
+  const now = nodes.context.currentTime + 0.02;
+
+  frequencies.forEach((frequency, index) => {
+    const oscillator = nodes.context.createOscillator();
+    const gain = nodes.context.createGain();
+    const filter = nodes.context.createBiquadFilter();
+    const panner = nodes.context.createStereoPanner();
+    const start = now + index * 0.075;
+
+    oscillator.type = cue === 'entropy' ? 'triangle' : 'sine';
+    oscillator.frequency.setValueAtTime(frequency, start);
+    oscillator.detune.setValueAtTime(cue === 'memory' ? -9 + index * 6 : index * 3, start);
+    filter.type = cue === 'control' ? 'lowpass' : 'bandpass';
+    filter.frequency.setValueAtTime(cue === 'control' ? 700 : frequency * 2.2, start);
+    filter.Q.value = cue === 'entropy' ? 1.5 : 0.85;
+    panner.pan.setValueAtTime((index - frequencies.length / 2) * 0.22, start);
+
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(cue === 'ending' ? 0.14 : 0.09, start + 0.018);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + (cue === 'ending' ? 1.4 : 0.65));
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(panner);
+    panner.connect(nodes.cueGain);
+    oscillator.start(start);
+    oscillator.stop(start + 1.5);
+  });
+}
+
 function playBassPulse(nodes: SoundscapeNodes, frequency: number, when: number) {
   const { context, masterGain } = nodes;
   const oscillator = context.createOscillator();
@@ -104,6 +146,7 @@ function playBassPulse(nodes: SoundscapeNodes, frequency: number, when: number) 
 function createSoundscape(volume: number): SoundscapeNodes {
   const context = new AudioContext();
   const masterGain = context.createGain();
+  const cueGain = context.createGain();
   const limiter = context.createDynamicsCompressor();
   const delay = context.createDelay(4);
   const delayFeedback = context.createGain();
@@ -113,6 +156,7 @@ function createSoundscape(volume: number): SoundscapeNodes {
   const textureSource = context.createBufferSource();
 
   masterGain.gain.value = 0;
+  cueGain.gain.value = 0.55;
   limiter.threshold.value = -24;
   limiter.knee.value = 18;
   limiter.ratio.value = 6;
@@ -137,13 +181,14 @@ function createSoundscape(volume: number): SoundscapeNodes {
   textureSource.connect(textureFilter);
   textureFilter.connect(textureGain);
   textureGain.connect(masterGain);
+  cueGain.connect(masterGain);
   textureSource.start();
 
   masterGain.connect(limiter);
   limiter.connect(context.destination);
   setGain(masterGain, volume);
 
-  return { context, masterGain, textureSource, textureFilter, delay, delayFeedback };
+  return { context, masterGain, cueGain, textureSource, textureFilter, delay, delayFeedback };
 }
 
 function scheduleMusic(nodes: SoundscapeNodes, step: number) {
@@ -198,9 +243,18 @@ export function AmbienceControl() {
       }
     };
 
+    const handleChoiceCue = (event: Event) => {
+      const cue = event instanceof CustomEvent ? event.detail?.cue : undefined;
+      const nodes = nodesRef.current;
+      if (!nodes || isMuted || nodes.context.state !== 'running') return;
+      playCue(nodes, typeof cue === 'string' ? cue : 'choice');
+    };
+
     void startAutomatically();
+    window.addEventListener('fractureline:choice-cue', handleChoiceCue);
 
     return () => {
+      window.removeEventListener('fractureline:choice-cue', handleChoiceCue);
       if (schedulerRef.current !== null) {
         window.clearInterval(schedulerRef.current);
       }
@@ -209,7 +263,7 @@ export function AmbienceControl() {
       nodes.textureSource.stop();
       void nodes.context.close();
     };
-  }, []);
+  }, [isMuted]);
 
   const enableSound = async () => {
     if (!nodesRef.current) {
@@ -269,7 +323,7 @@ export function AmbienceControl() {
                 {needsGesture ? 'Sound needs one tap' : isMuted ? 'Ambience muted' : 'Generative ambience'}
               </Typography>
               <Typography variant="caption" sx={{ display: { xs: 'none', sm: 'block' }, color: 'text.disabled', lineHeight: 1.2 }}>
-                Bell notes, soft delay, filtered texture
+                Branch cues, bell notes, soft delay
               </Typography>
             </Box>
             <Button size="small" color="inherit" variant="text" onClick={() => setIsOpen((value) => !value)} sx={{ minWidth: 76 }}>
