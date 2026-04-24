@@ -7,11 +7,10 @@ This repository includes a root `vercel.json` configured for the Next.js app in 
 Recommended Vercel project settings:
 
 - Framework preset: Next.js
-- Install command: `pnpm install --frozen-lockfile=false`
+- Install command: `pnpm install --frozen-lockfile`
 - Build command: `pnpm build`
-- Output directory: `apps/web/.next`
 
-The root `vercel.json` mirrors those settings so the project can deploy from the monorepo root.
+The root `vercel.json` mirrors those settings so the project can deploy from the monorepo root. The lockfile is committed, so CI and Vercel should use strict frozen-lockfile installs.
 
 ## Environment Variables
 
@@ -26,14 +25,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 ## PWA and Offline Support
 
-The app includes:
+The app uses `@ducanh2912/next-pwa` to generate a Workbox-powered service worker during production builds. The app registers the generated worker through `workbox-window` in `PwaRegister` and shows an update-ready prompt when a new version is waiting.
+
+The checked-in PWA assets are:
 
 - `apps/web/public/manifest.webmanifest`
-- `apps/web/public/sw.js`
 - `apps/web/public/offline.html`
 - `apps/web/public/icons/icon.svg`
 
-The service worker caches the home, play, help, manifest, icon, and offline fallback pages. The app registers the service worker in production through `PwaRegister`.
+Generated Workbox files such as `apps/web/public/sw.js` and `apps/web/public/workbox-*.js` are intentionally ignored because they are build artifacts.
 
 ## GitHub Actions
 
