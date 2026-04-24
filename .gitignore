@@ -7,4 +7,6 @@ coverage
 .env.*
 !.env.example
 .DS_Store
-pnpm-lock.yaml
+playwright-report
+test-results
+storybook-static
