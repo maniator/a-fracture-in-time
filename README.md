@@ -25,6 +25,7 @@ Playwright also captures generated screenshots during CI and uploads them as the
 - Material UI
 - Tailwind CSS for global utility styling
 - Zustand
+- Dexie and IndexedDB for local-first saves
 - Vitest
 - Playwright
 - Storybook
@@ -39,7 +40,7 @@ packages/shared-types         Shared contracts
 packages/narrative-engine     Pure branching logic
 .bmad-core                    BMAD agents and workflow files
 docs                          Product, architecture, QA, deployment, and planning docs
-supabase                      Future Supabase docs and migrations
+supabase                      Optional future cloud-sync planning docs and migrations
 .github/workflows             CI jobs
 ```
 
@@ -61,12 +62,18 @@ pnpm build-storybook
 The app currently includes:
 
 - `/` landing page
-- `/play` playable Chapter 1 vertical slice with local save/load
+- `/play` playable Chapter 1 vertical slice with IndexedDB save/load
 - `/help` gameplay, PWA, and testing help page
 - Material UI theme provider
 - installable PWA manifest
 - generated Workbox service worker in production builds
 - offline fallback page
+
+## Local-First Saves
+
+Fractureline stores MVP saves locally using Dexie and IndexedDB. Local saves are intended to work offline and without a user account. See `docs/LOCAL_FIRST_STORAGE.md` for the storage plan.
+
+Supabase is kept only as optional future cloud-sync planning. It is not required for MVP play.
 
 ## BMAD Method
 
@@ -90,13 +97,13 @@ Initial agents include:
 
 ## Testing
 
-Unit tests live in package-level test files, especially `packages/narrative-engine/src/index.test.ts` and `apps/web/content/chapter-one.test.ts`.
+Unit tests live in package-level test files, especially `packages/narrative-engine/src/index.test.ts`, `apps/web/content/chapter-one.test.ts`, and `apps/web/lib/persistence/save-service.test.ts`.
 
 End-to-end tests live in `apps/web/tests/e2e` and cover:
 
 - home page navigation
 - play flow from Protector to Dissenter
-- local save/load behavior
+- IndexedDB save/load behavior
 - deterministic Chapter 1 completion
 - help page content
 - static PWA assets in development
@@ -113,6 +120,8 @@ End-to-end tests live in `apps/web/tests/e2e` and cover:
 - Playwright e2e tests
 
 The workflow uploads Playwright reports, generated screenshots, Storybook static output, and Next.js build output as artifacts.
+
+When dependencies change, run the temporary `Refresh pnpm lockfile` workflow before relying on CI or Vercel frozen-lockfile installs.
 
 ## Vercel Deployment
 
@@ -146,4 +155,4 @@ See `docs/STORYBOOK.md` for next style-guide tasks.
 
 ## Next Steps
 
-See `docs/NEXT_STEPS.md` for the follow-up roadmap. Immediate priorities are CI/Vercel verification, PWA production validation, Storybook expansion, narrative expansion, and Supabase planning.
+See `docs/NEXT_STEPS.md` for the follow-up roadmap. Immediate priorities are CI/Vercel verification, PWA production validation, Storybook expansion, narrative expansion, and local-first storage hardening.
