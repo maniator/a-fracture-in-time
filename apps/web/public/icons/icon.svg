@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Fractureline icon">
+  <rect width="512" height="512" rx="112" fill="#08070b"/>
+  <path d="M256 56c83 0 150 67 150 150 0 116-150 250-150 250S106 322 106 206C106 123 173 56 256 56Z" fill="#8b5cf6" opacity="0.84"/>
+  <path d="M276 62 211 219h64l-41 231 104-289h-73l11-99Z" fill="#f6efe4"/>
+  <path d="M150 394c60-22 95-56 126-99 28-40 54-88 101-113" fill="none" stroke="#f59e0b" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
+</svg>
