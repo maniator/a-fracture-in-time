@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -217,7 +217,7 @@ export function AmbienceControl() {
   const [needsGesture, setNeedsGesture] = useState(false);
   const [volume, setVolume] = useState(INITIAL_VOLUME);
 
-  const startScheduler = () => {
+  const startScheduler = useCallback(() => {
     if (schedulerRef.current !== null || !nodesRef.current) return;
 
     scheduleMusic(nodesRef.current, stepRef.current);
@@ -228,7 +228,7 @@ export function AmbienceControl() {
       scheduleMusic(nodesRef.current, stepRef.current);
       stepRef.current += 1;
     }, 2800);
-  };
+  }, []);
 
   useEffect(() => {
     const startAutomatically = async () => {
@@ -263,7 +263,7 @@ export function AmbienceControl() {
       nodes.textureSource.stop();
       void nodes.context.close();
     };
-  }, [isMuted]);
+  }, [isMuted, startScheduler]);
 
   const enableSound = async () => {
     if (!nodesRef.current) {
