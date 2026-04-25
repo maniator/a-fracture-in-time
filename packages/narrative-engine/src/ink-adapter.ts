@@ -1,4 +1,5 @@
-import { Story } from 'inkjs';
+import { Compiler } from 'inkjs/compiler/Compiler';
+import { Story } from 'inkjs/engine/Story';
 
 type CompiledInkStory = ConstructorParameters<typeof Story>[0];
 type InkVariableValue = string | number | boolean;
@@ -11,6 +12,7 @@ export type InkChoiceView = {
 
 export type InkStorySnapshot = {
   text: string[];
+  tags: string[];
   choices: InkChoiceView[];
   variables: Record<string, unknown>;
   stateJson: string;
@@ -24,7 +26,15 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'rebellion',
   'memoryFracture',
   'magicEntropy',
+  'currentSceneId',
+  'currentPOV',
+  'currentSpeaker',
+  'endingKey',
 ] as const;
+
+export function compileInkStory(source: string): Story {
+  return new Compiler(source).Compile();
+}
 
 export function createInkStory(compiledStory: CompiledInkStory, variables: InkVariableMap = {}) {
   const story = new Story(compiledStory);
@@ -63,6 +73,7 @@ export function restoreInkStory(compiledStory: CompiledInkStory, stateJson: stri
 export function snapshotInkStory(story: Story, text: string[] = []): InkStorySnapshot {
   return {
     text,
+    tags: story.currentTags ?? [],
     choices: story.currentChoices.map((choice) => ({
       index: choice.index,
       text: choice.text,
