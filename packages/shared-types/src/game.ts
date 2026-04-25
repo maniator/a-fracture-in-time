@@ -15,6 +15,7 @@ export type TimelineState = Record<TimelineVariable, number> & {
   currentSceneId: string;
   currentPOV: POV;
   endingKey?: string;
+  inkStateJson?: string;
 };
 
 export type NumericConditionOperator = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
@@ -58,6 +59,7 @@ export type Choice = {
   effects?: Effect[];
   conditions?: Condition[];
   nextSceneId: string;
+  tags?: string[];
 };
 
 export type Scene = {
