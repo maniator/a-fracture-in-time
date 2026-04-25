@@ -1,5 +1,8 @@
 import { Story } from 'inkjs';
 
+type CompiledInkStory = ConstructorParameters<typeof Story>[0];
+type InkVariableValue = string | number | boolean;
+
 export type InkChoiceView = {
   index: number;
   text: string;
@@ -13,7 +16,7 @@ export type InkStorySnapshot = {
   stateJson: string;
 };
 
-export type InkVariableMap = Record<string, unknown>;
+export type InkVariableMap = Record<string, InkVariableValue>;
 
 const FRACTURELINE_VARIABLE_KEYS = [
   'stability',
@@ -23,7 +26,7 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'magicEntropy',
 ] as const;
 
-export function createInkStory(compiledStory: unknown, variables: InkVariableMap = {}) {
+export function createInkStory(compiledStory: CompiledInkStory, variables: InkVariableMap = {}) {
   const story = new Story(compiledStory);
 
   for (const [key, value] of Object.entries(variables)) {
@@ -51,7 +54,7 @@ export function chooseInkChoice(story: Story, choiceIndex: number): InkStorySnap
   return continueInkStory(story);
 }
 
-export function restoreInkStory(compiledStory: unknown, stateJson: string): Story {
+export function restoreInkStory(compiledStory: CompiledInkStory, stateJson: string): Story {
   const story = new Story(compiledStory);
   story.state.LoadJson(stateJson);
   return story;
