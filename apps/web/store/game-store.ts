@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { initialTimelineState, type Choice, type POV, type TimelineState } from '@fractureline/shared-types';
 import { chooseInkChoice, compileInkStory, continueInkStory, restoreInkStory, type InkStorySnapshot } from '@fractureline/narrative-engine';
-import { chapterOneInkSource } from '@/content/chapter-one-ink';
+import { chapterOnePack, loadChapterPackText } from '@/lib/chapter-packs/chapter-pack-cache';
 import { indexedDbSaveService } from '@/lib/persistence/save-service';
 
 type GameStore = {
@@ -13,14 +13,22 @@ type GameStore = {
   choices: Choice[];
   hasSave: boolean;
   isPersistenceReady: boolean;
-  choose: (choiceId: string) => void;
+  isStoryReady: boolean;
+  storyLoadError?: string;
+  initializeStory: () => Promise<void>;
+  choose: (choiceId: string) => Promise<void>;
   hydrateSaveStatus: () => Promise<void>;
   save: () => Promise<void>;
   load: () => Promise<boolean>;
   reset: () => Promise<void>;
 };
 
-const initialInkSnapshot = continueInkStory(compileInkStory(chapterOneInkSource));
+let chapterOneSourcePromise: Promise<string | null> | null = null;
+
+function getChapterOneSource() {
+  chapterOneSourcePromise ??= loadChapterPackText(chapterOnePack);
+  return chapterOneSourcePromise;
+}
 
 function toNumber(value: unknown) {
   return typeof value === 'number' ? value : 0;
@@ -76,10 +84,6 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
   };
 }
 
-function createInitialState() {
-  return snapshotToState(initialInkSnapshot, initialTimelineState);
-}
-
 function createStoreView(snapshot: InkStorySnapshot, previous = initialTimelineState) {
   const state = snapshotToState(snapshot, previous);
 
@@ -91,46 +95,98 @@ function createStoreView(snapshot: InkStorySnapshot, previous = initialTimelineS
   };
 }
 
-function restoreSnapshotFromState(state: TimelineState) {
-  if (!state.inkStateJson) return initialInkSnapshot;
-  return continueInkStory(restoreInkStory(compileInkStory(chapterOneInkSource), state.inkStateJson));
+async function createInitialSnapshot() {
+  const source = await getChapterOneSource();
+  if (!source) return null;
+  return continueInkStory(compileInkStory(source));
 }
 
-export const useGameStore = create<GameStore>((set, get) => {
-  const initialView = createStoreView(initialInkSnapshot);
+async function restoreSnapshotFromState(state: TimelineState) {
+  const source = await getChapterOneSource();
+  if (!source) return null;
+  if (!state.inkStateJson) return continueInkStory(compileInkStory(source));
+  return continueInkStory(restoreInkStory(compileInkStory(source), state.inkStateJson));
+}
 
-  return {
-    ...initialView,
-    hasSave: false,
-    isPersistenceReady: false,
-    choose: (choiceId) => {
-      const current = get().state;
-      const story = current.inkStateJson
-        ? restoreInkStory(compileInkStory(chapterOneInkSource), current.inkStateJson)
-        : compileInkStory(chapterOneInkSource);
-      const snapshot = chooseInkChoice(story, Number(choiceId));
-      set(createStoreView(snapshot, current));
-    },
-    hydrateSaveStatus: async () => {
+export const useGameStore = create<GameStore>((set, get) => ({
+  state: initialTimelineState,
+  speaker: initialTimelineState.currentSpeaker ?? 'Mira Vale',
+  sceneText: [],
+  choices: [],
+  hasSave: false,
+  isPersistenceReady: false,
+  isStoryReady: false,
+  storyLoadError: undefined,
+  initializeStory: async () => {
+    if (get().isStoryReady || get().storyLoadError) return;
+
+    const snapshot = await createInitialSnapshot();
+    if (!snapshot) {
+      set({
+        isStoryReady: false,
+        storyLoadError: 'Chapter 1 is not cached yet. Connect to the internet once to download this chapter for offline play.',
+      });
+      return;
+    }
+
+    set({ ...createStoreView(snapshot), isStoryReady: true, storyLoadError: undefined });
+  },
+  choose: async (choiceId) => {
+    const current = get().state;
+    const source = await getChapterOneSource();
+    if (!source) {
+      set({ storyLoadError: 'Chapter 1 is not available offline yet. Connect to download it.' });
+      return;
+    }
+
+    const story = current.inkStateJson
+      ? restoreInkStory(compileInkStory(source), current.inkStateJson)
+      : compileInkStory(source);
+    const snapshot = chooseInkChoice(story, Number(choiceId));
+    set(createStoreView(snapshot, current));
+  },
+  hydrateSaveStatus: async () => {
+    set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
+  },
+  save: async () => {
+    await indexedDbSaveService.write(get().state);
+    set({ hasSave: true, isPersistenceReady: true });
+  },
+  load: async () => {
+    const saved = await indexedDbSaveService.read();
+    if (!saved) {
       set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
-    },
-    save: async () => {
-      await indexedDbSaveService.write(get().state);
-      set({ hasSave: true, isPersistenceReady: true });
-    },
-    load: async () => {
-      const saved = await indexedDbSaveService.read();
-      if (!saved) {
-        set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
-        return false;
-      }
+      return false;
+    }
 
-      const snapshot = restoreSnapshotFromState(saved);
-      set({ ...createStoreView(snapshot, saved), hasSave: true, isPersistenceReady: true });
-      return true;
-    },
-    reset: async () => {
-      set({ ...createStoreView(initialInkSnapshot, createInitialState()), hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
-    },
-  };
-});
+    const snapshot = await restoreSnapshotFromState(saved);
+    if (!snapshot) {
+      set({
+        hasSave: true,
+        isPersistenceReady: true,
+        storyLoadError: 'Your save exists, but Chapter 1 must be downloaded before it can be loaded on this device.',
+      });
+      return false;
+    }
+
+    set({ ...createStoreView(snapshot, saved), hasSave: true, isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+    return true;
+  },
+  reset: async () => {
+    const snapshot = await createInitialSnapshot();
+    if (!snapshot) {
+      set({
+        state: initialTimelineState,
+        sceneText: [],
+        choices: [],
+        hasSave: await indexedDbSaveService.hasSave(),
+        isPersistenceReady: true,
+        isStoryReady: false,
+        storyLoadError: 'Chapter 1 is not cached yet. Connect to the internet once to download this chapter for offline play.',
+      });
+      return;
+    }
+
+    set({ ...createStoreView(snapshot), hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+  },
+}));
