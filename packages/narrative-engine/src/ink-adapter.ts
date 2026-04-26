@@ -31,6 +31,7 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'currentSpeaker',
   'endingKey',
   'chapterOneComplete',
+  'chapterTwoComplete',
 ] as const;
 
 export function compileInkStory(source: string): Story {
