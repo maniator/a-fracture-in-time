@@ -8,6 +8,8 @@ VAR currentPOV = "past"
 VAR currentSpeaker = "Xav Reivax"
 VAR endingKey = "signal-path"
 VAR chapterThreeComplete = false
+VAR relayLegitimacyHigh = false
+VAR relayCompromised = false
 
 -> ch3_signal_start
 
@@ -45,9 +47,48 @@ Marek ran protocol checks while Yve corrected metadata in real time.
 No one slept.
 + [Prioritize testimony integrity even if throughput slows] # cue:stability
     ~ stability += 1
-    -> ch3_signal_handoff
+    -> ch3_signal_pressure
 + [Prioritize maximum reach before authorities can adapt] # cue:control
     ~ controlIndex += 1
+    -> ch3_signal_pressure
+
+=== ch3_signal_pressure ===
+~ currentSceneId = "ch3_signal_pressure"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Three hours after the network went public, the first legal notice arrived.
+Seven minutes later, so did the first spoof packet pretending to come from Yve.
+By sunrise, both timelines were saturated with forged relay advisories.
+Marek projected packet headers against the tunnel wall.
+"They are testing whether we verify each other or just trust velocity," he said.
+Yve's real voice cut in over the clean channel.
+"We need a policy now. Not later. Pick one."
++ [Lock relay contributions to verified operators for 48 hours] # cue:control
+    ~ controlIndex += 2
+    ~ relayLegitimacyHigh = true
+    -> ch3_signal_irreversible
++ [Keep submissions open and crowd-source authenticity checks live] # cue:rebellion
+    ~ rebellion += 2
+    -> ch3_signal_irreversible
+
+=== ch3_signal_irreversible ===
+~ currentSceneId = "ch3_signal_irreversible"
+~ currentPOV = "past"
+~ currentSpeaker = "Yve Ettevy"
+Yve drew a line across the whiteboard and wrote one sentence above it.
+NO SECRET MODERATION.
+Then she wrote another below it.
+NO UNVERIFIED ROUTING.
+"Pick which promise gets priority on day one," she said. "We cannot optimize both while under attack."
+This was the first truly irreversible governance decision of the relay accord.
+Whatever they chose would train every district volunteer how to interpret "safety."
++ [Prioritize verification, even if it slows witness throughput] # cue:stability
+    ~ stability += 2
+    ~ relayLegitimacyHigh = true
+    -> ch3_signal_handoff
++ [Prioritize reach, even if some forged messages slip through] # cue:rebellion
+    ~ rebellion += 2
+    ~ relayCompromised = true
     -> ch3_signal_handoff
 
 === ch3_signal_handoff ===
@@ -65,9 +106,14 @@ Ari added a ninth line in block letters.
 NO ONE WITNESSES ALONE.
 Nobody removed it.
 The apartment erupted into overlapping agreement pings as districts voted to adopt the draft for a seven-day trial.
+If the verification-first proposal carried, neighborhood councils accepted slower traffic because the packet integrity rate held above ninety-six percent.
+If the reach-first proposal carried, they accepted noisier feeds because the movement crossed district boundaries before curfew lockdowns could isolate it.
+Both paths worked.
+Both carried cost.
 The signal held.
 The accord started.
-This Chapter 3 route is now playable as an initial foundation and will expand with district conflicts, governance tradeoffs, and counter-infiltration arcs.
+This Chapter 3 route now includes its first irreversible policy split and seeds Chapter 4 with a persistent relay legitimacy condition.
 + [End Chapter 3] # cue:ending
     ~ chapterThreeComplete = true
+    ~ endingKey = "signal-path"
     -> DONE

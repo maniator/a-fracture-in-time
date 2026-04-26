@@ -33,6 +33,12 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'chapterOneComplete',
   'chapterTwoComplete',
   'chapterThreeComplete',
+  'relayLegitimacyHigh',
+  'relayCompromised',
+  'ledgerTrustHigh',
+  'emergencyCustodyTriggered',
+  'trialCredibilityHigh',
+  'amnestyConflictTriggered',
 ] as const;
 
 export function compileInkStory(source: string): Story {

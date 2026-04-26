@@ -227,6 +227,53 @@ Possible beats:
 - Zelda's memories become increasingly unstable.
 - Xav must choose between making a clean better future and preserving the person asking him to make it.
 
+## Beyond Chapter 5 (Program Plan)
+
+### Chapter 6 — Working title: Terms of Repair
+
+Core goal:
+
+- Force institutions to negotiate material repair, not just narrative revision.
+- Translate witness legitimacy into enforceable civic terms.
+
+Planned beats:
+
+- District councils propose competing repair frameworks (restitution, amnesty exchange, structural reform).
+- Players mediate between survivor urgency and system capacity constraints.
+- A new schism appears between symbolic apology and budgeted repair.
+
+### Chapter 7 — Working title: The Inheritors
+
+Core goal:
+
+- Shift perspective toward Ari's generation and what they inherit from the witness era.
+- Test whether firstborn mechanics remain protective or become a new hierarchy.
+
+Planned beats:
+
+- Ari and peers challenge legacy governance structures built by the Chapter 3-6 protagonists.
+- Reivax/Adlez lineage data is contested by communities that reject bloodline-centric legitimacy.
+- Player chooses whether to decentralize or preserve lineage-guided authority.
+
+### Chapter 8 — Working title: The Shape of Peace
+
+Core goal:
+
+- Resolve the long arc: peace by control, peace by collapse, or peace by accountable plural memory.
+
+Planned beats:
+
+- Final constitutional assembly with timeline-integrity risks still active.
+- Endgame branches evaluate long-term outcomes of relay legitimacy, ledger trust, and trial credibility.
+- Multiple epilogues track survival, justice quality, and historical continuity.
+
+## Multi-Chapter Delivery Milestones
+
+1. **Milestone A (Ch.4 alpha):** Diderram voice routes playable with deterministic tests.
+2. **Milestone B (Ch.5 beta):** Notebook mechanism + existential Zelda stakes integrated.
+3. **Milestone C (Ch.6-7 preview):** Repair governance and inheritor conflict prototypes.
+4. **Milestone D (Ch.8 RC):** Endgame branches and epilogue matrix complete.
+
 ## Long-Term Mystery Threads
 
 - Why does the notebook follow firstborn rules?
