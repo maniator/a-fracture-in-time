@@ -52,6 +52,7 @@ pnpm dev
 pnpm build
 pnpm lint
 pnpm test
+pnpm test:coverage
 pnpm test:e2e
 pnpm storybook
 pnpm build-storybook
@@ -74,6 +75,8 @@ Chapter 2 route packs currently included:
 - `The Stable Signal` (`signal-path`)
 - `The Firstborn Record` (`family-path`)
 - `The Second Future` (`history-path`)
+
+Each Chapter 2 route now targets a 20+ minute reading baseline (minimum 3,000 words at ~150 WPM), with manifest estimates set to 22 minutes per route.
 
 ## Local-First Saves
 
@@ -103,7 +106,7 @@ Initial agents include:
 
 ## Testing
 
-Unit tests live in package-level test files, especially `packages/narrative-engine/src/index.test.ts`, `apps/web/content/chapter-one.test.ts`, and `apps/web/lib/persistence/save-service.test.ts`.
+Unit tests live in package-level test files, including Chapter 2 duration guardrails and cache behavior checks (`apps/web/content/chapter-two-duration.test.ts`, `apps/web/lib/chapter-packs/chapter-pack-cache.test.ts`) plus narrative-engine regression suites (`packages/narrative-engine/src/coverage-regression.test.ts`).
 
 End-to-end tests live in `apps/web/tests/e2e` and cover:
 

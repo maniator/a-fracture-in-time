@@ -77,3 +77,12 @@ Every agent must consume prior artifacts before producing new ones.
 - Narrative Designer: check route naming and chapter labels match chapter-pack canon.
 - QA: update tests for current story content and chapter progression behavior.
 - Growth: keep player-facing copy focused on world/characters and replayable route clarity.
+
+## Full-Agent Review Outcomes (Current Pass)
+- Product Manager: raised requirement that each Chapter 2 route must sustain 20+ minutes of play and be visible in product messaging.
+- Producer: split delivery into content expansion, coverage uplift, and workflow/documentation hardening so each stream can ship in separate commits.
+- Architect: validated chapter-pack manifest contract and increased Chapter 2 `estimatedMinutes` to align with product requirement.
+- Narrative Designer: expanded `chapter-2-family.ink` and `chapter-2-history.ink` with additional branching scenes and convergence points to reach 3,000+ words per route.
+- Backend/Platform: reviewed cache/download path and added explicit tests for online/offline chapter-pack behavior.
+- QA: added duration guardrail tests plus new narrative-engine regression coverage; set package-level Vitest coverage thresholds to enforce >90% lines/statements/functions.
+- Growth: updated README messaging so Chapter 2 route expectations and coverage command are clear for contributors and release notes.
