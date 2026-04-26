@@ -14,6 +14,8 @@ export type TimelineState = Record<TimelineVariable, number> & {
   chapter: number;
   currentSceneId: string;
   currentPOV: POV;
+  currentSpeaker?: string;
+  currentText?: string[];
   endingKey?: string;
   inkStateJson?: string;
 };
@@ -89,4 +91,5 @@ export const initialTimelineState: TimelineState = {
   chapter: 1,
   currentSceneId: 'ch1_p_001',
   currentPOV: 'protector',
+  currentSpeaker: 'Mira Vale',
 };
