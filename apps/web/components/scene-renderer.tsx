@@ -65,6 +65,7 @@ export function SceneRenderer() {
     sceneText,
     choices,
     choose,
+    continueToNextChapter,
     hydrateSaveStatus,
     initializeStory,
     save,
@@ -82,7 +83,9 @@ export function SceneRenderer() {
     void initializeStory();
   }, [hydrateSaveStatus, initializeStory]);
 
-  const chapterComplete = state.flags['chapter-one-complete'] || Boolean(state.endingKey);
+  const chapterOneComplete = state.flags['chapter-one-complete'];
+  const chapterTwoComplete = state.flags['chapter-two-complete'];
+  const canContinueToChapterTwo = chapterOneComplete && state.chapter === 1 && Boolean(state.endingKey);
 
   if (storyLoadError) {
     return (
@@ -163,10 +166,24 @@ export function SceneRenderer() {
           </Stack>
         ) : null}
 
-        {chapterComplete ? (
-          <Alert severity="success" sx={{ mt: 4 }} action={<Button color="inherit" onClick={() => void reset()}>Replay</Button>}>
-            <Typography sx={{ fontWeight: 700 }}>Chapter 1 complete.</Typography>
-            <Typography variant="body2">Your choices will shape which version of the next chapter becomes available.</Typography>
+        {chapterOneComplete || chapterTwoComplete ? (
+          <Alert
+            severity="success"
+            sx={{ mt: 4 }}
+            action={canContinueToChapterTwo ? (
+              <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()}>
+                Continue to Chapter 2
+              </Button>
+            ) : (
+              <Button color="inherit" disabled={isChoosing} onClick={() => void reset()}>Replay</Button>
+            )}
+          >
+            <Typography sx={{ fontWeight: 700 }}>Chapter {chapterTwoComplete ? 2 : 1} complete.</Typography>
+            <Typography variant="body2">
+              {canContinueToChapterTwo
+                ? 'Your ending has opened the next route.'
+                : 'Your choices will shape which future chapters become available.'}
+            </Typography>
           </Alert>
         ) : null}
 
