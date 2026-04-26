@@ -22,6 +22,18 @@ const cueByVariable: Record<TimelineVariable, string> = {
   magicEntropy: 'entropy',
 };
 
+const timelineVariables = new Set<TimelineVariable>([
+  'stability',
+  'controlIndex',
+  'rebellion',
+  'memoryFracture',
+  'magicEntropy',
+]);
+
+function isTimelineVariable(value: unknown): value is TimelineVariable {
+  return typeof value === 'string' && timelineVariables.has(value as TimelineVariable);
+}
+
 function getChoiceCue(choice: Choice) {
   const cueTag = choice.tags?.find((tag) => tag.startsWith('cue:'));
   if (cueTag) return cueTag.replace('cue:', '');
@@ -30,7 +42,7 @@ function getChoiceCue(choice: Choice) {
   if (endingEffect) return 'ending';
 
   const variableEffect = choice.effects?.find((effect) => effect.type === 'increment' || effect.type === 'decrement' || effect.type === 'setNumber');
-  if (variableEffect && 'key' in variableEffect) {
+  if (variableEffect && 'key' in variableEffect && isTimelineVariable(variableEffect.key)) {
     return cueByVariable[variableEffect.key];
   }
 
