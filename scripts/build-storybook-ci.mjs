@@ -25,9 +25,9 @@ if (run.status === 0) {
 }
 
 process.stderr.write(combinedOutput.length ? `${combinedOutput}\n` : 'Storybook build failed with no output.\n');
-console.warn('Storybook build failed in CI mode; writing fallback static artifact so workflow remains green.');
+console.warn('Storybook build failed in CI mode; writing fallback static artifact for logs/artifact inspection.');
 writeFileSync(
   join(reportDir, 'index.html'),
   '<html><body><h1>Storybook build failed for this run</h1><p>See build.log.txt artifact for full logs.</p></body></html>',
 );
-process.exit(0);
+process.exit(run.status ?? 1);
