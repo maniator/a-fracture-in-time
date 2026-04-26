@@ -1,4 +1,4 @@
-export type POV = 'protector' | 'dissenter';
+export type POV = 'past' | 'future';
 
 export type TimelineVariable =
   | 'stability'
@@ -89,7 +89,7 @@ export const initialTimelineState: TimelineState = {
   seenScenes: [],
   codex: [],
   chapter: 1,
-  currentSceneId: 'ch1_p_001',
-  currentPOV: 'protector',
-  currentSpeaker: 'Mira Vale',
+  currentSceneId: 'ch1_xav_quad',
+  currentPOV: 'past',
+  currentSpeaker: 'Xav Reivax',
 };
