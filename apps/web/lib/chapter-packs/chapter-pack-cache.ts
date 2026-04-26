@@ -163,17 +163,29 @@ export function getEligibleNextChapterPack(state: TimelineState) {
 }
 
 export function getChapterPackForState(state: TimelineState) {
-  return (
-    chapterPackManifest
-      .filter((pack) => pack.chapter === state.chapter)
-      .find((pack) => {
-        if (!pack.dependsOnEnding) return true;
-        if (!state.endingKey) return false;
-        return Array.isArray(pack.dependsOnEnding)
-          ? pack.dependsOnEnding.includes(state.endingKey)
-          : pack.dependsOnEnding === state.endingKey;
-      }) ?? null
-  );
+  if (state.chapterPackId) {
+    const matchedById = chapterPackManifest.find((pack) => pack.id === state.chapterPackId);
+    if (matchedById) return matchedById;
+  }
+
+  const chapterCandidates = chapterPackManifest.filter((pack) => pack.chapter === state.chapter);
+  if (chapterCandidates.length === 0) return null;
+
+  if (!state.endingKey) {
+    return chapterCandidates[0] ?? null;
+  }
+
+  const matchedByEnding = chapterCandidates.find((pack) => {
+    if (!pack.dependsOnEnding) return true;
+    return Array.isArray(pack.dependsOnEnding)
+      ? pack.dependsOnEnding.includes(state.endingKey as string)
+      : pack.dependsOnEnding === state.endingKey;
+  });
+
+  if (matchedByEnding) return matchedByEnding;
+
+  // endingKey may have advanced beyond this chapter's prerequisite key; keep restore on same chapter.
+  return chapterCandidates[0] ?? null;
 }
 
 export async function isChapterPackCached(pack: ChapterPackManifestItem) {

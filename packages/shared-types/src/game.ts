@@ -17,6 +17,7 @@ export type TimelineState = Record<TimelineVariable, number> & {
   currentSpeaker?: string;
   currentText?: string[];
   endingKey?: string;
+  chapterPackId?: string;
   inkStateJson?: string;
 };
 
