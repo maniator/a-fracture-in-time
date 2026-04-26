@@ -198,8 +198,19 @@ Possible beats:
    - History: public memory trial credibility level.
 3. Define Chapter 4 end states that branch Chapter 5 stakes (exposure success, backlash severity, ally cohesion).
 
+### Chapter 4 implementation status (current)
+
+- Chapter 4 now starts from six Chapter 3 consequence outcomes, not three static route families:
+  - `relay-legitimacy-path`
+  - `relay-compromised-path`
+  - `ledger-trust-path`
+  - `emergency-custody-path`
+  - `trial-credibility-path`
+  - `amnesty-conflict-path`
+- These packs are currently foundation-level consequence entries and should be expanded into full Chapter 4 route modules.
+
 #### Phase 3 — Playable pack production
-1. Draft `chapter-4-signal.ink`, `chapter-4-family.ink`, `chapter-4-history.ink` skeletons.
+1. Expand the six current Chapter 4 consequence pack skeletons into full route modules.
 2. Implement minimum scene/choice targets:
    - 12+ meaningful choices per route.
    - at least 3 distinct Diderram speaking roles per route.
@@ -226,6 +237,40 @@ Possible beats:
 - The firstborn rule may be a safety mechanism, not just tradition.
 - Zelda's memories become increasingly unstable.
 - Xav must choose between making a clean better future and preserving the person asking him to make it.
+
+## Complexity Management Plan (Critical)
+
+To prevent branch explosion, chapters after Chapter 4 should use a **Braided Branch Model** instead of fully separate trees.
+
+### Braided Branch Model
+
+1. **Split:** irreversible decision creates a consequence branch.
+2. **Echo:** several scenes reflect that consequence with meaningful gameplay/story differences.
+3. **Merge:** branches converge at a shared chapter hub.
+4. **Re-split:** a later irreversible decision branches again.
+
+This keeps choices meaningful while avoiding exponential content growth.
+
+### Branch Budget Rules
+
+- Max one major irreversible split per route segment between merge hubs.
+- Max two active branch families at the same chapter depth before mandatory merge.
+- Target at least 50% shared scenes per chapter (hub scenes + reusable modular blocks).
+- New branches must introduce distinct mechanics/stakes, not just cosmetic dialogue changes.
+
+### State-Driven Recombination
+
+Carry consequences as compact state keys (relay doctrine, family governance doctrine, memory-justice doctrine) and recombine them at shared hubs using conditional scene inserts.
+
+### Chapter 5+ Production Pattern
+
+For each chapter after this point:
+
+1. Define shared hub scenes first.
+2. Define consequence inserts tied to persisted state keys.
+3. Add one new irreversible split.
+4. Define planned merge point before chapter end.
+5. Add QA tests for split key writes, merge reachability, and continuation resolution.
 
 ## Beyond Chapter 5 (Program Plan)
 

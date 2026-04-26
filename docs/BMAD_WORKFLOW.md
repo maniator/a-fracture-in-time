@@ -73,6 +73,12 @@ Every agent must consume prior artifacts before producing new ones.
 - Mid-sprint: blockers and artifact alignment
 - Sprint close: demo, acceptance check, and doc refresh
 
+## Branch Complexity Guardrails
+- Use braided branching (split -> echo -> merge -> re-split), not unbounded branch trees.
+- Require a merge-hub plan whenever a narrative artifact introduces an irreversible split.
+- Producer tracks branch budget per chapter and blocks over-budget route proliferation.
+- QA validates both consequence integrity and merge reachability before sign-off.
+
 ## Current Repo Review Checklist (Applied)
 - Product Manager: confirm chapter progression goals and Chapter 2 unlock UX copy.
 - Producer: verify delivery includes docs refresh, tests, and workflow health.
