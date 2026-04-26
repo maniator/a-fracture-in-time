@@ -7,6 +7,7 @@
     "build": "pnpm --filter web build",
     "lint": "pnpm --filter web lint && pnpm --filter @fractureline/shared-types lint && pnpm --filter @fractureline/narrative-engine lint",
     "test": "pnpm -r test",
+    "test:coverage": "pnpm --filter @fractureline/narrative-engine test --coverage && pnpm --filter web test --coverage",
     "test:e2e": "pnpm --filter web test:e2e",
     "test:e2e:update": "pnpm --filter web test:e2e:update",
     "storybook": "pnpm --filter web storybook",

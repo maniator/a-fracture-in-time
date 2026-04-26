@@ -26,21 +26,21 @@ export const chapterPackManifest: ChapterPackManifestItem[] = [
     chapter: 2,
     route: '/chapter-packs/chapter-2-signal.ink',
     dependsOnEnding: 'signal-path',
-    estimatedMinutes: 18,
+    estimatedMinutes: 22,
   },
   {
     id: 'chapter-2-family',
     chapter: 2,
     route: '/chapter-packs/chapter-2-family.ink',
     dependsOnEnding: 'family-path',
-    estimatedMinutes: 18,
+    estimatedMinutes: 22,
   },
   {
     id: 'chapter-2-history',
     chapter: 2,
     route: '/chapter-packs/chapter-2-history.ink',
     dependsOnEnding: 'history-path',
-    estimatedMinutes: 18,
+    estimatedMinutes: 22,
   },
 ];
 
