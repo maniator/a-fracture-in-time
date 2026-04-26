@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { Choice, TimelineVariable } from '@fractureline/shared-types';
 import { getEligibleNextChapterPack } from '@/lib/chapter-packs/chapter-pack-cache';
+import { isChapterComplete } from '@/lib/chapter-completion';
 import { useGameStore } from '@/store/game-store';
 
 const cueByVariable: Record<TimelineVariable, string> = {
@@ -115,14 +116,7 @@ export function SceneRenderer() {
     );
   }, [state.chapter, state.currentPOV, state.memoryFracture, state.rebellion]);
 
-  const chapterCompletionFlagByChapter: Record<number, string> = {
-    1: 'chapter-one-complete',
-    2: 'chapter-two-complete',
-    3: 'chapter-three-complete',
-    4: 'chapter-four-complete',
-    5: 'chapter-five-complete',
-  };
-  const currentChapterComplete = Boolean(state.flags[chapterCompletionFlagByChapter[state.chapter]]);
+  const currentChapterComplete = isChapterComplete(state.flags, state.chapter);
   const nextPack = getEligibleNextChapterPack(state);
   const canContinue = currentChapterComplete && Boolean(nextPack);
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
