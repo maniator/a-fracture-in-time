@@ -6,6 +6,8 @@ import { chooseInkChoice, compileInkStory, continueInkStory, restoreInkStory, ty
 import { chapterOnePack, loadChapterPackText } from '@/lib/chapter-packs/chapter-pack-cache';
 import { indexedDbSaveService } from '@/lib/persistence/save-service';
 
+type InkRuntimeStory = ReturnType<typeof compileInkStory>;
+
 type GameStore = {
   state: TimelineState;
   speaker: string;
@@ -25,6 +27,7 @@ type GameStore = {
 };
 
 let chapterOneSourcePromise: Promise<string | null> | null = null;
+let activeStory: InkRuntimeStory | null = null;
 
 function getChapterOneSource() {
   chapterOneSourcePromise ??= loadChapterPackText(chapterOnePack);
@@ -99,14 +102,41 @@ function createStoreView(snapshot: InkStorySnapshot, previous = initialTimelineS
 async function createInitialSnapshot() {
   const source = await getChapterOneSource();
   if (!source) return null;
-  return continueInkStory(compileInkStory(source));
+
+  activeStory = compileInkStory(source);
+  return continueInkStory(activeStory);
+}
+
+async function restoreStoryFromState(state: TimelineState) {
+  const source = await getChapterOneSource();
+  if (!source) return null;
+
+  activeStory = state.inkStateJson
+    ? restoreInkStory(compileInkStory(source), state.inkStateJson)
+    : compileInkStory(source);
+
+  return activeStory;
 }
 
 async function restoreSnapshotFromState(state: TimelineState) {
-  const source = await getChapterOneSource();
-  if (!source) return null;
-  if (!state.inkStateJson) return continueInkStory(compileInkStory(source));
-  return continueInkStory(restoreInkStory(compileInkStory(source), state.inkStateJson));
+  const story = await restoreStoryFromState(state);
+  if (!story) return null;
+  return continueInkStory(story);
+}
+
+async function getActiveStoryForChoice(state: TimelineState) {
+  if (activeStory && activeStory.currentChoices.length > 0) {
+    return activeStory;
+  }
+
+  const restored = await restoreStoryFromState(state);
+  if (!restored) return null;
+
+  if (restored.currentChoices.length === 0 && restored.canContinue) {
+    continueInkStory(restored);
+  }
+
+  return restored;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -148,16 +178,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ isChoosing: true, storyLoadError: undefined });
 
     try {
-      const source = await getChapterOneSource();
-      if (!source) {
+      const story = await getActiveStoryForChoice(current);
+      if (!story) {
         set({ isChoosing: false, storyLoadError: 'Chapter 1 is not available offline yet. Connect to download it.' });
         return;
       }
 
-      const story = current.inkStateJson
-        ? restoreInkStory(compileInkStory(source), current.inkStateJson)
-        : compileInkStory(source);
+      if (choiceIndex >= story.currentChoices.length) {
+        set({
+          isChoosing: false,
+          storyLoadError: 'The story choice list changed before the choice could be applied. Restart the chapter or reload your save.',
+        });
+        return;
+      }
+
       const snapshot = chooseInkChoice(story, choiceIndex);
+      activeStory = story;
       set({ ...createStoreView(snapshot, current), isChoosing: false, storyLoadError: undefined });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown Ink runtime error';
