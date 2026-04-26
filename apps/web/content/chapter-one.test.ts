@@ -30,6 +30,8 @@ describe('Chapter 1 ink pack', () => {
     expect(snapshot.variables.currentPOV).toBe('past');
     expect(snapshot.variables.currentSpeaker).toBe('Xav Reivax');
     expect(snapshot.choices.length).toBe(2);
+    expect(snapshot.text.join(' ')).toContain('Ari');
+    expect(snapshot.text.join(' ')).toContain('firstborn notebook');
   });
 
   it('can complete the Signal Path ending', () => {
