@@ -69,6 +69,7 @@ export function SceneRenderer() {
     hasSave,
     isPersistenceReady,
     isStoryReady,
+    isChoosing,
     storyLoadError,
   } = useGameStore();
 
@@ -118,12 +119,13 @@ export function SceneRenderer() {
           <Chip label="Chapter pack" color="secondary" variant="outlined" />
           {state.endingKey ? <Chip label={state.endingKey} color="secondary" variant="outlined" /> : null}
           <Chip label={isPersistenceReady ? 'Local save ready' : 'Checking saves'} color={hasSave ? 'secondary' : 'default'} variant="outlined" />
+          {isChoosing ? <Chip label="Applying choice" color="secondary" variant="filled" /> : null}
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 4 }}>
-          <Button variant="contained" color="secondary" onClick={() => void save()}>Save progress</Button>
-          <Button variant="outlined" color="inherit" disabled={!isPersistenceReady || !hasSave} onClick={() => void load()}>Load progress</Button>
-          <Button variant="text" color="inherit" onClick={() => void reset()}>Restart chapter</Button>
+          <Button variant="contained" color="secondary" disabled={isChoosing} onClick={() => void save()}>Save progress</Button>
+          <Button variant="outlined" color="inherit" disabled={isChoosing || !isPersistenceReady || !hasSave} onClick={() => void load()}>Load progress</Button>
+          <Button variant="text" color="inherit" disabled={isChoosing} onClick={() => void reset()}>Restart chapter</Button>
         </Stack>
 
         <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
@@ -143,6 +145,7 @@ export function SceneRenderer() {
             {choices.map((choice) => (
               <Button
                 key={choice.id}
+                disabled={isChoosing}
                 onClick={() => {
                   dispatchChoiceCue(choice);
                   void choose(choice.id);
