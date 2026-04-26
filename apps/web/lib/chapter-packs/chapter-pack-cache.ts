@@ -2,7 +2,7 @@ import type { TimelineState } from '@fractureline/shared-types';
 
 const CHAPTER_PACK_CACHE = 'fractureline-chapter-packs-v1';
 
-export type ChapterPackId = 'chapter-1' | 'chapter-2-fracture' | 'chapter-2-rebellion' | 'chapter-2-control';
+export type ChapterPackId = 'chapter-1' | 'chapter-2-signal' | 'chapter-2-family' | 'chapter-2-history';
 
 export type ChapterPackManifestItem = {
   id: ChapterPackId;
@@ -22,24 +22,24 @@ export const chapterOnePack: ChapterPackManifestItem = {
 export const chapterPackManifest: ChapterPackManifestItem[] = [
   chapterOnePack,
   {
-    id: 'chapter-2-fracture',
+    id: 'chapter-2-signal',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-fracture.ink',
-    dependsOnEnding: 'fracture-path',
+    route: '/chapter-packs/chapter-2-signal.ink',
+    dependsOnEnding: 'signal-path',
     estimatedMinutes: 18,
   },
   {
-    id: 'chapter-2-rebellion',
+    id: 'chapter-2-family',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-rebellion.ink',
-    dependsOnEnding: 'rebellion-path',
+    route: '/chapter-packs/chapter-2-family.ink',
+    dependsOnEnding: 'family-path',
     estimatedMinutes: 18,
   },
   {
-    id: 'chapter-2-control',
+    id: 'chapter-2-history',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-control.ink',
-    dependsOnEnding: 'control-path',
+    route: '/chapter-packs/chapter-2-history.ink',
+    dependsOnEnding: 'history-path',
     estimatedMinutes: 18,
   },
 ];
