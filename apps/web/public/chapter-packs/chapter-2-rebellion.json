@@ -1,0 +1,9 @@
+{
+  "id": "chapter-2-rebellion",
+  "chapter": 2,
+  "dependsOnEnding": "rebellion-path",
+  "estimatedMinutes": 12,
+  "status": "planned",
+  "title": "Chapter 2: The Room That Broke",
+  "summary": "A placeholder chapter pack reserved for players who finished Chapter 1 on the Rebellion Path. The final Ink content will preserve Chapter 1 variables and continue from Mira's public break with protocol."
+}
