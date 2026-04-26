@@ -2,37 +2,50 @@ import type { TimelineState } from '@fractureline/shared-types';
 
 const CHAPTER_PACK_CACHE = 'fractureline-chapter-packs-v1';
 
-export type ChapterPackId = 'chapter-2-fracture' | 'chapter-2-rebellion' | 'chapter-2-control';
+export type ChapterPackId = 'chapter-1' | 'chapter-2-fracture' | 'chapter-2-rebellion' | 'chapter-2-control';
 
 export type ChapterPackManifestItem = {
   id: ChapterPackId;
   chapter: number;
   route: string;
-  dependsOnEnding: string;
+  dependsOnEnding?: string;
   estimatedMinutes: number;
+  kind: 'ink' | 'json';
+};
+
+export const chapterOnePack: ChapterPackManifestItem = {
+  id: 'chapter-1',
+  chapter: 1,
+  route: '/chapter-packs/chapter-1.ink',
+  estimatedMinutes: 10,
+  kind: 'ink',
 };
 
 export const chapterPackManifest: ChapterPackManifestItem[] = [
+  chapterOnePack,
   {
     id: 'chapter-2-fracture',
     chapter: 2,
     route: '/chapter-packs/chapter-2-fracture.json',
     dependsOnEnding: 'fracture-path',
-    estimatedMinutes: 12,
+    estimatedMinutes: 18,
+    kind: 'json',
   },
   {
     id: 'chapter-2-rebellion',
     chapter: 2,
     route: '/chapter-packs/chapter-2-rebellion.json',
     dependsOnEnding: 'rebellion-path',
-    estimatedMinutes: 12,
+    estimatedMinutes: 18,
+    kind: 'json',
   },
   {
     id: 'chapter-2-control',
     chapter: 2,
     route: '/chapter-packs/chapter-2-control.json',
     dependsOnEnding: 'control-path',
-    estimatedMinutes: 12,
+    estimatedMinutes: 18,
+    kind: 'json',
   },
 ];
 
@@ -51,16 +64,35 @@ export async function isChapterPackCached(pack: ChapterPackManifestItem) {
   return Boolean(await cache.match(pack.route));
 }
 
-export async function cacheChapterPack(pack: ChapterPackManifestItem) {
-  if (!canUseCacheStorage()) return false;
-  if (typeof navigator !== 'undefined' && navigator.onLine === false) return false;
+async function fetchChapterPackResponse(pack: ChapterPackManifestItem) {
+  if (canUseCacheStorage()) {
+    const cache = await window.caches.open(CHAPTER_PACK_CACHE);
+    const cached = await cache.match(pack.route);
+    if (cached) return cached;
+  }
+
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    return null;
+  }
 
   const response = await fetch(pack.route, { cache: 'no-store' });
-  if (!response.ok) return false;
+  if (!response.ok) return null;
 
-  const cache = await window.caches.open(CHAPTER_PACK_CACHE);
-  await cache.put(pack.route, response.clone());
-  return true;
+  if (canUseCacheStorage()) {
+    const cache = await window.caches.open(CHAPTER_PACK_CACHE);
+    await cache.put(pack.route, response.clone());
+  }
+
+  return response;
+}
+
+export async function loadChapterPackText(pack: ChapterPackManifestItem) {
+  const response = await fetchChapterPackResponse(pack);
+  return response ? response.text() : null;
+}
+
+export async function cacheChapterPack(pack: ChapterPackManifestItem) {
+  return Boolean(await fetchChapterPackResponse(pack));
 }
 
 export async function ensureEligibleNextChapterPack(state: TimelineState) {
