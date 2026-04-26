@@ -14,6 +14,7 @@ type GameStore = {
   hasSave: boolean;
   isPersistenceReady: boolean;
   isStoryReady: boolean;
+  isChoosing: boolean;
   storyLoadError?: string;
   initializeStory: () => Promise<void>;
   choose: (choiceId: string) => Promise<void>;
@@ -47,10 +48,10 @@ function toPOV(value: unknown): POV {
 }
 
 function snapshotToChoices(snapshot: InkStorySnapshot): Choice[] {
-  return snapshot.choices.map((choice) => ({
-    id: String(choice.index),
+  return snapshot.choices.map((choice, currentChoiceIndex) => ({
+    id: String(currentChoiceIndex),
     label: choice.text,
-    nextSceneId: String(choice.index),
+    nextSceneId: String(currentChoiceIndex),
     tags: choice.tags,
   }));
 }
@@ -116,34 +117,52 @@ export const useGameStore = create<GameStore>((set, get) => ({
   hasSave: false,
   isPersistenceReady: false,
   isStoryReady: false,
+  isChoosing: false,
   storyLoadError: undefined,
   initializeStory: async () => {
-    if (get().isStoryReady || get().storyLoadError) return;
+    if (get().isStoryReady || get().isChoosing) return;
 
+    set({ isChoosing: true, storyLoadError: undefined });
     const snapshot = await createInitialSnapshot();
     if (!snapshot) {
       set({
+        isChoosing: false,
         isStoryReady: false,
         storyLoadError: 'Chapter 1 is not cached yet. Connect to the internet once to download this chapter for offline play.',
       });
       return;
     }
 
-    set({ ...createStoreView(snapshot), isStoryReady: true, storyLoadError: undefined });
+    set({ ...createStoreView(snapshot), isChoosing: false, isStoryReady: true, storyLoadError: undefined });
   },
   choose: async (choiceId) => {
+    if (get().isChoosing) return;
+
     const current = get().state;
-    const source = await getChapterOneSource();
-    if (!source) {
-      set({ storyLoadError: 'Chapter 1 is not available offline yet. Connect to download it.' });
+    const choiceIndex = Number(choiceId);
+    if (!Number.isInteger(choiceIndex) || choiceIndex < 0 || choiceIndex >= get().choices.length) {
+      set({ storyLoadError: 'That choice is no longer available. Try restarting the chapter.' });
       return;
     }
 
-    const story = current.inkStateJson
-      ? restoreInkStory(compileInkStory(source), current.inkStateJson)
-      : compileInkStory(source);
-    const snapshot = chooseInkChoice(story, Number(choiceId));
-    set(createStoreView(snapshot, current));
+    set({ isChoosing: true, storyLoadError: undefined });
+
+    try {
+      const source = await getChapterOneSource();
+      if (!source) {
+        set({ isChoosing: false, storyLoadError: 'Chapter 1 is not available offline yet. Connect to download it.' });
+        return;
+      }
+
+      const story = current.inkStateJson
+        ? restoreInkStory(compileInkStory(source), current.inkStateJson)
+        : compileInkStory(source);
+      const snapshot = chooseInkChoice(story, choiceIndex);
+      set({ ...createStoreView(snapshot, current), isChoosing: false, storyLoadError: undefined });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown Ink runtime error';
+      set({ isChoosing: false, storyLoadError: `The choice could not be applied: ${message}` });
+    }
   },
   hydrateSaveStatus: async () => {
     set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
