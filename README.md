@@ -93,6 +93,25 @@ Chapter 4 consequence packs now branch from Chapter 3 governance outcomes instea
 - `The Credibility Docket` (`trial-credibility-path`)
 - `The Amnesty Faultline` (`amnesty-conflict-path`)
 
+## Branching Scalability Plan (to avoid exponential path growth)
+
+Fractureline will use a **braided narrative architecture** rather than fully independent trees.
+
+Core rules:
+
+1. **Branch at irreversible decisions, then rejoin at chapter hubs**
+   - Chapters can diverge into consequence variants, but major story anchors converge at planned merge scenes.
+2. **Carry consequences as state, not duplicated full chapters**
+   - Route outcomes are persisted as flags/ending keys and reflected through scene variants, checks, and consequence blocks.
+3. **Limit branch fan-out per chapter**
+   - Each chapter should introduce at most one primary irreversible split per route and should merge before final chapter handoff when possible.
+4. **Use modular scene blocks**
+   - Shared scenes remain shared; only high-impact consequence scenes fork.
+
+This keeps player agency meaningful while preventing content complexity from scaling exponentially as chapters increase.
+
+See `docs/NARRATIVE_BRANCHING_STRATEGY.md` for the detailed production/QA model.
+
 ## Local-First Saves
 
 Fractureline stores MVP saves locally using Dexie and IndexedDB. Local saves are intended to work offline and without a user account. See `docs/LOCAL_FIRST_STORAGE.md` for the storage plan.

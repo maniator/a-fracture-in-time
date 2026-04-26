@@ -35,10 +35,17 @@
 
 ### 4. Expand narrative coverage
 - Add alternate branch path tests through Chapter 1.
-- Add Chapter 2 outline and scene graph.
-- Add codex review for unlock pacing and wording.
+- Add deterministic continuation tests for Chapter 3 -> Chapter 4 consequence routing.
+- Add merge-hub tests for future chapters to ensure braided narrative recombination remains reachable.
+- Add codex review for unlock pacing and wording across Chapters 2-4.
 
-### 5. Wire Supabase integration
+### 5. Implement branching complexity controls
+- Adopt the braided-branch architecture documented in `docs/STORY_ROADMAP.md`.
+- Define per-chapter branch budgets before writing new packs (max active branches before merge).
+- Require each new irreversible split to include an explicit planned merge point.
+- Track shared-scene percentage and consequence-insert coverage as QA metrics.
+
+### 6. Wire Supabase integration
 - Add Supabase client dependency and app service adapter when ready to move beyond local-first saves.
 - Replace or augment local save service with authenticated cloud saves.
 - Add mocked tests for cloud save service behavior.
