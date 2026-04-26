@@ -9,9 +9,9 @@ VAR currentSpeaker = "Zelda Adlez"
 VAR endingKey = "amnesty-conflict-path"
 VAR chapterFourComplete = false
 
--> ch4_amnesty-conflict_start
+-> ch4_amnesty_conflict_start
 
-=== ch4_amnesty-conflict_start ===
+=== ch4_amnesty_conflict_start ===
 ~ currentSceneId = "ch4_amnesty-conflict_start"
 Chapter 4: Consequences of amnesty conflict.
 The city no longer debates whether memory infrastructure exists; it now debates who carries its cost every day.
@@ -20,12 +20,12 @@ Xav reminds the room that Chapter 3 choices are now policy precedent, not tempor
 Ari asks the question no one can dodge: "What do we protect first when every option hurts someone?"
 + [Invest in district care teams before expanding public operations] # cue:stability
     ~ stability += 1
-    -> ch4_amnesty-conflict_resolution
+    -> ch4_amnesty_conflict_resolution
 + [Expand operations now and patch care systems in parallel] # cue:rebellion
     ~ rebellion += 1
-    -> ch4_amnesty-conflict_resolution
+    -> ch4_amnesty_conflict_resolution
 
-=== ch4_amnesty-conflict_resolution ===
+=== ch4_amnesty_conflict_resolution ===
 ~ currentSceneId = "ch4_amnesty-conflict_resolution"
 ~ currentSpeaker = "Yve Ettevy"
 Yve publishes a "living obligations" bulletin: every promise gets an owner, a deadline, and a public review window.
