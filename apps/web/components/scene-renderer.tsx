@@ -115,16 +115,14 @@ export function SceneRenderer() {
     );
   }, [state.chapter, state.currentPOV, state.memoryFracture, state.rebellion]);
 
-  const chapterOneComplete = state.flags['chapter-one-complete'];
-  const chapterTwoComplete = state.flags['chapter-two-complete'];
-  const chapterThreeComplete = state.flags['chapter-three-complete'];
-  const currentChapterComplete = state.chapter === 1
-    ? chapterOneComplete
-    : state.chapter === 2
-      ? chapterTwoComplete
-      : state.chapter === 3
-        ? chapterThreeComplete
-        : false;
+  const chapterCompletionFlagByChapter: Record<number, string> = {
+    1: 'chapter-one-complete',
+    2: 'chapter-two-complete',
+    3: 'chapter-three-complete',
+    4: 'chapter-four-complete',
+    5: 'chapter-five-complete',
+  };
+  const currentChapterComplete = state.flags[chapterCompletionFlagByChapter[state.chapter]] === true;
   const nextPack = getEligibleNextChapterPack(state);
   const canContinue = Boolean(currentChapterComplete && nextPack);
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
