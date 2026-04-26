@@ -30,6 +30,7 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'currentPOV',
   'currentSpeaker',
   'endingKey',
+  'chapterOneComplete',
 ] as const;
 
 export function compileInkStory(source: string): Story {
@@ -50,7 +51,9 @@ export function continueInkStory(story: Story): InkStorySnapshot {
   const text: string[] = [];
 
   while (story.canContinue) {
-    const nextLine = story.Continue().trim();
+    const continued = story.Continue();
+    const nextLine = typeof continued === 'string' ? continued.trim() : '';
+
     if (nextLine.length > 0) {
       text.push(nextLine);
     }
