@@ -63,7 +63,7 @@ pnpm build-storybook
 The app currently includes:
 
 - `/` landing page
-- `/play` playable Chapter 1 plus unlocked Chapter 2 route continuation based on the Chapter 1 ending
+- `/play` playable Chapter 1 plus unlocked Chapter 2 and Chapter 3 continuation based on ending path
 - `/help` gameplay, PWA, and testing help page
 - Material UI theme provider
 - installable PWA manifest
@@ -77,6 +77,12 @@ Chapter 2 route packs currently included:
 - `The Second Future` (`history-path`)
 
 Each Chapter 2 route now targets a 20+ minute reading baseline (minimum 3,000 words at ~150 WPM), with manifest estimates set to 22 minutes per route.
+
+Chapter 3 foundation route packs currently included:
+
+- `The Relay Accord` (`signal-path`)
+- `The Witness Ledger` (`family-path`)
+- `The Public Memory Trial` (`history-path`)
 
 ## Local-First Saves
 

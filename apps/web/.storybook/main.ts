@@ -5,6 +5,15 @@ process.env.STORYBOOK = 'true';
 const config: StorybookConfig = {
   stories: ['../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-docs'],
+  core: {
+    builder: {
+      name: '@storybook/builder-webpack5',
+      options: {
+        fsCache: false,
+        lazyCompilation: false,
+      },
+    },
+  },
   framework: {
     name: '@storybook/nextjs',
     options: {},
@@ -14,10 +23,7 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
   webpackFinal: async (webpackConfig) => {
-    if (process.env.CI === 'true') {
-      webpackConfig.cache = false;
-    }
-
+    webpackConfig.cache = { type: 'memory' };
     return webpackConfig;
   },
 };

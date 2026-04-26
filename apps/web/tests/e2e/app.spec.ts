@@ -1,4 +1,18 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function clickChoiceByPattern(page: Page, choice: RegExp) {
+  await page.getByRole('button', { name: choice }).click();
+}
+
+async function advanceByClickingFirstChoiceUntil(page: Page, stopChoice: RegExp) {
+  for (let attempts = 0; attempts < 24; attempts += 1) {
+    const stop = page.getByRole('button', { name: stopChoice });
+    if (await stop.count()) return;
+    await page.getByRole('button').nth(3).click();
+  }
+
+  throw new Error(`Could not reach choice ${stopChoice.toString()} within step limit`);
+}
 
 test('home page loads setup and links into the game without prefetching play', async ({ page }) => {
   const chapterPackRequests: string[] = [];
@@ -128,6 +142,33 @@ test('can continue from Chapter 1 into Chapter 2 Signal route', async ({ page })
   await expect(page.getByRole('button', { name: /let yve create a careful contact protocol/i })).toBeVisible();
 });
 
+test('full flow can progress from Chapter 1 Signal path through Chapter 3', async ({ page }) => {
+  await page.goto('/play');
+
+  for (const choice of [
+    /admit the com broke again/i,
+    /study the official history/i,
+    /answer the impossible voice/i,
+    /start carefully and ask/i,
+    /ask zelda what the family line means/i,
+    /tell ari the truth/i,
+    /end chapter 1/i,
+  ]) {
+    await clickChoiceByPattern(page, choice);
+  }
+
+  await clickChoiceByPattern(page, /continue to chapter 2/i);
+  await expect(page.getByText(/chapter 2: the stable signal/i)).toBeVisible();
+
+  await advanceByClickingFirstChoiceUntil(page, /end chapter 2/i);
+  await clickChoiceByPattern(page, /end chapter 2/i);
+  await expect(page.getByText(/chapter 2 complete/i)).toBeVisible();
+
+  await clickChoiceByPattern(page, /continue to chapter 3/i);
+  await expect(page.getByText(/chapter 3: the relay accord/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /route the first clean signal/i })).toBeVisible();
+});
+
 test('can complete the Family Path', async ({ page }) => {
   await page.goto('/play');
 
@@ -197,11 +238,18 @@ test('static PWA assets and chapter packs are available in dev', async ({ page }
   expect(chapterPack).not.toContain('Mira Vale');
   expect(chapterPack).not.toContain('Soren Quill');
 
-  for (const pack of ['chapter-2-signal.ink', 'chapter-2-family.ink', 'chapter-2-history.ink']) {
+  for (const pack of [
+    'chapter-2-signal.ink',
+    'chapter-2-family.ink',
+    'chapter-2-history.ink',
+    'chapter-3-signal.ink',
+    'chapter-3-family.ink',
+    'chapter-3-history.ink',
+  ]) {
     const response = await page.goto(`/chapter-packs/${pack}`);
     expect(response?.ok()).toBeTruthy();
     const body = await page.locator('body').textContent();
-    expect(body).toContain('Chapter 2');
+    expect(body).toMatch(/Chapter [23]/);
     expect(body).not.toContain('Mira Vale');
     expect(body).not.toContain('Soren Quill');
   }

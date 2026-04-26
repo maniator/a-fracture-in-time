@@ -99,6 +99,7 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
       ...previous.flags,
       'chapter-one-complete': previous.flags['chapter-one-complete'] || toBoolean(snapshot.variables.chapterOneComplete),
       'chapter-two-complete': previous.flags['chapter-two-complete'] || toBoolean(snapshot.variables.chapterTwoComplete),
+      'chapter-three-complete': previous.flags['chapter-three-complete'] || toBoolean(snapshot.variables.chapterThreeComplete),
     },
     seenScenes,
     endingKey: endingKey && endingKey.length > 0 ? endingKey : previous.endingKey,
