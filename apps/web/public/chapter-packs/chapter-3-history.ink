@@ -150,10 +150,12 @@ If they rejected amnesty testimony, they could preserve purity at the risk of sl
 + [Codify conditional amnesty protocol with strict disclosure and victim veto windows] # cue:control
     ~ controlIndex += 2
     ~ trialCredibilityHigh = true
+    ~ endingKey = "trial-credibility-path"
     -> ch3_history_forum
 + [Codify no-amnesty protocol and build a longer witness-led evidence pipeline] # cue:memory
     ~ memoryFracture += 1
     ~ amnestyConflictTriggered = true
+    ~ endingKey = "amnesty-conflict-path"
     -> ch3_history_forum
 
 === ch3_history_forum ===
@@ -199,7 +201,6 @@ PUBLIC MEMORY IS A PROCESS, NOT A DECREE.
 This Chapter 3 route now includes an irreversible amnesty-precedent split and seeds Chapter 4 with a persistent trial credibility condition.
 + [End Chapter 3] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "history-path"
     -> ch3_history_debrief
 
 
@@ -330,5 +331,4 @@ Community log 119: After the trial ruling, memory-justice teams documented proce
 Community log 120: After the trial ruling, memory-justice teams documented procedures, tradeoffs, and repairs so tomorrow's volunteers inherit practical memory instead of panic, and every district repeated the lesson that accountability must be specific, shared, and maintained.
 + [Close the chapter and carry these commitments forward] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "history-path"
     -> DONE

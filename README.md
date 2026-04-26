@@ -84,6 +84,15 @@ Chapter 3 foundation route packs currently included:
 - `The Witness Ledger` (`family-path`)
 - `The Public Memory Trial` (`history-path`)
 
+Chapter 4 consequence packs now branch from Chapter 3 governance outcomes instead of forcing a fixed path:
+
+- `The Relay Covenant` (`relay-legitimacy-path`)
+- `The Relay Breach` (`relay-compromised-path`)
+- `The Family Guarantee` (`ledger-trust-path`)
+- `The Custody Exodus` (`emergency-custody-path`)
+- `The Credibility Docket` (`trial-credibility-path`)
+- `The Amnesty Faultline` (`amnesty-conflict-path`)
+
 ## Local-First Saves
 
 Fractureline stores MVP saves locally using Dexie and IndexedDB. Local saves are intended to work offline and without a user account. See `docs/LOCAL_FIRST_STORAGE.md` for the storage plan.

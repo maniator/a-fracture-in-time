@@ -9,7 +9,13 @@ export type ChapterPackId =
   | 'chapter-2-history'
   | 'chapter-3-signal'
   | 'chapter-3-family'
-  | 'chapter-3-history';
+  | 'chapter-3-history'
+  | 'chapter-4-relay-legitimacy'
+  | 'chapter-4-relay-compromised'
+  | 'chapter-4-ledger-trust'
+  | 'chapter-4-emergency-custody'
+  | 'chapter-4-trial-credibility'
+  | 'chapter-4-amnesty-conflict';
 
 export type ChapterPackManifestItem = {
   id: ChapterPackId;
@@ -69,6 +75,48 @@ export const chapterPackManifest: ChapterPackManifestItem[] = [
     route: '/chapter-packs/chapter-3-history.ink',
     dependsOnEnding: 'history-path',
     estimatedMinutes: 26,
+  },
+  {
+    id: 'chapter-4-relay-legitimacy',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-relay-legitimacy.ink',
+    dependsOnEnding: 'relay-legitimacy-path',
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-4-relay-compromised',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-relay-compromised.ink',
+    dependsOnEnding: 'relay-compromised-path',
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-4-ledger-trust',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-ledger-trust.ink',
+    dependsOnEnding: 'ledger-trust-path',
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-4-emergency-custody',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-emergency-custody.ink',
+    dependsOnEnding: 'emergency-custody-path',
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-4-trial-credibility',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-trial-credibility.ink',
+    dependsOnEnding: 'trial-credibility-path',
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-4-amnesty-conflict',
+    chapter: 4,
+    route: '/chapter-packs/chapter-4-amnesty-conflict.ink',
+    dependsOnEnding: 'amnesty-conflict-path',
+    estimatedMinutes: 24,
   },
 ];
 
