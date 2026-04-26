@@ -3,7 +3,13 @@
 import { create } from 'zustand';
 import { initialTimelineState, type Choice, type POV, type TimelineState } from '@fractureline/shared-types';
 import { chooseInkChoice, compileInkStory, continueInkStory, restoreInkStory, type InkStorySnapshot } from '@fractureline/narrative-engine';
-import { chapterOnePack, getEligibleNextChapterPack, loadChapterPackText, type ChapterPackManifestItem } from '@/lib/chapter-packs/chapter-pack-cache';
+import {
+  chapterOnePack,
+  getChapterPackForState,
+  getEligibleNextChapterPack,
+  loadChapterPackText,
+  type ChapterPackManifestItem,
+} from '@/lib/chapter-packs/chapter-pack-cache';
 import { indexedDbSaveService } from '@/lib/persistence/save-service';
 
 type InkRuntimeStory = ReturnType<typeof compileInkStory>;
@@ -273,7 +279,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return false;
     }
 
-    setActiveChapterPack(saved.chapter === 2 ? getEligibleNextChapterPack(saved) ?? chapterOnePack : chapterOnePack);
+    setActiveChapterPack(getChapterPackForState(saved) ?? chapterOnePack);
     const snapshot = await restoreSnapshotFromState(saved);
     if (!snapshot) {
       set({
