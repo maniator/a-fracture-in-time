@@ -47,7 +47,7 @@ function toBoolean(value: unknown) {
 }
 
 function toPOV(value: unknown): POV {
-  return value === 'dissenter' ? 'dissenter' : 'protector';
+  return value === 'future' ? 'future' : 'past';
 }
 
 function snapshotToChoices(snapshot: InkStorySnapshot): Choice[] {
@@ -76,7 +76,7 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
     chapter: 1,
     currentSceneId,
     currentPOV: toPOV(snapshot.variables.currentPOV),
-    currentSpeaker: toStringValue(snapshot.variables.currentSpeaker) ?? previous.currentSpeaker ?? 'Mira Vale',
+    currentSpeaker: toStringValue(snapshot.variables.currentSpeaker) ?? previous.currentSpeaker ?? 'Xav Reivax',
     currentText: snapshot.text.length ? snapshot.text : previous.currentText,
     flags: {
       ...previous.flags,
@@ -93,7 +93,7 @@ function createStoreView(snapshot: InkStorySnapshot, previous = initialTimelineS
 
   return {
     state,
-    speaker: state.currentSpeaker ?? 'Mira Vale',
+    speaker: state.currentSpeaker ?? 'Xav Reivax',
     sceneText: state.currentText ?? snapshot.text,
     choices: snapshotToChoices(snapshot),
   };
@@ -141,7 +141,7 @@ async function getActiveStoryForChoice(state: TimelineState) {
 
 export const useGameStore = create<GameStore>((set, get) => ({
   state: initialTimelineState,
-  speaker: initialTimelineState.currentSpeaker ?? 'Mira Vale',
+  speaker: initialTimelineState.currentSpeaker ?? 'Xav Reivax',
   sceneText: [],
   choices: [],
   hasSave: false,
@@ -158,7 +158,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({
         isChoosing: false,
         isStoryReady: false,
-        storyLoadError: 'Chapter 1 is not cached yet. Connect to the internet once to download this chapter for offline play.',
+        storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
       });
       return;
     }
@@ -187,7 +187,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (choiceIndex >= story.currentChoices.length) {
         set({
           isChoosing: false,
-          storyLoadError: 'The story choice list changed before the choice could be applied. Restart the chapter or reload your save.',
+          storyLoadError: 'The story changed before that choice could be applied. Restart the chapter or reload your save.',
         });
         return;
       }
@@ -195,9 +195,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const snapshot = chooseInkChoice(story, choiceIndex);
       activeStory = story;
       set({ ...createStoreView(snapshot, current), isChoosing: false, storyLoadError: undefined });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown Ink runtime error';
-      set({ isChoosing: false, storyLoadError: `The choice could not be applied: ${message}` });
+    } catch {
+      set({ isChoosing: false, storyLoadError: 'That choice could not be applied. Please try again.' });
     }
   },
   hydrateSaveStatus: async () => {
@@ -237,7 +236,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         hasSave: await indexedDbSaveService.hasSave(),
         isPersistenceReady: true,
         isStoryReady: false,
-        storyLoadError: 'Chapter 1 is not cached yet. Connect to the internet once to download this chapter for offline play.',
+        storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
       });
       return;
     }
