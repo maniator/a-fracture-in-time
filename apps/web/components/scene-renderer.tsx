@@ -72,6 +72,9 @@ const chapterTitleByPackId: Record<string, string> = {
   'chapter-4-emergency-custody': 'The Custody Exodus',
   'chapter-4-trial-credibility': 'The Credibility Docket',
   'chapter-4-amnesty-conflict': 'The Amnesty Faultline',
+  'chapter-5-governance-reckoning': 'The Cost of Utopia: Governance Reckoning',
+  'chapter-5-lineage-protocol': 'The Cost of Utopia: Lineage Protocol',
+  'chapter-5-memory-settlement': 'The Cost of Utopia: Memory Settlement',
 };
 
 export function SceneRenderer() {

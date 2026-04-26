@@ -93,6 +93,12 @@ Chapter 4 consequence packs now branch from Chapter 3 governance outcomes instea
 - `The Credibility Docket` (`trial-credibility-path`)
 - `The Amnesty Faultline` (`amnesty-conflict-path`)
 
+Chapter 5 now begins recombining Chapter 4 outcomes into braided merge hubs:
+
+- `The Cost of Utopia: Governance Reckoning` (from `relay-legitimacy-path` or `relay-compromised-path`)
+- `The Cost of Utopia: Lineage Protocol` (from `ledger-trust-path` or `emergency-custody-path`)
+- `The Cost of Utopia: Memory Settlement` (from `trial-credibility-path` or `amnesty-conflict-path`)
+
 ## Branching Scalability Plan (to avoid exponential path growth)
 
 Fractureline will use a **braided narrative architecture** rather than fully independent trees.
