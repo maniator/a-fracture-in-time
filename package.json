@@ -11,6 +11,7 @@
     "test:e2e": "pnpm --filter web test:e2e",
     "test:e2e:update": "pnpm --filter web test:e2e:update",
     "storybook": "pnpm --filter web storybook",
-    "build-storybook": "pnpm --filter web build-storybook"
+    "build-storybook": "pnpm --filter web build-storybook",
+    "bmad:nom:review": "node scripts/bmad-nom-review.mjs"
   }
 }

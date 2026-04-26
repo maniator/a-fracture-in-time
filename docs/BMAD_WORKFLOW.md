@@ -3,6 +3,11 @@
 ## Purpose
 Define how agents collaborate without stepping on each other.
 
+## BMAD NOM Module
+- Installed path: `.bmad-core/modules/nom`
+- Runner: `pnpm bmad:nom:review`
+- Output artifact: `docs/reviews/CHAPTERS_1_3_AGENT_REVIEW.md`
+
 ## Core Rule
 Every agent must consume prior artifacts before producing new ones.
 

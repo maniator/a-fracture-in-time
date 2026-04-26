@@ -96,6 +96,7 @@ BMAD files are included in two places:
 
 - `.bmad-core/agents`: individual agent definitions
 - `.bmad-core/workflows`: launch workflow and handoff order
+- `.bmad-core/modules/nom`: BMAD NOM (Narrative Operations Matrix) review module
 - `docs/AGENT_PROMPTS.md`: prompt-facing agent descriptions
 - `docs/BMAD_WORKFLOW.md`: broader workflow explanation
 
@@ -109,6 +110,14 @@ Initial agents include:
 - QA
 - Growth
 - Producer
+
+Run the BMAD NOM review pass for Chapters 1-3 with:
+
+```bash
+pnpm bmad:nom:review
+```
+
+This writes `docs/reviews/CHAPTERS_1_3_AGENT_REVIEW.md` as a durable audit artifact.
 
 ## Testing
 
