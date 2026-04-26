@@ -184,6 +184,12 @@ export function getChapterPackForState(state: TimelineState) {
 
   if (matchedByEnding) return matchedByEnding;
 
+  if (state.endingKey) {
+    const endingRouteKey = state.endingKey.replace(/-path$/, '');
+    const matchedByRouteKey = chapterCandidates.find((pack) => pack.id.includes(endingRouteKey));
+    if (matchedByRouteKey) return matchedByRouteKey;
+  }
+
   // endingKey may have advanced beyond this chapter's prerequisite key; keep restore on same chapter.
   return chapterCandidates[0] ?? null;
 }
