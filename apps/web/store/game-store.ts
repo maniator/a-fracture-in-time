@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { initialTimelineState, type Choice, type POV, type TimelineState } from '@fractureline/shared-types';
 import { chooseInkChoice, compileInkStory, continueInkStory, restoreInkStory, type InkStorySnapshot } from '@fractureline/narrative-engine';
-import { chapterOnePack, loadChapterPackText } from '@/lib/chapter-packs/chapter-pack-cache';
+import { chapterOnePack, getEligibleNextChapterPack, loadChapterPackText, type ChapterPackManifestItem } from '@/lib/chapter-packs/chapter-pack-cache';
 import { indexedDbSaveService } from '@/lib/persistence/save-service';
 
 type InkRuntimeStory = ReturnType<typeof compileInkStory>;
@@ -20,18 +20,26 @@ type GameStore = {
   storyLoadError?: string;
   initializeStory: () => Promise<void>;
   choose: (choiceId: string) => Promise<void>;
+  continueToNextChapter: () => Promise<void>;
   hydrateSaveStatus: () => Promise<void>;
   save: () => Promise<void>;
   load: () => Promise<boolean>;
   reset: () => Promise<void>;
 };
 
-let chapterOneSourcePromise: Promise<string | null> | null = null;
+let activeChapterPack: ChapterPackManifestItem = chapterOnePack;
+let activeStorySourcePromise: Promise<string | null> | null = null;
 let activeStory: InkRuntimeStory | null = null;
 
-function getChapterOneSource() {
-  chapterOneSourcePromise ??= loadChapterPackText(chapterOnePack);
-  return chapterOneSourcePromise;
+function setActiveChapterPack(pack: ChapterPackManifestItem) {
+  activeChapterPack = pack;
+  activeStorySourcePromise = null;
+  activeStory = null;
+}
+
+function getActiveStorySource() {
+  activeStorySourcePromise ??= loadChapterPackText(activeChapterPack);
+  return activeStorySourcePromise;
 }
 
 function toNumber(value: unknown) {
@@ -59,6 +67,15 @@ function snapshotToChoices(snapshot: InkStorySnapshot): Choice[] {
   }));
 }
 
+function applyTimelineVariables(story: InkRuntimeStory, state: TimelineState) {
+  story.variablesState.stability = state.stability;
+  story.variablesState.controlIndex = state.controlIndex;
+  story.variablesState.rebellion = state.rebellion;
+  story.variablesState.memoryFracture = state.memoryFracture;
+  story.variablesState.magicEntropy = state.magicEntropy;
+  if (state.endingKey) story.variablesState.endingKey = state.endingKey;
+}
+
 function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = initialTimelineState): TimelineState {
   const currentSceneId = toStringValue(snapshot.variables.currentSceneId) ?? previous.currentSceneId;
   const endingKey = toStringValue(snapshot.variables.endingKey);
@@ -73,14 +90,15 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
     rebellion: toNumber(snapshot.variables.rebellion),
     memoryFracture: toNumber(snapshot.variables.memoryFracture),
     magicEntropy: toNumber(snapshot.variables.magicEntropy),
-    chapter: 1,
+    chapter: activeChapterPack.chapter,
     currentSceneId,
     currentPOV: toPOV(snapshot.variables.currentPOV),
     currentSpeaker: toStringValue(snapshot.variables.currentSpeaker) ?? previous.currentSpeaker ?? 'Xav Reivax',
     currentText: snapshot.text.length ? snapshot.text : previous.currentText,
     flags: {
       ...previous.flags,
-      'chapter-one-complete': toBoolean(snapshot.variables.chapterOneComplete),
+      'chapter-one-complete': previous.flags['chapter-one-complete'] || toBoolean(snapshot.variables.chapterOneComplete),
+      'chapter-two-complete': previous.flags['chapter-two-complete'] || toBoolean(snapshot.variables.chapterTwoComplete),
     },
     seenScenes,
     endingKey: endingKey && endingKey.length > 0 ? endingKey : previous.endingKey,
@@ -100,15 +118,26 @@ function createStoreView(snapshot: InkStorySnapshot, previous = initialTimelineS
 }
 
 async function createInitialSnapshot() {
-  const source = await getChapterOneSource();
+  setActiveChapterPack(chapterOnePack);
+  const source = await getActiveStorySource();
   if (!source) return null;
 
   activeStory = compileInkStory(source);
   return continueInkStory(activeStory);
 }
 
+async function createChapterSnapshot(pack: ChapterPackManifestItem, previous: TimelineState) {
+  setActiveChapterPack(pack);
+  const source = await getActiveStorySource();
+  if (!source) return null;
+
+  activeStory = compileInkStory(source);
+  applyTimelineVariables(activeStory, previous);
+  return continueInkStory(activeStory);
+}
+
 async function restoreStoryFromState(state: TimelineState) {
-  const source = await getChapterOneSource();
+  const source = await getActiveStorySource();
   if (!source) return null;
 
   activeStory = state.inkStateJson
@@ -180,7 +209,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     try {
       const story = await getActiveStoryForChoice(current);
       if (!story) {
-        set({ isChoosing: false, storyLoadError: 'Chapter 1 is not available offline yet. Connect to download it.' });
+        set({ isChoosing: false, storyLoadError: `Chapter ${current.chapter} is not available offline yet. Connect to download it.` });
         return;
       }
 
@@ -199,6 +228,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({ isChoosing: false, storyLoadError: 'That choice could not be applied. Please try again.' });
     }
   },
+  continueToNextChapter: async () => {
+    if (get().isChoosing) return;
+
+    const current = get().state;
+    const pack = getEligibleNextChapterPack(current);
+    if (!pack) {
+      set({ storyLoadError: 'The next chapter is not available for this route yet.' });
+      return;
+    }
+
+    set({ isChoosing: true, storyLoadError: undefined });
+    const snapshot = await createChapterSnapshot(pack, current);
+    if (!snapshot) {
+      set({
+        isChoosing: false,
+        storyLoadError: 'Chapter 2 is not available offline yet. Connect to the internet once to download it.',
+      });
+      return;
+    }
+
+    set({ ...createStoreView(snapshot, { ...current, inkStateJson: undefined }), isChoosing: false, isStoryReady: true, storyLoadError: undefined });
+  },
   hydrateSaveStatus: async () => {
     set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
   },
@@ -213,12 +264,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return false;
     }
 
+    setActiveChapterPack(saved.chapter === 2 ? getEligibleNextChapterPack(saved) ?? chapterOnePack : chapterOnePack);
     const snapshot = await restoreSnapshotFromState(saved);
     if (!snapshot) {
       set({
         hasSave: true,
         isPersistenceReady: true,
-        storyLoadError: 'Your save exists, but Chapter 1 must be downloaded before it can be loaded on this device.',
+        storyLoadError: `Your save exists, but Chapter ${saved.chapter} must be downloaded before it can be loaded on this device.`,
       });
       return false;
     }
