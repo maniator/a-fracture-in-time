@@ -101,6 +101,31 @@ test('can complete the Signal Path', async ({ page }) => {
   await expect(page.getByText(/chapter 1 complete/i)).toBeVisible();
   await expect(page.getByText(/ending: the signal path/i)).toBeVisible();
   await expect(page.getByText(/signal-path/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /continue to chapter 2/i })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the stable signal/i)).toBeVisible();
+});
+
+test('can continue from Chapter 1 into Chapter 2 Signal route', async ({ page }) => {
+  await page.goto('/play');
+
+  const choices = [
+    /admit the com broke again/i,
+    /study the official history/i,
+    /answer the impossible voice/i,
+    /start carefully and ask/i,
+    /ask zelda what the family line means/i,
+    /tell ari the truth/i,
+    /end chapter 1/i,
+  ];
+
+  for (const choice of choices) {
+    await page.getByRole('button', { name: choice }).click();
+  }
+
+  await page.getByRole('button', { name: /continue to chapter 2/i }).click();
+  await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the stable signal/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /let yve create a careful contact protocol/i })).toBeVisible();
 });
 
 test('can complete the Family Path', async ({ page }) => {

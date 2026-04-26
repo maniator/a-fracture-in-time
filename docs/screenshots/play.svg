@@ -3,12 +3,12 @@
   <rect x="120" y="90" width="960" height="580" rx="34" fill="#ffffff" opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
   <text x="170" y="160" fill="#f6efe4" opacity="0.62" font-family="Arial, sans-serif" font-size="18" letter-spacing="6">CHAPTER 1</text>
   <rect x="340" y="132" width="150" height="38" rx="19" fill="none" stroke="#8b5cf6" stroke-opacity="0.75"/>
-  <text x="370" y="158" fill="#8b5cf6" font-family="Arial, sans-serif" font-size="16" letter-spacing="4">PROTECTOR</text>
-  <text x="170" y="240" fill="#f6efe4" font-family="Georgia, serif" font-size="48" font-weight="700">Protector</text>
-  <text x="170" y="315" fill="#f6efe4" opacity="0.86" font-family="Georgia, serif" font-size="28">The bells did not ring in Lattice unless something had been corrected.</text>
-  <text x="170" y="365" fill="#f6efe4" opacity="0.86" font-family="Georgia, serif" font-size="28">Today they rang three times.</text>
+  <text x="388" y="158" fill="#8b5cf6" font-family="Arial, sans-serif" font-size="16" letter-spacing="4">PAST</text>
+  <text x="170" y="240" fill="#f6efe4" font-family="Georgia, serif" font-size="48" font-weight="700">Xav Reivax</text>
+  <text x="170" y="315" fill="#f6efe4" opacity="0.86" font-family="Georgia, serif" font-size="28">University of Brinkton. The quad looked exactly like the brochures.</text>
+  <text x="170" y="365" fill="#f6efe4" opacity="0.86" font-family="Georgia, serif" font-size="28">A broken com, a history exam, and a signal from Zelda Adlez.</text>
   <rect x="170" y="430" width="760" height="64" rx="18" fill="#08070b" opacity="0.65" stroke="#ffffff" stroke-opacity="0.18"/>
-  <text x="200" y="471" fill="#f6efe4" font-family="Arial, sans-serif" font-size="22">Study the crowd before speaking</text>
+  <text x="200" y="471" fill="#f6efe4" font-family="Arial, sans-serif" font-size="22">Admit the com broke again</text>
   <rect x="170" y="515" width="760" height="64" rx="18" fill="#08070b" opacity="0.65" stroke="#ffffff" stroke-opacity="0.18"/>
-  <text x="200" y="556" fill="#f6efe4" font-family="Arial, sans-serif" font-size="22">Go directly to the correction dais</text>
+  <text x="200" y="556" fill="#f6efe4" font-family="Arial, sans-serif" font-size="22">Joke that Cybol technology clearly fears you</text>
 </svg>

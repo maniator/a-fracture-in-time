@@ -6,8 +6,8 @@ const graph: SceneGraph = {
   start: {
     id: 'start',
     chapter: 1,
-    pov: 'protector',
-    speaker: 'Protector',
+    pov: 'past',
+    speaker: 'Xav Reivax',
     text: ['The bells rang three times.'],
     choices: [
       {
@@ -21,8 +21,8 @@ const graph: SceneGraph = {
   next: {
     id: 'next',
     chapter: 1,
-    pov: 'dissenter',
-    speaker: 'Dissenter',
+    pov: 'future',
+    speaker: 'Zelda Adlez',
     text: ['Someone else heard them too.'],
     choices: [],
   },
@@ -44,7 +44,7 @@ describe('narrative engine', () => {
     const nextState = resolveChoice(graph, state, 'listen');
 
     expect(nextState.currentSceneId).toBe('next');
-    expect(nextState.currentPOV).toBe('dissenter');
+    expect(nextState.currentPOV).toBe('future');
     expect(nextState.memoryFracture).toBe(1);
     expect(nextState.seenScenes).toContain('next');
   });
@@ -55,7 +55,7 @@ describe('narrative engine', () => {
       broken: {
         id: 'broken',
         chapter: 1,
-        pov: 'protector',
+        pov: 'past',
         text: ['A broken path.'],
         choices: [{ id: 'bad', label: 'Break', nextSceneId: 'missing' }],
       },
