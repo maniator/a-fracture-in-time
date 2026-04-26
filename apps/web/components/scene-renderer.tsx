@@ -118,8 +118,15 @@ export function SceneRenderer() {
   const chapterOneComplete = state.flags['chapter-one-complete'];
   const chapterTwoComplete = state.flags['chapter-two-complete'];
   const chapterThreeComplete = state.flags['chapter-three-complete'];
+  const currentChapterComplete = state.chapter === 1
+    ? chapterOneComplete
+    : state.chapter === 2
+      ? chapterTwoComplete
+      : state.chapter === 3
+        ? chapterThreeComplete
+        : false;
   const nextPack = getEligibleNextChapterPack(state);
-  const canContinue = Boolean(nextPack);
+  const canContinue = Boolean(currentChapterComplete && nextPack);
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
 
   if (storyLoadError) {
@@ -201,7 +208,7 @@ export function SceneRenderer() {
           </Stack>
         ) : null}
 
-        {chapterOneComplete || chapterTwoComplete || chapterThreeComplete ? (
+        {currentChapterComplete ? (
           <Alert
             severity="success"
             sx={{ mt: 4 }}
