@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Fractureline help page screenshot placeholder">
   <rect width="1200" height="760" fill="#08070b"/>
-  <text x="90" y="120" fill="#f59e0b" font-family="Georgia, serif" font-size="22" letter-spacing="8">HELP</text>
-  <text x="90" y="205" fill="#f6efe4" font-family="Georgia, serif" font-size="64" font-weight="700">Playing Fractureline</text>
+  <text x="90" y="120" fill="#f59e0b" font-family="Georgia, serif" font-size="22" letter-spacing="8">PLAYER GUIDE</text>
+  <text x="90" y="205" fill="#f6efe4" font-family="Georgia, serif" font-size="64" font-weight="700">How to play Fractureline</text>
   <g fill="#ffffff" opacity="0.06" stroke="#ffffff" stroke-opacity="0.12">
     <rect x="90" y="280" width="480" height="150" rx="26"/>
     <rect x="630" y="280" width="480" height="150" rx="26"/>
@@ -10,14 +10,14 @@
   </g>
   <g fill="#f6efe4" font-family="Georgia, serif">
     <text x="130" y="340" font-size="30" font-weight="700">How choices work</text>
-    <text x="670" y="340" font-size="30" font-weight="700">The two viewpoints</text>
-    <text x="130" y="535" font-size="30" font-weight="700">Offline play</text>
-    <text x="670" y="535" font-size="30" font-weight="700">Testing strategy</text>
+    <text x="670" y="340" font-size="30" font-weight="700">Who you are</text>
+    <text x="130" y="535" font-size="30" font-weight="700">Local saves</text>
+    <text x="670" y="535" font-size="30" font-weight="700">Reading the stats</text>
   </g>
   <g fill="#f6efe4" opacity="0.72" font-family="Arial, sans-serif" font-size="20">
-    <text x="130" y="382">Choices update variables and story flags.</text>
-    <text x="670" y="382">Protector and Dissenter alter each other.</text>
-    <text x="130" y="577">Installable PWA shell and fallback page.</text>
-    <text x="670" y="577">Unit coverage plus Playwright e2e flows.</text>
+    <text x="130" y="382">Choices shift both eras and unlock routes.</text>
+    <text x="670" y="382">Play as Xav, Yve, and Zelda across time.</text>
+    <text x="130" y="577">Save progress locally and resume later.</text>
+    <text x="670" y="577">Stability, Control, Rebellion, Memory, Entropy.</text>
   </g>
 </svg>

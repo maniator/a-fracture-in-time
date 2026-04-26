@@ -58,6 +58,12 @@ function formatEraLabel(era: string) {
   return era === 'future' ? 'Future' : era === 'past' ? 'Past' : era;
 }
 
+const chapterTwoTitleByEnding: Record<string, string> = {
+  'signal-path': 'The Stable Signal',
+  'family-path': 'The Firstborn Record',
+  'history-path': 'The Second Future',
+};
+
 export function SceneRenderer() {
   const {
     state,
@@ -86,6 +92,7 @@ export function SceneRenderer() {
   const chapterOneComplete = state.flags['chapter-one-complete'];
   const chapterTwoComplete = state.flags['chapter-two-complete'];
   const canContinueToChapterTwo = chapterOneComplete && state.chapter === 1 && Boolean(state.endingKey);
+  const chapterTwoTitle = state.endingKey ? chapterTwoTitleByEnding[state.endingKey] : undefined;
 
   if (storyLoadError) {
     return (
@@ -105,7 +112,7 @@ export function SceneRenderer() {
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
             <CircularProgress color="secondary" size={28} />
             <Box>
-              <Typography variant="h5">Loading Chapter 1</Typography>
+              <Typography variant="h5">Loading Chapter {state.chapter}</Typography>
               <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
                 Preparing the opening chapter. Once it loads, it can be available for offline play.
               </Typography>
@@ -181,7 +188,7 @@ export function SceneRenderer() {
             <Typography sx={{ fontWeight: 700 }}>Chapter {chapterTwoComplete ? 2 : 1} complete.</Typography>
             <Typography variant="body2">
               {canContinueToChapterTwo
-                ? 'Your ending has opened the next route.'
+                ? `Your ending unlocked Chapter 2${chapterTwoTitle ? `: ${chapterTwoTitle}.` : '.'}`
                 : 'Your choices will shape which future chapters become available.'}
             </Typography>
           </Alert>

@@ -67,3 +67,13 @@ Every agent must consume prior artifacts before producing new ones.
 - Sprint kickoff: scope and dependencies
 - Mid-sprint: blockers and artifact alignment
 - Sprint close: demo, acceptance check, and doc refresh
+
+## Current Repo Review Checklist (Applied)
+- Product Manager: confirm chapter progression goals and Chapter 2 unlock UX copy.
+- Producer: verify delivery includes docs refresh, tests, and workflow health.
+- Architect: ensure chapter pack loading and ending-based routing stay contract-safe.
+- Backend: verify local save/load behavior remains compatible across chapter transitions.
+- UI Agent: validate play page presents Chapter 2 continuation clearly after Chapter 1 endings.
+- Narrative Designer: check route naming and chapter labels match chapter-pack canon.
+- QA: update tests for current story content and chapter progression behavior.
+- Growth: keep player-facing copy focused on world/characters and replayable route clarity.

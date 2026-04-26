@@ -62,12 +62,18 @@ pnpm build-storybook
 The app currently includes:
 
 - `/` landing page
-- `/play` playable Chapter 1 vertical slice with IndexedDB save/load
+- `/play` playable Chapter 1 plus unlocked Chapter 2 route continuation based on the Chapter 1 ending
 - `/help` gameplay, PWA, and testing help page
 - Material UI theme provider
 - installable PWA manifest
 - generated Workbox service worker in production builds
 - offline fallback page
+
+Chapter 2 route packs currently included:
+
+- `The Stable Signal` (`signal-path`)
+- `The Firstborn Record` (`family-path`)
+- `The Second Future` (`history-path`)
 
 ## Local-First Saves
 
