@@ -15,13 +15,16 @@ export type ChapterPackId =
   | 'chapter-4-ledger-trust'
   | 'chapter-4-emergency-custody'
   | 'chapter-4-trial-credibility'
-  | 'chapter-4-amnesty-conflict';
+  | 'chapter-4-amnesty-conflict'
+  | 'chapter-5-governance-reckoning'
+  | 'chapter-5-lineage-protocol'
+  | 'chapter-5-memory-settlement';
 
 export type ChapterPackManifestItem = {
   id: ChapterPackId;
   chapter: number;
   route: string;
-  dependsOnEnding?: string;
+  dependsOnEnding?: string | string[];
   estimatedMinutes: number;
 };
 
@@ -118,6 +121,27 @@ export const chapterPackManifest: ChapterPackManifestItem[] = [
     dependsOnEnding: 'amnesty-conflict-path',
     estimatedMinutes: 24,
   },
+  {
+    id: 'chapter-5-governance-reckoning',
+    chapter: 5,
+    route: '/chapter-packs/chapter-5-governance-reckoning.ink',
+    dependsOnEnding: ['relay-legitimacy-path', 'relay-compromised-path'],
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-5-lineage-protocol',
+    chapter: 5,
+    route: '/chapter-packs/chapter-5-lineage-protocol.ink',
+    dependsOnEnding: ['ledger-trust-path', 'emergency-custody-path'],
+    estimatedMinutes: 24,
+  },
+  {
+    id: 'chapter-5-memory-settlement',
+    chapter: 5,
+    route: '/chapter-packs/chapter-5-memory-settlement.ink',
+    dependsOnEnding: ['trial-credibility-path', 'amnesty-conflict-path'],
+    estimatedMinutes: 24,
+  },
 ];
 
 function canUseCacheStorage() {
@@ -128,7 +152,12 @@ export function getEligibleNextChapterPack(state: TimelineState) {
   if (!state.endingKey) return null;
   return (
     chapterPackManifest
-      .filter((pack) => pack.dependsOnEnding === state.endingKey && pack.chapter > state.chapter)
+      .filter((pack) => {
+        if (!pack.dependsOnEnding || pack.chapter <= state.chapter) return false;
+        return Array.isArray(pack.dependsOnEnding)
+          ? pack.dependsOnEnding.includes(state.endingKey as string)
+          : pack.dependsOnEnding === state.endingKey;
+      })
       .sort((left, right) => left.chapter - right.chapter)[0] ?? null
   );
 }

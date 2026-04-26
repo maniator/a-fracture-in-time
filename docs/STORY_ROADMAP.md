@@ -238,6 +238,14 @@ Possible beats:
 - Zelda's memories become increasingly unstable.
 - Xav must choose between making a clean better future and preserving the person asking him to make it.
 
+### Chapter 5 implementation status (current)
+
+- Foundation merge-hub packs now exist to recombine Chapter 4 outcome branches:
+  - Governance Reckoning (relay outcomes merge)
+  - Lineage Protocol (family-governance outcomes merge)
+  - Memory Settlement (trial/amnesty outcomes merge)
+- This is the first concrete implementation of the braided branch model in runtime chapter-pack routing.
+
 ## Complexity Management Plan (Critical)
 
 To prevent branch explosion, chapters after Chapter 4 should use a **Braided Branch Model** instead of fully separate trees.

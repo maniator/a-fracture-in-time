@@ -83,6 +83,22 @@ describe('chapter pack cache', () => {
     expect(pack?.id).toBe('chapter-4-relay-compromised');
   });
 
+  it('merges Chapter 4 governance outcomes into shared Chapter 5 pack', () => {
+    const legitimacyPack = getEligibleNextChapterPack({
+      ...initialTimelineState,
+      chapter: 4,
+      endingKey: 'relay-legitimacy-path',
+    });
+    const compromisedPack = getEligibleNextChapterPack({
+      ...initialTimelineState,
+      chapter: 4,
+      endingKey: 'relay-compromised-path',
+    });
+
+    expect(legitimacyPack?.id).toBe('chapter-5-governance-reckoning');
+    expect(compromisedPack?.id).toBe('chapter-5-governance-reckoning');
+  });
+
   it('downloads and caches a chapter pack response', async () => {
     const pack = chapterPackManifest.find((candidate) => candidate.id === 'chapter-2-family');
     expect(pack).toBeDefined();
