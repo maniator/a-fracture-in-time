@@ -33,6 +33,8 @@ const FRACTURELINE_VARIABLE_KEYS = [
   'chapterOneComplete',
   'chapterTwoComplete',
   'chapterThreeComplete',
+  'chapterFourComplete',
+  'chapterFiveComplete',
   'relayLegitimacyHigh',
   'relayCompromised',
   'ledgerTrustHigh',
