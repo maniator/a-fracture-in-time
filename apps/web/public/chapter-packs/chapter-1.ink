@@ -3,280 +3,311 @@ VAR controlIndex = 0
 VAR rebellion = 0
 VAR memoryFracture = 0
 VAR magicEntropy = 0
-VAR currentSceneId = "ch1_p_001"
-VAR currentPOV = "protector"
-VAR currentSpeaker = "Mira Vale"
+VAR currentSceneId = "ch1_xav_quad"
+VAR currentPOV = "past"
+VAR currentSpeaker = "Xav Reivax"
 VAR endingKey = ""
 VAR chapterOneComplete = false
-VAR noticedSynchronizedSmiles = false
-VAR reportedToPlatform = false
-VAR followedChildEcho = false
-VAR markedBellAnchor = false
-VAR comfortedChild = false
-VAR calledKeeperOnChild = false
-VAR stoleCorrectedRecord = false
-VAR signedCorrectedRecord = false
-VAR authorizedSorenCorrection = false
-VAR delayedCorrectionOrder = false
-VAR touchedFractureline = false
-VAR armedChildMemory = false
-VAR miraProtectedChild = false
-VAR scatteredCrowd = false
+VAR yveNoticedCom = false
+VAR studiedCybolHistory = false
+VAR skippedStudy = false
+VAR zeldaFoundDevice = false
+VAR zeldaHeardXav = false
+VAR xavOpenedNotebook = false
+VAR ariTouchedNotebook = false
+VAR firstSignalSent = false
+VAR warnedAboutDiderram = false
+VAR askedAboutFamily = false
 
--> ch1_p_001
+-> ch1_xav_quad
 
-=== ch1_p_001 ===
-~ currentSceneId = "ch1_p_001"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-Mira Vale stood at the edge of Bell Square in her blue Protector uniform, one hand resting on the sealed civic record at her side.
-The square had been built to feel gentle. Warm stone. Clean banners. Fruit sellers who never shouted. Children released from lessons early so they could watch history become simpler.
-In Lattice, the bells did not ring unless something had been corrected. Today they rang three times, and everyone in the square smiled at the exact same moment.
-Mira had been trained to love that sound. A bell meant one less wound in the world. One less argument. One less dangerous memory. But today the third bell arrived half a breath too late, and the crowd's smile held on a little too long.
-+ [Look for what feels wrong in the crowd] # cue:memory
-    ~ memoryFracture += 1
-    ~ noticedSynchronizedSmiles = true
-    -> ch1_d_echo
-+ [Do your Protector duty and report to the ceremony platform] # cue:control
+=== ch1_xav_quad ===
+~ currentSceneId = "ch1_xav_quad"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+3.14.874cy. University of Brinkton.
+The quad looked exactly the way the city brochures said it should: glass lecture towers, clean paths through bright moss, students laughing like Cybol had already solved every serious problem on Ayker.
+I sat under the blueleaf trees with my broken com in my lap, trying to decide whether hitting it again counted as repair.
+"Hey, Xav!"
+Yve Ettevy jogged across the quad, hair half out of place, tablet tucked under one arm, expression already suspicious.
+"You didn't answer any of my messages," she said. "Again."
++ [Admit the com broke again] # cue:stability
+    ~ stability += 1
+    ~ yveNoticedCom = true
+    -> ch1_yve_exam
++ [Joke that Cybol technology clearly fears you] # cue:rebellion
+    ~ rebellion += 1
+    ~ skippedStudy = true
+    -> ch1_yve_tease
+
+=== ch1_yve_exam ===
+~ currentSceneId = "ch1_yve_exam"
+~ currentPOV = "past"
+~ currentSpeaker = "Yve Ettevy"
+"Again?" Yve dropped beside me and took the com before I could hide the crack across its screen. "Didn't this happen two weeks ago?"
+"I am consistent," I said.
+"You are impossible. We have a Cybol history exam in forty minutes, and your plan is to sit here committing crimes against handheld technology?"
+She opened her tablet. The exam topic glowed across the top: The Unification of Cybol and the Civic Peace of Diderram.
+Everyone in Brinkton knew the official story. Cybol rose, Cybol led, Diderram accepted peace, and Ayker prospered.
+Yve looked at me over the tablet. "Quiz me. And try not to make the fall of Diderram sound like a sports score."
++ [Study the official history with Yve] # cue:control
     ~ controlIndex += 1
-    ~ reportedToPlatform = true
-    -> ch1_d_duty
-
-=== ch1_d_echo ===
-~ currentSceneId = "ch1_d_echo"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Below the old rail line, Soren Quill heard the correction ripple through the city above.
-Dust slipped from the tunnel ceiling in soft gray threads. His receiver clicked once, twice, then filled with the sound of a thousand people agreeing to remember the same lie.
-Someone inside the ceremony had noticed the smiles were synchronized. That meant Mira was not fully asleep inside Lattice anymore.
-Soren had crossed thirty-seven versions of this hour to find her. In most of them, she signed the record. In two, she screamed. In one, she recognized his name before he had ever said it.
-+ [Follow the childlike voice deeper into the tunnels] # cue:rebellion
-    ~ rebellion += 1
-    ~ followedChildEcho = true
-    -> ch1_p_child
-+ [Use the bell tower as a fixed point in time] # cue:entropy
-    ~ magicEntropy += 1
-    ~ markedBellAnchor = true
-    -> ch1_p_record
-
-=== ch1_d_duty ===
-~ currentSceneId = "ch1_d_duty"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Soren watched Mira step toward the ceremony platform instead of the crowd.
-That route was harder. If Mira stayed loyal, Lattice would use her as the signature on whatever lie came next.
-The brass map in Soren's hands rearranged itself as she moved. Streets folded toward the platform. Patrol routes brightened. Somewhere above him, a Keeper turned his head toward a sound Soren had not made yet.
-He could still interfere, but every interference had a cost. The future had not sent him back with mercy. It had sent him back with a list of losses and Mira Vale's name underlined twice.
-+ [Map the ceremony correction and avoid direct contact] # cue:stability
-    ~ stability += 1
-    -> ch1_p_authority
-+ [Quietly corrupt the ceremony logs before Mira signs them] # cue:rebellion
-    ~ rebellion += 1
-    ~ magicEntropy += 1
-    -> ch1_p_record
-
-=== ch1_p_child ===
-~ currentSceneId = "ch1_p_child"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-A child in the crowd pointed at Mira and began to cry.
-The child's mother tried to hush her with the practiced calm everyone used around Protectors. No panic. No accusation. Just a smile that begged the city not to notice them.
-When her mother asked why, the child said, "Because she already chose the fire." The phrase struck Mira like a memory from a life she had never lived.
-The words brought a smell with them: smoke under rain, iron in the mouth, Soren Quill shouting her name from somewhere she had never been.
-+ [Break protocol and comfort the child yourself] # cue:rebellion
-    ~ rebellion += 2
-    ~ comfortedChild = true
-    -> ch1_d_rebellion
-+ [Call a Keeper to calm and correct the child] # cue:control
-    ~ controlIndex += 2
-    ~ calledKeeperOnChild = true
-    -> ch1_d_control
-
-=== ch1_p_record ===
-~ currentSceneId = "ch1_p_record"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-The Archivist handed Mira the corrected record. Her name was already signed at the bottom.
-The page was warm, as if it had just been pulled from a living thing. The official seal shifted between blue and black when her eyes moved across it.
-She had no memory of signing it. The ink was still wet, and one line kept changing whenever she looked away.
-The line read: No citizens were harmed by the correction. Then: No citizens remembered harm. Then, briefly, before the ink settled again: The harm has been assigned elsewhere.
-+ [Hide the record so you can inspect it later] # cue:memory
-    ~ memoryFracture += 2
-    ~ stoleCorrectedRecord = true
-    -> ch1_d_memory
-+ [Sign the record publicly and preserve the ceremony] # cue:control
-    ~ controlIndex += 2
-    ~ stability += 1
-    ~ signedCorrectedRecord = true
-    -> ch1_d_control
-
-=== ch1_p_authority ===
-~ currentSceneId = "ch1_p_authority"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-The Archivist did not hand Mira a record. He handed her a sealed order.
-It named a Dissenter beneath the rail line and asked Mira to authorize a private correction before anyone in the square noticed the disturbance.
-Mira had authorized corrections before. Lost keys. Panic disorders. Grief that prevented civic function. But this order was different. The subject's name was written in a script that seemed to remember her hand.
-Soren Quill. She did not know him. She was sure she did not know him. Her pulse disagreed.
-+ [Authorize the private correction] # cue:control
-    ~ controlIndex += 2
-    ~ stability += 1
-    ~ authorizedSorenCorrection = true
-    -> ch1_d_control
-+ [Delay the order and ask why the Dissenter knows your name] # cue:memory
+    ~ studiedCybolHistory = true
+    -> ch1_exam_exit
++ [Ask why Diderram needed Cybol's peace in the first place] # cue:memory
     ~ memoryFracture += 1
-    ~ rebellion += 1
-    ~ delayedCorrectionOrder = true
-    -> ch1_d_memory
+    -> ch1_exam_doubt
 
-=== ch1_d_rebellion ===
-~ currentSceneId = "ch1_d_rebellion"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-The tunnel wall split open like glass under pressure.
-Through it, Soren saw Mira kneeling beside the child instead of handing her to the Keepers. That was not the timeline he came from. It was better, and therefore more dangerous.
-The future answered with pain. His left hand forgot the scar across the knuckles, then remembered it wrong. The tunnel forgot where its exit was.
-Still, the fracture held. For three seconds, Soren and Mira existed in the same decision.
-+ [Reach through the break in time toward Mira] # cue:entropy
-    ~ magicEntropy += 2
-    ~ touchedFractureline = true
-    -> ch1_p_fracture
-+ [Send the child one protected memory before the break closes] # cue:rebellion
-    ~ rebellion += 2
-    ~ armedChildMemory = true
-    -> ch1_p_rebellion
-
-=== ch1_d_memory ===
-~ currentSceneId = "ch1_d_memory"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-The stolen page appeared in Soren's hand before Mira had finished deciding what to do with it.
-Across the margin, in his own handwriting, were three words: Do not trust me.
-He laughed once, too sharply. Time travel had taught him to fear other people's certainty. It was crueler to learn he should fear his own.
-The page smelled like Bell Square rain. The ink crawled toward his thumb as if trying to identify him.
-+ [Remember the warning and keep the page intact] # cue:memory
+=== ch1_yve_tease ===
+~ currentSceneId = "ch1_yve_tease"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+"Cybol technology fears greatness," I said.
+Yve stared at me for a long second. "Your com fears stairs, rain, your pocket, and possibly basic responsibility."
+I laughed, but the com buzzed once in my hand even though the battery indicator was dead.
+For a blink, the cracked screen showed a gray sky over ruined buildings. Then it went black.
+Yve's smile faded. "Xav. Did you see that?"
++ [Tell Yve exactly what appeared on the screen] # cue:memory
     ~ memoryFracture += 2
-    -> ch1_p_fracture
-+ [Burn the warning before it can rewrite your mission] # cue:stability
+    ~ yveNoticedCom = true
+    -> ch1_exam_doubt
++ [Pretend it was just the crack catching light] # cue:stability
+    ~ stability += 1
+    -> ch1_exam_exit
+
+=== ch1_exam_exit ===
+~ currentSceneId = "ch1_exam_exit"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+The exam went fine. Probably. Yve finished early, which meant she either knew everything or had decided the test was beneath her.
+I left the lecture hall feeling good enough to be annoying about it.
+"We definitely aced that," I said.
+Yve adjusted her bag. "Maybe you did. I kept thinking about Diderram."
+Brinkton's afternoon transit bells chimed overhead. Students streamed toward the city lines, the campus gates, the floating gardens, all the places a perfect society sent people when the day was done.
+My com buzzed again.
+This time, a voice came through the dead speaker.
+"If anyone can hear this, please answer. My name is Zelda Adlez. I am in the ruins of Brinkton."
++ [Answer the impossible voice] # cue:memory
+    ~ memoryFracture += 2
+    ~ firstSignalSent = true
+    -> ch1_zelda_ruins
++ [Show Yve before saying anything] # cue:stability
+    ~ stability += 1
+    -> ch1_yve_signal
+
+=== ch1_exam_doubt ===
+~ currentSceneId = "ch1_exam_doubt"
+~ currentPOV = "past"
+~ currentSpeaker = "Yve Ettevy"
+"Careful," Yve said softly. "Questions about Diderram make people boring."
+In Brinkton, boring was not an insult. It meant someone stopped getting invited to interviews, internships, scholarship dinners. It meant doors kept opening, just never to anywhere important.
+"I thought Cybol valued inquiry," I said.
+"Cybol values useful inquiry. Different thing."
+My dead com lit up between us.
+A girl's voice crackled from the speaker. "This is Zelda Adlez, recording from old Brinkton. If this reaches the past, please tell Xav Reivax not to trust the official history."
+Yve went completely still.
++ [Answer Zelda before the signal dies] # cue:memory
+    ~ memoryFracture += 2
+    ~ firstSignalSent = true
+    -> ch1_zelda_ruins
++ [Ask Yve how Zelda knows your name] # cue:control
+    ~ controlIndex += 1
+    -> ch1_yve_signal
+
+=== ch1_yve_signal ===
+~ currentSceneId = "ch1_yve_signal"
+~ currentPOV = "past"
+~ currentSpeaker = "Yve Ettevy"
+Yve took the com like it might bite her.
+"Say nothing yet," she whispered. "If this is a prank, it's targeted. If it isn't a prank, then every word you say could matter."
+The voice came again, thinner now.
+"Xav, if you are there, the date should be 3.14.874cy. You are at the University of Brinkton. Yve is probably telling you not to answer. She is usually right, but not this time."
+Yve looked up at me.
+"I hate this," she said.
++ [Trust Zelda because she knows too much] # cue:memory
+    ~ memoryFracture += 1
+    ~ zeldaHeardXav = true
+    -> ch1_zelda_ruins
++ [Ask Zelda to prove she is from the future] # cue:stability
+    ~ stability += 1
+    -> ch1_zelda_proof
+
+=== ch1_zelda_ruins ===
+~ currentSceneId = "ch1_zelda_ruins"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+7.27.23ac. Ruins of old Brinkton.
+Zelda Adlez crouched under a collapsed transit arch while dust fell in slow sheets from the city above.
+The old maps still called this place the University of Brinkton. In Zelda's time, it was a warning told to children: do not dig too deep under Cybol stone, because Cybol always left something hungry behind.
+The device in her hands had been sealed in a metal case beneath a lecture hall. Its screen showed a face for half a second: a boy under blueleaf trees, older than a child, younger than a legend.
+Then his voice broke through.
+"Zelda? This is Xav. I think. Where are you?"
+Her hands shook so badly she almost dropped the device.
++ [Tell Xav the truth: Cybol falls] # cue:rebellion
+    ~ rebellion += 2
+    ~ zeldaFoundDevice = true
+    ~ zeldaHeardXav = true
+    -> ch1_xav_future_truth
++ [Start carefully and ask what Xav knows about Diderram] # cue:stability
+    ~ stability += 1
+    ~ zeldaFoundDevice = true
+    -> ch1_xav_diderram
+
+=== ch1_zelda_proof ===
+~ currentSceneId = "ch1_zelda_proof"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Zelda knew he would ask for proof. She had practiced the answer in the tunnels, whispering to stone until the others told her to save her breath.
+"Your com broke this morning," she said. "Yve found you on the quad. Your history exam was about Diderram. You think you did well. Yve is less convinced."
+Static chewed through the next words.
+She looked back toward the tunnel mouth. The others were waiting. They had found the device together, but she was the only one whose family name matched the half-burned records inside the case.
+Adlez. Reivax. The old family tree had both.
++ [Reveal the family record to Xav] # cue:memory
+    ~ memoryFracture += 2
+    ~ askedAboutFamily = true
+    -> ch1_xav_family
++ [Hide the family link and focus on the collapse] # cue:control
+    ~ controlIndex += 1
+    -> ch1_xav_future_truth
+
+=== ch1_xav_future_truth ===
+~ currentSceneId = "ch1_xav_future_truth"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+"Cybol falls" did not sound like a sentence. It sounded like someone saying gravity had changed its mind.
+Yve sat down on the nearest bench.
+I looked across the campus: the banners, the transit bells, the lecture towers, the students complaining about exams in a city that had never once seemed breakable.
+"How far in the future are you?" I asked.
+Zelda's answer arrived in pieces.
+"Twenty-three years after the fall. Fifty-three years after your exam. Maybe. Time is... not staying still anymore."
++ [Warn Zelda that changing the past could erase her memories] # cue:stability
     ~ stability += 2
-    -> ch1_p_control
-
-=== ch1_d_control ===
-~ currentSceneId = "ch1_d_control"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-The city tightened around Soren. Doors remembered being walls. Cameras remembered looking away. The correction was already moving.
-Mira had kept the ceremony intact, and Lattice rewarded loyalty by making the next disobedient thought harder to form.
-Above him, the bells began practicing a fourth note. Soren knew that note. In the future, children learned to stop crying when they heard it.
-If he hid, he might survive to fracture another hour. If he forced a signal, Mira might hear him and Lattice would hear him too.
-+ [Hide and preserve the mission for another fracture] # cue:stability
-    ~ stability += 1
-    -> ch1_p_control
-+ [Force one message through before Lattice seals the tunnels] # cue:entropy
-    ~ magicEntropy += 2
-    -> ch1_p_fracture
-
-=== ch1_p_fracture ===
-~ currentSceneId = "ch1_p_fracture"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-Mira's palm burned with a memory that was not hers.
-She remembered Soren reaching through a wall. She remembered him refusing. She remembered both as if both had already happened.
-The crowd blurred. For a moment, every face in Bell Square became a different version of itself: older, younger, grieving, grateful, gone.
-A word formed behind Mira's teeth. It was forbidden, though no one had ever forbidden it to her. Fractureline.
-+ [Say the impossible word: fractureline] # cue:memory
-    ~ memoryFracture += 2
-    -> ch1_end_fracture
-+ [Seal the impossible memory before anyone sees your fear] # cue:control
-    ~ controlIndex += 1
-    -> ch1_end_control
-
-=== ch1_p_rebellion ===
-~ currentSceneId = "ch1_p_rebellion"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-The child stopped crying and smiled at Mira without synchronization.
-Around them, the crowd's perfect calm broke into hundreds of different expressions. Lattice had lost the room for three impossible seconds.
-Someone laughed. Someone screamed. Someone asked where their brother had gone. The square filled with the dangerous music of people becoming separate again.
-The Keepers moved toward the child first. They always moved toward the smallest contradiction first.
-+ [Stand between the child and the Keepers] # cue:rebellion
-    ~ rebellion += 2
-    ~ miraProtectedChild = true
-    -> ch1_end_rebellion
-+ [Tell the crowd to run before the correction resumes] # cue:rebellion
-    ~ magicEntropy += 1
+    -> ch1_family_notebook
++ [Ask what event starts the fall] # cue:rebellion
     ~ rebellion += 1
-    ~ scatteredCrowd = true
-    -> ch1_end_rebellion
+    ~ warnedAboutDiderram = true
+    -> ch1_family_notebook
 
-=== ch1_p_control ===
-~ currentSceneId = "ch1_p_control"
-~ currentPOV = "protector"
-~ currentSpeaker = "Mira Vale"
-The ceremony finished exactly on time.
-Only Mira noticed that three minutes had disappeared from the public record. Only Mira noticed she was relieved.
-Relief was the first gift Lattice offered after obedience. The second was a story about why obedience had been compassion all along.
-Mira accepted the applause. Her hands did not shake until she looked down and saw a smear of ash across her palm.
-+ [Accept the order and let the missing minutes stay missing] # cue:control
-    ~ controlIndex += 1
-    -> ch1_end_control
-* {memoryFracture >= 1} [Write yourself a private note before the relief becomes obedience] # cue:memory
+=== ch1_xav_diderram ===
+~ currentSceneId = "ch1_xav_diderram"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+"Diderram accepted peace," I said, because that was the answer every schoolchild knew.
+Zelda laughed once, and the sound was so bitter it made Yve flinch.
+"Diderram was decimated. Your histories call it peace because Cybol won the right to write the word."
+Yve whispered, "That cannot be true."
+But she did not sound certain.
+The dead com warmed in my palm. On its cracked screen, letters appeared: FAMILY LINE VERIFIED.
++ [Ask Zelda what the family line means] # cue:memory
+    ~ memoryFracture += 2
+    ~ askedAboutFamily = true
+    -> ch1_xav_family
++ [Focus on Diderram and ignore the family warning] # cue:rebellion
+    ~ rebellion += 2
+    ~ warnedAboutDiderram = true
+    -> ch1_family_notebook
+
+=== ch1_xav_family ===
+~ currentSceneId = "ch1_xav_family"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+"What family line?" I asked.
+Zelda went quiet long enough for the campus bells to chime twice.
+"I think," she said, "I think you are my grandfather. Or you were. Or you will be. The records are damaged. But your name is there. Xav Reivax. Then a line of names. Then mine. Zelda Adlez."
+Yve grabbed my sleeve.
+"Xav, stop. Not because I don't believe her. Because I think I do."
+My broken com displayed one more instruction: FIND THE NOTEBOOK BEFORE SOMEONE ELSE TOUCHES IT.
++ [Go home for the family notebook immediately] # cue:memory
     ~ memoryFracture += 1
-    -> ch1_end_fracture
+    ~ xavOpenedNotebook = true
+    -> ch1_family_notebook
++ [Bring Yve with you and keep Zelda on the line] # cue:stability
+    ~ stability += 1
+    ~ xavOpenedNotebook = true
+    -> ch1_family_notebook
 
-=== ch1_end_fracture ===
-~ currentSceneId = "ch1_end_fracture"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Soren's device showed a completed choice log, but the first line did not belong to him or Mira.
-It belonged to someone who had been edited out of both of them. The line read: They remembered enough to become dangerous.
-Ending: The Fracture Path. Mira knows the city lies. Soren knows the timeline can answer back.
+=== ch1_family_notebook ===
+~ currentSceneId = "ch1_family_notebook"
+~ currentPOV = "past"
+~ currentSpeaker = "Xav Reivax"
+The notebook was exactly where Da said it would be: wrapped in brown cloth, locked in the upper drawer, old enough that the air changed when I touched it.
+Every firstborn in our family was supposed to write in it from their twentieth birthday until they turned twenty-five.
+I was not twenty yet.
+Ari, my younger sister, stood in the doorway before I could hide the cloth.
+"Is that the weird book Da told you not to let me touch?"
+The com buzzed hard enough to slide across the desk.
+Zelda's voice cut through the static.
+"Xav, listen to me. In my timeline, someone touched it early. No one agrees who. But the first change begins in your house."
++ [Tell Ari the truth and ask her not to touch it] # cue:stability
+    ~ stability += 2
+    -> ch1_end_signal
++ [Open the notebook before Ari can reach it] # cue:memory
+    ~ memoryFracture += 2
+    ~ xavOpenedNotebook = true
+    -> ch1_end_family
++ [Let Ari help, even if Zelda warned you] # cue:rebellion
+    ~ rebellion += 2
+    ~ ariTouchedNotebook = true
+    -> ch1_end_history
+
+=== ch1_end_signal ===
+~ currentSceneId = "ch1_end_signal"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+In the ruins of Brinkton, Zelda watched the tunnel lights flicker from red to gold.
+Someone beside her gasped. On the wall, a patch of old Cybol script rewrote itself into a warning instead of a victory slogan.
+The future had not changed enough to save them. But it had changed enough to answer.
+Ending: The Signal Path. Xav, Yve, and Zelda have made contact carefully, and the first stable bridge between eras survives.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
-    ~ endingKey = "fracture-path"
-    -> ch1_complete_fracture
+    ~ endingKey = "signal-path"
+    -> ch1_complete_signal
 
-=== ch1_end_rebellion ===
-~ currentSceneId = "ch1_end_rebellion"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-The bell tower missed its fourth note. For the first time in years, Lattice had to improvise.
-Improvisation was not freedom, but it was a crack in the machine large enough for breath.
-Ending: The Rebellion Path. Mira has publicly broken protocol. Soren has made the future less certain and more alive.
+=== ch1_end_family ===
+~ currentSceneId = "ch1_end_family"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+The notebook opened in Xav's room and Zelda felt it in the future like a door unlocking under her ribs.
+A new page appeared in the device case, written in Xav's hand and dated years after his exam.
+Zelda read the first line twice.
+If my grandchild is reading this, then I failed once and am trying again.
+Ending: The Family Path. The Reivax-Adlez connection is no longer theory. The family record has become a weapon, a warning, and a promise.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
-    ~ endingKey = "rebellion-path"
-    -> ch1_complete_rebellion
+    ~ endingKey = "family-path"
+    -> ch1_complete_family
 
-=== ch1_end_control ===
-~ currentSceneId = "ch1_end_control"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Soren woke beneath the rail line with the taste of erased words in his mouth.
-He had failed to break the ceremony, but failure was not the same as silence. Mira Vale had hesitated. The city had noticed.
-Ending: The Control Path. Lattice holds the city, but Mira has become important enough for the city to fear her doubt.
+=== ch1_end_history ===
+~ currentSceneId = "ch1_end_history"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Ari touched the notebook.
+For one impossible second, Zelda remembered two childhoods: one under Diderram patrol curfew, one in a Cybol school that should not exist after the fall.
+Then the older memory began to fade.
+She dug her nails into her palm and whispered Xav's name until both timelines hurt.
+Ending: The History Path. The past has changed too quickly. Zelda still remembers the first future, but time is already trying to settle over the evidence.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
-    ~ endingKey = "control-path"
-    -> ch1_complete_control
+    ~ endingKey = "history-path"
+    -> ch1_complete_history
 
-=== ch1_complete_fracture ===
-~ currentSceneId = "ch1_complete_fracture"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Ending: The Fracture Path. Chapter 1 complete.
+=== ch1_complete_signal ===
+~ currentSceneId = "ch1_complete_signal"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Ending: The Signal Path. Chapter 1 complete.
 -> DONE
 
-=== ch1_complete_rebellion ===
-~ currentSceneId = "ch1_complete_rebellion"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Ending: The Rebellion Path. Chapter 1 complete.
+=== ch1_complete_family ===
+~ currentSceneId = "ch1_complete_family"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Ending: The Family Path. Chapter 1 complete.
 -> DONE
 
-=== ch1_complete_control ===
-~ currentSceneId = "ch1_complete_control"
-~ currentPOV = "dissenter"
-~ currentSpeaker = "Soren Quill"
-Ending: The Control Path. Chapter 1 complete.
+=== ch1_complete_history ===
+~ currentSceneId = "ch1_complete_history"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Ending: The History Path. Chapter 1 complete.
 -> DONE
