@@ -12,8 +12,15 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 const INITIAL_VOLUME = 0.07;
-const NOTE_SCALE = [196, 220, 246.94, 293.66, 329.63, 392, 440, 493.88, 587.33];
-const BASS_NOTES = [98, 110, 130.81, 146.83];
+const CHAPTER_NOTE_SCALES: Record<number, number[]> = {
+  1: [196, 220, 246.94, 293.66, 329.63, 392],
+  2: [174.61, 196, 220, 261.63, 293.66, 349.23],
+  3: [164.81, 196, 220, 246.94, 293.66, 329.63],
+};
+const POV_BASS_NOTES: Record<'past' | 'future', number[]> = {
+  past: [98, 110, 130.81],
+  future: [87.31, 98, 116.54],
+};
 const CUE_FREQUENCIES: Record<string, number[]> = {
   stability: [196, 246.94],
   control: [146.83, 196, 246.94],
@@ -32,6 +39,13 @@ type SoundscapeNodes = {
   textureFilter: BiquadFilterNode;
   delay: DelayNode;
   delayFeedback: GainNode;
+};
+
+type SceneMood = {
+  chapter: number;
+  pov: 'past' | 'future';
+  memory: number;
+  rebellion: number;
 };
 
 function setGain(gain: GainNode, value: number) {
@@ -191,21 +205,26 @@ function createSoundscape(volume: number): SoundscapeNodes {
   return { context, masterGain, cueGain, textureSource, textureFilter, delay, delayFeedback };
 }
 
-function scheduleMusic(nodes: SoundscapeNodes, step: number) {
+function scheduleMusic(nodes: SoundscapeNodes, step: number, mood: SceneMood) {
+  const scale = CHAPTER_NOTE_SCALES[mood.chapter] ?? CHAPTER_NOTE_SCALES[1];
+  const bassNotes = POV_BASS_NOTES[mood.pov];
   const now = nodes.context.currentTime + 0.08;
-  const noteIndex = (step * 2 + Math.floor(Math.random() * 3)) % NOTE_SCALE.length;
-  const frequency = NOTE_SCALE[noteIndex] * (Math.random() > 0.82 ? 2 : 1);
-  const pan = (Math.random() - 0.5) * 1.2;
+  const noteIndex = (step + mood.memory) % scale.length;
+  const harmonyIndex = (noteIndex + 2 + (mood.rebellion % 2)) % scale.length;
+  const frequency = scale[noteIndex];
+  const harmony = scale[harmonyIndex] * (mood.chapter >= 3 ? 1 : 0.5);
+  const pan = mood.pov === 'future' ? 0.22 : -0.22;
 
   playBell(nodes, frequency, now, pan);
+  playBell(nodes, harmony, now + 0.26, -pan * 0.8);
 
-  if (step % 4 === 0) {
-    playBassPulse(nodes, BASS_NOTES[(step / 4) % BASS_NOTES.length], now);
+  if (step % 3 === 0) {
+    playBassPulse(nodes, bassNotes[(step / 3) % bassNotes.length], now);
   }
 
-  nodes.textureFilter.frequency.setTargetAtTime(220 + Math.random() * 190, now, 1.8);
-  nodes.delay.delayTime.setTargetAtTime(0.58 + Math.random() * 0.42, now, 0.8);
-  nodes.delayFeedback.gain.setTargetAtTime(0.2 + Math.random() * 0.14, now, 0.9);
+  nodes.textureFilter.frequency.setTargetAtTime(180 + mood.chapter * 55 + mood.memory * 4, now, 1.6);
+  nodes.delay.delayTime.setTargetAtTime(mood.pov === 'future' ? 0.78 : 0.62, now, 0.9);
+  nodes.delayFeedback.gain.setTargetAtTime(0.18 + Math.min(0.2, mood.rebellion * 0.015), now, 1);
 }
 
 export function AmbienceControl() {
@@ -216,18 +235,19 @@ export function AmbienceControl() {
   const [isMuted, setIsMuted] = useState(false);
   const [needsGesture, setNeedsGesture] = useState(false);
   const [volume, setVolume] = useState(INITIAL_VOLUME);
+  const moodRef = useRef<SceneMood>({ chapter: 1, pov: 'past', memory: 0, rebellion: 0 });
 
   const startScheduler = useCallback(() => {
     if (schedulerRef.current !== null || !nodesRef.current) return;
 
-    scheduleMusic(nodesRef.current, stepRef.current);
+    scheduleMusic(nodesRef.current, stepRef.current, moodRef.current);
     stepRef.current += 1;
 
     schedulerRef.current = window.setInterval(() => {
       if (!nodesRef.current || nodesRef.current.context.state !== 'running') return;
-      scheduleMusic(nodesRef.current, stepRef.current);
+      scheduleMusic(nodesRef.current, stepRef.current, moodRef.current);
       stepRef.current += 1;
-    }, 2800);
+    }, 4200);
   }, []);
 
   useEffect(() => {
@@ -250,11 +270,24 @@ export function AmbienceControl() {
       playCue(nodes, typeof cue === 'string' ? cue : 'choice');
     };
 
+    const handleSceneContext = (event: Event) => {
+      const detail = event instanceof CustomEvent ? event.detail : undefined;
+      if (!detail) return;
+      moodRef.current = {
+        chapter: typeof detail.chapter === 'number' ? detail.chapter : moodRef.current.chapter,
+        pov: detail.pov === 'future' ? 'future' : 'past',
+        memory: typeof detail.memory === 'number' ? detail.memory : moodRef.current.memory,
+        rebellion: typeof detail.rebellion === 'number' ? detail.rebellion : moodRef.current.rebellion,
+      };
+    };
+
     void startAutomatically();
     window.addEventListener('fractureline:choice-cue', handleChoiceCue);
+    window.addEventListener('fractureline:scene-context', handleSceneContext);
 
     return () => {
       window.removeEventListener('fractureline:choice-cue', handleChoiceCue);
+      window.removeEventListener('fractureline:scene-context', handleSceneContext);
       if (schedulerRef.current !== null) {
         window.clearInterval(schedulerRef.current);
       }

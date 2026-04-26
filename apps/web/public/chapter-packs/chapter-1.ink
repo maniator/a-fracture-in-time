@@ -28,6 +28,9 @@ VAR askedAboutFamily = false
 3.14.874cy. University of Brinkton.
 The quad looked exactly the way the city brochures said it should: glass lecture towers, clean paths through bright moss, students laughing like Cybol had already solved every serious problem on Ayker.
 I sat under the blueleaf trees with my broken com in my lap, trying to decide whether hitting it again counted as repair.
+Before class, Ari had asked whether I was still bringing home the old Reivax firstborn notebook for Da's inventory check.
+I told her yes, and no, she still could not touch it yet.
+At the time it felt like ordinary family routine, not the kind of detail that could fracture history.
 "Hey, Xav!"
 Yve Ettevy jogged across the quad, hair half out of place, tablet tucked under one arm, expression already suspicious.
 "You didn't answer any of my messages," she said. "Again."

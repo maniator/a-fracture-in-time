@@ -96,6 +96,19 @@ export function SceneRenderer() {
     void initializeStory();
   }, [hydrateSaveStatus, initializeStory]);
 
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent('fractureline:scene-context', {
+        detail: {
+          chapter: state.chapter,
+          pov: state.currentPOV,
+          memory: state.memoryFracture,
+          rebellion: state.rebellion,
+        },
+      }),
+    );
+  }, [state.chapter, state.currentPOV, state.memoryFracture, state.rebellion]);
+
   const chapterOneComplete = state.flags['chapter-one-complete'];
   const chapterTwoComplete = state.flags['chapter-two-complete'];
   const chapterThreeComplete = state.flags['chapter-three-complete'];
