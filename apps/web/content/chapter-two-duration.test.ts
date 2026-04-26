@@ -5,6 +5,7 @@ import { chapterPackManifest } from '../lib/chapter-packs/chapter-pack-cache';
 
 const WORDS_PER_MINUTE = 150;
 const MIN_CHAPTER_TWO_MINUTES = 20;
+const MAX_CHAPTER_TWO_MINUTES = 30;
 const MIN_CHAPTER_TWO_WORDS = WORDS_PER_MINUTE * MIN_CHAPTER_TWO_MINUTES;
 
 function readChapterPack(route: string) {
@@ -24,6 +25,9 @@ describe('Chapter 2 route length guardrail', () => {
       expect(words, `${pack.id} only has ${words} words`).toBeGreaterThanOrEqual(MIN_CHAPTER_TWO_WORDS);
       expect(pack.estimatedMinutes, `${pack.id} estimatedMinutes should advertise 20+ minutes`).toBeGreaterThanOrEqual(
         MIN_CHAPTER_TWO_MINUTES,
+      );
+      expect(pack.estimatedMinutes, `${pack.id} estimatedMinutes should remain within 20-30 minute target`).toBeLessThanOrEqual(
+        MAX_CHAPTER_TWO_MINUTES,
       );
     }
   });
