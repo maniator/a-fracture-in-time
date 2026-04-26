@@ -54,6 +54,10 @@ function dispatchChoiceCue(choice: Choice) {
   window.dispatchEvent(new CustomEvent('fractureline:choice-cue', { detail: { cue: getChoiceCue(choice) } }));
 }
 
+function formatEraLabel(era: string) {
+  return era === 'future' ? 'Future' : era === 'past' ? 'Past' : era;
+}
+
 export function SceneRenderer() {
   const {
     state,
@@ -100,7 +104,7 @@ export function SceneRenderer() {
             <Box>
               <Typography variant="h5">Loading Chapter 1</Typography>
               <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
-                Downloading the first chapter pack. Once loaded, it can be cached for offline play.
+                Preparing the opening chapter. Once it loads, it can be available for offline play.
               </Typography>
             </Box>
           </Stack>
@@ -114,9 +118,7 @@ export function SceneRenderer() {
       <CardContent sx={{ p: { xs: 3, md: 5 } }}>
         <Stack direction="row" spacing={1.5} sx={{ mb: 4, flexWrap: 'wrap' }}>
           <Chip label={`Chapter ${state.chapter}`} variant="outlined" />
-          <Chip label={state.currentPOV} color="primary" variant="outlined" />
-          <Chip label="Ink runtime" color="secondary" variant="outlined" />
-          <Chip label="Chapter pack" color="secondary" variant="outlined" />
+          <Chip label={formatEraLabel(state.currentPOV)} color="primary" variant="outlined" />
           {state.endingKey ? <Chip label={state.endingKey} color="secondary" variant="outlined" /> : null}
           <Chip label={isPersistenceReady ? 'Local save ready' : 'Checking saves'} color={hasSave ? 'secondary' : 'default'} variant="outlined" />
           {isChoosing ? <Chip label="Applying choice" color="secondary" variant="filled" /> : null}
@@ -164,7 +166,7 @@ export function SceneRenderer() {
         {chapterComplete ? (
           <Alert severity="success" sx={{ mt: 4 }} action={<Button color="inherit" onClick={() => void reset()}>Replay</Button>}>
             <Typography sx={{ fontWeight: 700 }}>Chapter 1 complete.</Typography>
-            <Typography variant="body2">Future chapters will choose and cache the next eligible chapter pack based on this saved Ink state.</Typography>
+            <Typography variant="body2">Your choices will shape which version of the next chapter becomes available.</Typography>
           </Alert>
         ) : null}
 
