@@ -162,6 +162,20 @@ export function getEligibleNextChapterPack(state: TimelineState) {
   );
 }
 
+export function getChapterPackForState(state: TimelineState) {
+  return (
+    chapterPackManifest
+      .filter((pack) => pack.chapter === state.chapter)
+      .find((pack) => {
+        if (!pack.dependsOnEnding) return true;
+        if (!state.endingKey) return false;
+        return Array.isArray(pack.dependsOnEnding)
+          ? pack.dependsOnEnding.includes(state.endingKey)
+          : pack.dependsOnEnding === state.endingKey;
+      }) ?? null
+  );
+}
+
 export async function isChapterPackCached(pack: ChapterPackManifestItem) {
   if (!canUseCacheStorage()) return false;
   const cache = await window.caches.open(CHAPTER_PACK_CACHE);

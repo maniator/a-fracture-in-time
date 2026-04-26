@@ -4,6 +4,7 @@ import {
   cacheChapterPack,
   chapterPackManifest,
   ensureEligibleNextChapterPack,
+  getChapterPackForState,
   getEligibleNextChapterPack,
   loadChapterPackText,
 } from './chapter-pack-cache';
@@ -73,6 +74,16 @@ describe('chapter pack cache', () => {
     expect(pack?.id).toBe('chapter-3-signal');
   });
 
+  it('returns current chapter pack for save restore without jumping ahead', () => {
+    const pack = getChapterPackForState({
+      ...initialTimelineState,
+      chapter: 2,
+      endingKey: 'signal-path',
+    });
+
+    expect(pack?.id).toBe('chapter-2-signal');
+  });
+
   it('returns divergent Chapter 4 pack from Chapter 3 governance outcome', () => {
     const pack = getEligibleNextChapterPack({
       ...initialTimelineState,
@@ -97,6 +108,16 @@ describe('chapter pack cache', () => {
 
     expect(legitimacyPack?.id).toBe('chapter-5-governance-reckoning');
     expect(compromisedPack?.id).toBe('chapter-5-governance-reckoning');
+  });
+
+  it('returns saved Chapter 4 pack for restore lookup', () => {
+    const pack = getChapterPackForState({
+      ...initialTimelineState,
+      chapter: 4,
+      endingKey: 'relay-compromised-path',
+    });
+
+    expect(pack?.id).toBe('chapter-4-relay-compromised');
   });
 
   it('downloads and caches a chapter pack response', async () => {
