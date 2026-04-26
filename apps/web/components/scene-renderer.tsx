@@ -115,14 +115,16 @@ export function SceneRenderer() {
     );
   }, [state.chapter, state.currentPOV, state.memoryFracture, state.rebellion]);
 
-  const chapterCompletionByNumber: Record<number, boolean> = {
-    1: state.flags['chapter-one-complete'],
-    2: state.flags['chapter-two-complete'],
-    3: state.flags['chapter-three-complete'],
+  const chapterCompletionFlagByChapter: Record<number, string> = {
+    1: 'chapter-one-complete',
+    2: 'chapter-two-complete',
+    3: 'chapter-three-complete',
+    4: 'chapter-four-complete',
+    5: 'chapter-five-complete',
   };
-  const isCurrentChapterComplete = Boolean(chapterCompletionByNumber[state.chapter]);
+  const currentChapterComplete = Boolean(state.flags[chapterCompletionFlagByChapter[state.chapter]]);
   const nextPack = getEligibleNextChapterPack(state);
-  const canContinue = isCurrentChapterComplete && Boolean(nextPack);
+  const canContinue = currentChapterComplete && Boolean(nextPack);
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
 
   if (storyLoadError) {
@@ -204,7 +206,7 @@ export function SceneRenderer() {
           </Stack>
         ) : null}
 
-        {isCurrentChapterComplete ? (
+        {currentChapterComplete ? (
           <Alert
             severity="success"
             sx={{ mt: 4 }}
