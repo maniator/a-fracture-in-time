@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -54,22 +55,56 @@ function dispatchChoiceCue(choice: Choice) {
 }
 
 export function SceneRenderer() {
-  const { state, speaker, sceneText, choices, choose, hydrateSaveStatus, save, load, reset, hasSave, isPersistenceReady } = useGameStore();
+  const {
+    state,
+    speaker,
+    sceneText,
+    choices,
+    choose,
+    hydrateSaveStatus,
+    initializeStory,
+    save,
+    load,
+    reset,
+    hasSave,
+    isPersistenceReady,
+    isStoryReady,
+    storyLoadError,
+  } = useGameStore();
 
   useEffect(() => {
     void hydrateSaveStatus();
-  }, [hydrateSaveStatus]);
+    void initializeStory();
+  }, [hydrateSaveStatus, initializeStory]);
 
   const chapterComplete = state.flags['chapter-one-complete'] || Boolean(state.endingKey);
 
-  if (!sceneText.length) {
+  if (storyLoadError) {
     return (
       <Alert
-        severity="error"
-        action={<Button color="inherit" onClick={() => void reset()}>Restart</Button>}
+        severity="warning"
+        action={<Button color="inherit" onClick={() => void initializeStory()}>Try again</Button>}
       >
-        Story text could not be loaded. Restart the chapter or refresh the app.
+        {storyLoadError}
       </Alert>
+    );
+  }
+
+  if (!isStoryReady || !sceneText.length) {
+    return (
+      <Card component="section" aria-label="Loading chapter" sx={{ boxShadow: '0 28px 80px rgba(0,0,0,0.45)' }}>
+        <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            <CircularProgress color="secondary" size={28} />
+            <Box>
+              <Typography variant="h5">Loading Chapter 1</Typography>
+              <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
+                Downloading the first chapter pack. Once loaded, it can be cached for offline play.
+              </Typography>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -80,6 +115,7 @@ export function SceneRenderer() {
           <Chip label={`Chapter ${state.chapter}`} variant="outlined" />
           <Chip label={state.currentPOV} color="primary" variant="outlined" />
           <Chip label="Ink runtime" color="secondary" variant="outlined" />
+          <Chip label="Chapter pack" color="secondary" variant="outlined" />
           {state.endingKey ? <Chip label={state.endingKey} color="secondary" variant="outlined" /> : null}
           <Chip label={isPersistenceReady ? 'Local save ready' : 'Checking saves'} color={hasSave ? 'secondary' : 'default'} variant="outlined" />
         </Stack>
@@ -109,7 +145,7 @@ export function SceneRenderer() {
                 key={choice.id}
                 onClick={() => {
                   dispatchChoiceCue(choice);
-                  choose(choice.id);
+                  void choose(choice.id);
                 }}
                 variant="outlined"
                 color="inherit"
