@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('home page loads and links into the game without prefetching play', async ({ page }) => {
+test('home page loads setup and links into the game without prefetching play', async ({ page }) => {
   const chapterPackRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/chapter-packs/')) {
@@ -9,13 +9,16 @@ test('home page loads and links into the game without prefetching play', async (
   });
 
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /two choices/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /a utopia in the past/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /you are entering ayker/i })).toBeVisible();
+  await expect(page.getByText(/xav reivax/i)).toBeVisible();
+  await expect(page.getByText(/yve ettevy/i)).toBeVisible();
+  await expect(page.getByText(/zelda adlez/i)).toBeVisible();
   expect(chapterPackRequests).toHaveLength(0);
 
   await page.getByRole('link', { name: /start chapter 1/i }).click();
-  await expect(page.getByRole('heading', { name: /you are entering/i })).toBeVisible();
-  await expect(page.getByText(/xav reivax/i)).toBeVisible();
-  await expect(page.getByText(/zelda adlez/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /you are entering ayker/i })).toHaveCount(0);
 });
 
 test('play route downloads Chapter 1 pack and first choice advances without runtime errors', async ({ page }) => {
@@ -154,7 +157,7 @@ test('help page explains gameplay instead of build process', async ({ page }) =>
   await expect(page.getByText(/playwright/i)).toHaveCount(0);
 });
 
-test('static PWA assets and Chapter 1 pack are available in dev', async ({ page }) => {
+test('static PWA assets and chapter packs are available in dev', async ({ page }) => {
   const manifestResponse = await page.goto('/manifest.webmanifest');
   expect(manifestResponse?.ok()).toBeTruthy();
   const manifest = await page.locator('body').textContent();
@@ -168,6 +171,15 @@ test('static PWA assets and Chapter 1 pack are available in dev', async ({ page 
   expect(chapterPack).toContain('Zelda Adlez');
   expect(chapterPack).not.toContain('Mira Vale');
   expect(chapterPack).not.toContain('Soren Quill');
+
+  for (const pack of ['chapter-2-signal.ink', 'chapter-2-family.ink', 'chapter-2-history.ink']) {
+    const response = await page.goto(`/chapter-packs/${pack}`);
+    expect(response?.ok()).toBeTruthy();
+    const body = await page.locator('body').textContent();
+    expect(body).toContain('Chapter 2');
+    expect(body).not.toContain('Mira Vale');
+    expect(body).not.toContain('Soren Quill');
+  }
 
   const offlineResponse = await page.goto('/offline.html');
   expect(offlineResponse?.ok()).toBeTruthy();
