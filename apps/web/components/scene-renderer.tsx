@@ -59,16 +59,19 @@ function formatEraLabel(era: string) {
   return era === 'future' ? 'Future' : era === 'past' ? 'Past' : era;
 }
 
-const chapterTwoTitleByEnding: Record<string, string> = {
-  'signal-path': 'The Stable Signal',
-  'family-path': 'The Firstborn Record',
-  'history-path': 'The Second Future',
-};
-
-const chapterThreeTitleByEnding: Record<string, string> = {
-  'signal-path': 'The Relay Accord',
-  'family-path': 'The Witness Ledger',
-  'history-path': 'The Public Memory Trial',
+const chapterTitleByPackId: Record<string, string> = {
+  'chapter-2-signal': 'The Stable Signal',
+  'chapter-2-family': 'The Firstborn Record',
+  'chapter-2-history': 'The Second Future',
+  'chapter-3-signal': 'The Relay Accord',
+  'chapter-3-family': 'The Witness Ledger',
+  'chapter-3-history': 'The Public Memory Trial',
+  'chapter-4-relay-legitimacy': 'The Relay Covenant',
+  'chapter-4-relay-compromised': 'The Relay Breach',
+  'chapter-4-ledger-trust': 'The Family Guarantee',
+  'chapter-4-emergency-custody': 'The Custody Exodus',
+  'chapter-4-trial-credibility': 'The Credibility Docket',
+  'chapter-4-amnesty-conflict': 'The Amnesty Faultline',
 };
 
 export function SceneRenderer() {
@@ -114,9 +117,7 @@ export function SceneRenderer() {
   const chapterThreeComplete = state.flags['chapter-three-complete'];
   const nextPack = getEligibleNextChapterPack(state);
   const canContinue = Boolean(nextPack);
-  const nextChapterTitle = state.endingKey
-    ? (nextPack?.chapter === 2 ? chapterTwoTitleByEnding[state.endingKey] : chapterThreeTitleByEnding[state.endingKey])
-    : undefined;
+  const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
 
   if (storyLoadError) {
     return (

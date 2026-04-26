@@ -181,10 +181,12 @@ Whatever they chose would train every district volunteer how to interpret "safet
 + [Prioritize verification, even if it slows witness throughput] # cue:stability
     ~ stability += 2
     ~ relayLegitimacyHigh = true
+    ~ endingKey = "relay-legitimacy-path"
     -> ch3_signal_handoff
 + [Prioritize reach, even if some forged messages slip through] # cue:rebellion
     ~ rebellion += 2
     ~ relayCompromised = true
+    ~ endingKey = "relay-compromised-path"
     -> ch3_signal_handoff
 
 === ch3_signal_handoff ===
@@ -211,7 +213,6 @@ The accord started.
 This Chapter 3 route now includes its first irreversible policy split and seeds Chapter 4 with a persistent relay legitimacy condition.
 + [End Chapter 3] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "signal-path"
     -> ch3_signal_debrief
 
 
@@ -342,5 +343,4 @@ Community log 119: After the accord vote, relay teams documented procedures, tra
 Community log 120: After the accord vote, relay teams documented procedures, tradeoffs, and repairs so tomorrow's volunteers inherit practical memory instead of panic, and every district repeated the lesson that accountability must be specific, shared, and maintained.
 + [Close the chapter and carry these commitments forward] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "signal-path"
     -> DONE

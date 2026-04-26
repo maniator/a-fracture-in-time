@@ -73,6 +73,16 @@ describe('chapter pack cache', () => {
     expect(pack?.id).toBe('chapter-3-signal');
   });
 
+  it('returns divergent Chapter 4 pack from Chapter 3 governance outcome', () => {
+    const pack = getEligibleNextChapterPack({
+      ...initialTimelineState,
+      chapter: 3,
+      endingKey: 'relay-compromised-path',
+    });
+
+    expect(pack?.id).toBe('chapter-4-relay-compromised');
+  });
+
   it('downloads and caches a chapter pack response', async () => {
     const pack = chapterPackManifest.find((candidate) => candidate.id === 'chapter-2-family');
     expect(pack).toBeDefined();

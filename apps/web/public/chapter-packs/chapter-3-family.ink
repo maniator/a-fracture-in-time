@@ -155,10 +155,12 @@ Either option would be remembered.
 + [Lock charter around public process guarantees and transparency safeguards] # cue:control
     ~ controlIndex += 2
     ~ ledgerTrustHigh = true
+    ~ endingKey = "ledger-trust-path"
     -> ch3_family_rules
 + [Lock charter around emergency extraction and decentralized custody protection] # cue:rebellion
     ~ rebellion += 1
     ~ emergencyCustodyTriggered = true
+    ~ endingKey = "emergency-custody-path"
     -> ch3_family_rules
 
 === ch3_family_rules ===
@@ -199,7 +201,6 @@ The witness ledger had started to become culture.
 This Chapter 3 route now includes an irreversible custody-governance split and seeds Chapter 4 with a persistent ledger trust condition.
 + [End Chapter 3] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "family-path"
     -> ch3_family_debrief
 
 
@@ -330,5 +331,4 @@ Community log 119: After the ledger vote, family-protection teams documented pro
 Community log 120: After the ledger vote, family-protection teams documented procedures, tradeoffs, and repairs so tomorrow's volunteers inherit practical memory instead of panic, and every district repeated the lesson that accountability must be specific, shared, and maintained.
 + [Close the chapter and carry these commitments forward] # cue:ending
     ~ chapterThreeComplete = true
-    ~ endingKey = "family-path"
     -> DONE
