@@ -120,6 +120,27 @@ describe('chapter pack cache', () => {
     expect(pack?.id).toBe('chapter-4-relay-compromised');
   });
 
+  it('prefers saved chapterPackId when endingKey has advanced beyond chapter prerequisite', () => {
+    const pack = getChapterPackForState({
+      ...initialTimelineState,
+      chapter: 4,
+      chapterPackId: 'chapter-4-relay-compromised',
+      endingKey: 'governance-reckoning-path',
+    });
+
+    expect(pack?.id).toBe('chapter-4-relay-compromised');
+  });
+
+  it('keeps restore on current chapter when endingKey no longer matches chapter prerequisites', () => {
+    const pack = getChapterPackForState({
+      ...initialTimelineState,
+      chapter: 4,
+      endingKey: 'governance-reckoning-path',
+    });
+
+    expect(pack?.chapter).toBe(4);
+  });
+
   it('downloads and caches a chapter pack response', async () => {
     const pack = chapterPackManifest.find((candidate) => candidate.id === 'chapter-2-family');
     expect(pack).toBeDefined();

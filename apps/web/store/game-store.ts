@@ -99,6 +99,7 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
     chapter: activeChapterPack.chapter,
     currentSceneId,
     currentPOV: toPOV(snapshot.variables.currentPOV),
+    chapterPackId: activeChapterPack.id,
     currentSpeaker: toStringValue(snapshot.variables.currentSpeaker) ?? previous.currentSpeaker ?? 'Xav Reivax',
     currentText: snapshot.text.length ? snapshot.text : previous.currentText,
     flags: {
