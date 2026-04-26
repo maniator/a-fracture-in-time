@@ -8,6 +8,8 @@ VAR currentPOV = "future"
 VAR currentSpeaker = "Zelda Adlez"
 VAR endingKey = "family-path"
 VAR chapterThreeComplete = false
+VAR ledgerTrustHigh = false
+VAR emergencyCustodyTriggered = false
 
 -> ch3_family_start
 
@@ -23,9 +25,47 @@ Marek placed a kettle on an old maintenance coil and called an emergency governa
 "We need rules before panic becomes policy," he said.
 + [Publish the full ledger immediately to prevent selective leaks] # cue:rebellion
     ~ rebellion += 2
-    -> ch3_family_rules
+    -> ch3_family_pressure
 + [Create redaction rules with family consent before publication] # cue:stability
     ~ stability += 2
+    -> ch3_family_pressure
+
+=== ch3_family_pressure ===
+~ currentSceneId = "ch3_family_pressure"
+~ currentPOV = "past"
+~ currentSpeaker = "Yve Ettevy"
+Before the first bulletin went out, a Cybol legal office issued emergency filings claiming "temporary custodial authority" over any minor named in firstborn-ledger disputes.
+The filings were broad enough to include Ari.
+The room went silent.
+Marek read the clauses twice, then set them down.
+"They are using child protection language to seize narrative leverage," he said.
+Yve looked at Xav.
+"We need a line in the charter right now."
++ [Add an absolute ban on closed-door minor testimony and immediate legal defense triggers] # cue:stability
+    ~ stability += 2
+    ~ ledgerTrustHigh = true
+    -> ch3_family_irreversible
++ [Trigger a rapid-response extraction protocol for named minors before hearings begin] # cue:rebellion
+    ~ rebellion += 2
+    ~ emergencyCustodyTriggered = true
+    -> ch3_family_irreversible
+
+=== ch3_family_irreversible ===
+~ currentSceneId = "ch3_family_irreversible"
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+The council's next vote became the chapter's irreversible pivot:
+would they prioritize legal durability in public process,
+or preemptive protection by moving vulnerable families before process could be weaponized?
+Either option shaped trust differently.
+Either option would be remembered.
++ [Lock charter around public process guarantees and transparency safeguards] # cue:control
+    ~ controlIndex += 2
+    ~ ledgerTrustHigh = true
+    -> ch3_family_rules
++ [Lock charter around emergency extraction and decentralized custody protection] # cue:rebellion
+    ~ rebellion += 1
+    ~ emergencyCustodyTriggered = true
     -> ch3_family_rules
 
 === ch3_family_rules ===
@@ -56,11 +96,15 @@ When Cybol spokespeople demanded a private "verification review," the council vo
 By nightfall, the ledger council published its first bulletin with signatures from students, transit workers, archivists, and three grandparents who refused to be anonymized into silence.
 The bulletin did not promise safety.
 It promised procedure, witnesses, and shared accountability.
+If the charter held process-first, public confidence climbed because decisions stayed legible and challengeable.
+If the charter held extraction-first, confidence rose in threatened districts while central institutions accused the council of vigilantism.
+In both versions, families learned they were no longer alone when the state tried to classify them in silence.
 The vault lights flickered as backup power switched over, and Zelda laughed because even the infrastructure seemed surprised this much truth was moving at once.
 "Chapter 3 isn't about discovering the family system," she told Xav over coms. "It's about refusing to inherit it unchanged."
 Xav answered with Ari in the background, reciting the council rules like multiplication tables.
 The witness ledger had started to become culture.
-This Chapter 3 route is now available in a foundation pass and will expand into custody fights, forged-record incidents, and succession disputes under public oversight.
+This Chapter 3 route now includes an irreversible custody-governance split and seeds Chapter 4 with a persistent ledger trust condition.
 + [End Chapter 3] # cue:ending
     ~ chapterThreeComplete = true
+    ~ endingKey = "family-path"
     -> DONE

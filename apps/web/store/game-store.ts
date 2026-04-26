@@ -100,6 +100,14 @@ function snapshotToState(snapshot: InkStorySnapshot, previous: TimelineState = i
       'chapter-one-complete': previous.flags['chapter-one-complete'] || toBoolean(snapshot.variables.chapterOneComplete),
       'chapter-two-complete': previous.flags['chapter-two-complete'] || toBoolean(snapshot.variables.chapterTwoComplete),
       'chapter-three-complete': previous.flags['chapter-three-complete'] || toBoolean(snapshot.variables.chapterThreeComplete),
+      'relay-legitimacy-high': previous.flags['relay-legitimacy-high'] || toBoolean(snapshot.variables.relayLegitimacyHigh),
+      'relay-compromised': previous.flags['relay-compromised'] || toBoolean(snapshot.variables.relayCompromised),
+      'ledger-trust-high': previous.flags['ledger-trust-high'] || toBoolean(snapshot.variables.ledgerTrustHigh),
+      'emergency-custody-triggered':
+        previous.flags['emergency-custody-triggered'] || toBoolean(snapshot.variables.emergencyCustodyTriggered),
+      'trial-credibility-high': previous.flags['trial-credibility-high'] || toBoolean(snapshot.variables.trialCredibilityHigh),
+      'amnesty-conflict-triggered':
+        previous.flags['amnesty-conflict-triggered'] || toBoolean(snapshot.variables.amnestyConflictTriggered),
     },
     seenScenes,
     endingKey: endingKey && endingKey.length > 0 ? endingKey : previous.endingKey,
