@@ -141,6 +141,16 @@ describe('chapter pack cache', () => {
     expect(pack?.chapter).toBe(4);
   });
 
+  it('resolves chapter pack from chapter-local route ending when prerequisite ending has already advanced', () => {
+    const pack = getChapterPackForState({
+      ...initialTimelineState,
+      chapter: 5,
+      endingKey: 'lineage-protocol-path',
+    });
+
+    expect(pack?.id).toBe('chapter-5-lineage-protocol');
+  });
+
   it('downloads and caches a chapter pack response', async () => {
     const pack = chapterPackManifest.find((candidate) => candidate.id === 'chapter-2-family');
     expect(pack).toBeDefined();
