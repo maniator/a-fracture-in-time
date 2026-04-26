@@ -54,6 +54,7 @@ pnpm lint
 pnpm test
 pnpm test:coverage
 pnpm test:e2e
+pnpm codex:bootstrap
 pnpm storybook
 pnpm build-storybook
 ```

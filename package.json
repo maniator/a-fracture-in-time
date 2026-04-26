@@ -14,6 +14,7 @@
     "storybook": "pnpm --filter web storybook",
     "build-storybook": "pnpm --filter web build-storybook",
     "bmad:nom:review": "node scripts/bmad-nom-review.mjs",
-    "build-storybook:ci": "node scripts/build-storybook-ci.mjs"
+    "build-storybook:ci": "node scripts/build-storybook-ci.mjs",
+    "codex:bootstrap": "node scripts/codex-bootstrap.mjs"
   }
 }
