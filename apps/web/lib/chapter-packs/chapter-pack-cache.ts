@@ -10,7 +10,6 @@ export type ChapterPackManifestItem = {
   route: string;
   dependsOnEnding?: string;
   estimatedMinutes: number;
-  kind: 'ink' | 'json';
 };
 
 export const chapterOnePack: ChapterPackManifestItem = {
@@ -18,7 +17,6 @@ export const chapterOnePack: ChapterPackManifestItem = {
   chapter: 1,
   route: '/chapter-packs/chapter-1.ink',
   estimatedMinutes: 10,
-  kind: 'ink',
 };
 
 export const chapterPackManifest: ChapterPackManifestItem[] = [
@@ -26,26 +24,23 @@ export const chapterPackManifest: ChapterPackManifestItem[] = [
   {
     id: 'chapter-2-fracture',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-fracture.json',
+    route: '/chapter-packs/chapter-2-fracture.ink',
     dependsOnEnding: 'fracture-path',
     estimatedMinutes: 18,
-    kind: 'json',
   },
   {
     id: 'chapter-2-rebellion',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-rebellion.json',
+    route: '/chapter-packs/chapter-2-rebellion.ink',
     dependsOnEnding: 'rebellion-path',
     estimatedMinutes: 18,
-    kind: 'json',
   },
   {
     id: 'chapter-2-control',
     chapter: 2,
-    route: '/chapter-packs/chapter-2-control.json',
+    route: '/chapter-packs/chapter-2-control.ink',
     dependsOnEnding: 'control-path',
     estimatedMinutes: 18,
-    kind: 'json',
   },
 ];
 
@@ -71,9 +66,7 @@ async function fetchChapterPackResponse(pack: ChapterPackManifestItem) {
     if (cached) return cached;
   }
 
-  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-    return null;
-  }
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return null;
 
   const response = await fetch(pack.route, { cache: 'no-store' });
   if (!response.ok) return null;
