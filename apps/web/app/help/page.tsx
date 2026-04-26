@@ -11,15 +11,15 @@ import { PwaRegister } from '@/components/pwa-register';
 const sections = [
   {
     title: 'Who you are',
-    body: 'You alternate between Mira Vale, a Protector who keeps Lattice stable, and Soren Quill, a Dissenter trying to expose the truth hidden beneath the city’s corrected memories.',
+    body: 'You move between Xav Reivax in 874cy, a University of Brinkton student inside Cybol’s polished society, and Zelda Adlez in 23ac, a survivor searching the ruins of old Brinkton after Cybol’s fall.',
   },
   {
-    title: 'What Lattice is',
-    body: 'Lattice is a peaceful future city built on memory edits and magical constraint. The question is whether that peace is worth the choices it erased.',
+    title: 'What Ayker is',
+    body: 'Ayker is a small lush planet shaped by Cybol, Diderram, and the mystery of how an apparent utopia became Zelda’s dystopian future.',
   },
   {
     title: 'How choices work',
-    body: 'Choices shift the timeline. Some preserve order, some reveal buried memories, and some increase pressure on the fractureline between possible histories.',
+    body: 'Choices shift both eras. Xav’s decisions in the past can change what Zelda remembers, what ruins exist, and which version of history is trying to become permanent.',
   },
   {
     title: 'Local saves',
@@ -27,11 +27,11 @@ const sections = [
   },
   {
     title: 'Ambience',
-    body: 'The ambience control in the bottom corner is optional. Press Play to start a quiet generated background tone, use the slider to adjust it, or mute it at any time.',
+    body: 'The ambience control in the bottom corner is optional. Use the mute button or volume slider if you want the background sound quieter or off.',
   },
   {
     title: 'Reading the stats',
-    body: 'Stability, Control, Rebellion, Memory, and Entropy are not scores. They show what kind of future your choices are shaping.',
+    body: 'Stability, Control, Rebellion, Memory, and Entropy are not scores. They show what kind of timeline your choices are shaping.',
   },
 ];
 
@@ -48,7 +48,7 @@ export default function HelpPage() {
           How to play Fractureline
         </Typography>
         <Typography sx={{ mt: 3, maxWidth: 820, color: 'text.secondary', fontSize: { xs: '1.05rem', md: '1.2rem' }, lineHeight: 1.8 }}>
-          Fractureline is a dual-perspective narrative game about safety, freedom, memory, and the cost of rewriting history. Read the scene, choose what the character does next, and watch the future bend around those choices.
+          Fractureline is a dual-era narrative game about history, family, and the cost of saving a future that may not want to stay saved. Read each scene, choose what the character does next, and watch the timeline bend around those choices.
         </Typography>
         <Grid container spacing={3} sx={{ mt: 5 }}>
           {sections.map((section) => (
@@ -67,8 +67,8 @@ export default function HelpPage() {
           ))}
         </Grid>
         <Stack spacing={1.25} sx={{ mt: 5, color: 'text.secondary' }}>
-          <Typography variant="body2">Tip: start with the briefing on the Play page if the first scene feels unfamiliar.</Typography>
-          <Typography variant="body2">Tip: there is no single correct route. Chapter 1 is about learning what kind of truth you are willing to disturb.</Typography>
+          <Typography variant="body2">Tip: read the homepage briefing first if the world feels unfamiliar.</Typography>
+          <Typography variant="body2">Tip: there is no single correct route. Chapter 1 is about deciding how much official history you are willing to disturb.</Typography>
         </Stack>
       </Container>
     </Box>
