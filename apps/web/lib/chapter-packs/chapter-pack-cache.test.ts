@@ -63,6 +63,16 @@ describe('chapter pack cache', () => {
     expect(pack?.id).toBe('chapter-2-signal');
   });
 
+  it('returns eligible Chapter 3 pack after finishing Chapter 2', () => {
+    const pack = getEligibleNextChapterPack({
+      ...initialTimelineState,
+      chapter: 2,
+      endingKey: 'signal-path',
+    });
+
+    expect(pack?.id).toBe('chapter-3-signal');
+  });
+
   it('downloads and caches a chapter pack response', async () => {
     const pack = chapterPackManifest.find((candidate) => candidate.id === 'chapter-2-family');
     expect(pack).toBeDefined();

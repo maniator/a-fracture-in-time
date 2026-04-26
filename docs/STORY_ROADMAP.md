@@ -155,6 +155,18 @@ Possible major choices:
 - Have Zelda alter or preserve future records.
 - Protect Ari from the notebook or involve her deliberately.
 
+### Chapter 3 implementation status (current pass)
+
+- Foundation route packs are now started in code for all three Chapter 3 branches:
+  - Signal Path: **The Relay Accord**
+  - Family Path: **The Witness Ledger**
+  - History Path: **The Public Memory Trial**
+- Current implementation goal: establish governance/witness-network mechanics and end each branch on an actionable expansion hook.
+- Next Chapter 3 delivery goals:
+  1. Add route-specific antagonistic pressure systems (legal capture, archive sabotage, witness fatigue).
+  2. Add one durable chapter-specific state key per branch that carries into Chapter 4.
+  3. Add at least one mid-route irreversible decision per branch.
+
 ## Chapter 4 Direction
 
 Working title: Diderram's Silence.
@@ -170,6 +182,33 @@ Possible beats:
 - Zelda finds Diderram survivor records in the future.
 - Cybol's utopia is revealed to depend on what it removed from Diderram.
 - The player must decide whether to expose truth in a way that risks immediate harm.
+
+### Chapter 4 execution plan (draft)
+
+#### Phase 1 — Discovery and canon alignment
+1. Consolidate Diderram canon references from Chapter 1-3 packs into a single constraint brief.
+2. Define "living Diderram voices" cast list (at minimum: student activist, elder witness, civic mediator).
+3. Define forbidden contradictions list (facts Chapter 4 cannot rewrite without explicit retcon protocol).
+
+#### Phase 2 — Narrative architecture
+1. Design shared Chapter 4 anchor event: first direct cross-era Diderram testimony exchange.
+2. Define route entry states based on Chapter 3 outcomes:
+   - Signal: relay network legitimacy level.
+   - Family: ledger governance trust level.
+   - History: public memory trial credibility level.
+3. Define Chapter 4 end states that branch Chapter 5 stakes (exposure success, backlash severity, ally cohesion).
+
+#### Phase 3 — Playable pack production
+1. Draft `chapter-4-signal.ink`, `chapter-4-family.ink`, `chapter-4-history.ink` skeletons.
+2. Implement minimum scene/choice targets:
+   - 12+ meaningful choices per route.
+   - at least 3 distinct Diderram speaking roles per route.
+3. Add chapter-pack manifest metadata and continuation plumbing.
+
+#### Phase 4 — QA and release readiness
+1. Add deterministic traversal tests for one canonical Chapter 4 route per branch.
+2. Add narrative guardrail tests for required Diderram-voice scenes.
+3. Add e2e full-flow coverage from Chapter 1 through initial Chapter 4 entry point.
 
 ## Chapter 5 Direction
 

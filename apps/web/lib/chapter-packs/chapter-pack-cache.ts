@@ -1,8 +1,15 @@
 import type { TimelineState } from '@fractureline/shared-types';
 
-const CHAPTER_PACK_CACHE = 'fractureline-chapter-packs-v1';
+const CHAPTER_PACK_CACHE = 'fractureline-chapter-packs-v2';
 
-export type ChapterPackId = 'chapter-1' | 'chapter-2-signal' | 'chapter-2-family' | 'chapter-2-history';
+export type ChapterPackId =
+  | 'chapter-1'
+  | 'chapter-2-signal'
+  | 'chapter-2-family'
+  | 'chapter-2-history'
+  | 'chapter-3-signal'
+  | 'chapter-3-family'
+  | 'chapter-3-history';
 
 export type ChapterPackManifestItem = {
   id: ChapterPackId;
@@ -42,6 +49,27 @@ export const chapterPackManifest: ChapterPackManifestItem[] = [
     dependsOnEnding: 'history-path',
     estimatedMinutes: 22,
   },
+  {
+    id: 'chapter-3-signal',
+    chapter: 3,
+    route: '/chapter-packs/chapter-3-signal.ink',
+    dependsOnEnding: 'signal-path',
+    estimatedMinutes: 26,
+  },
+  {
+    id: 'chapter-3-family',
+    chapter: 3,
+    route: '/chapter-packs/chapter-3-family.ink',
+    dependsOnEnding: 'family-path',
+    estimatedMinutes: 26,
+  },
+  {
+    id: 'chapter-3-history',
+    chapter: 3,
+    route: '/chapter-packs/chapter-3-history.ink',
+    dependsOnEnding: 'history-path',
+    estimatedMinutes: 26,
+  },
 ];
 
 function canUseCacheStorage() {
@@ -50,7 +78,11 @@ function canUseCacheStorage() {
 
 export function getEligibleNextChapterPack(state: TimelineState) {
   if (!state.endingKey) return null;
-  return chapterPackManifest.find((pack) => pack.dependsOnEnding === state.endingKey) ?? null;
+  return (
+    chapterPackManifest
+      .filter((pack) => pack.dependsOnEnding === state.endingKey && pack.chapter > state.chapter)
+      .sort((left, right) => left.chapter - right.chapter)[0] ?? null
+  );
 }
 
 export async function isChapterPackCached(pack: ChapterPackManifestItem) {

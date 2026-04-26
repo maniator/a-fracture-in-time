@@ -20,33 +20,40 @@ export function GameBriefing() {
       <CardContent sx={{ p: { xs: 3, md: 5 } }}>
         <Stack direction="row" spacing={1} sx={{ mb: 3, flexWrap: 'wrap' }}>
           <Chip label="Before you start" color="secondary" variant="outlined" />
-          <Chip label="Chapter 1" variant="outlined" />
+          <Chip label="Chapters 1-3" variant="outlined" />
         </Stack>
 
         <Typography id="briefing-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3.25rem' } }}>
-          You are entering Lattice.
+          You are entering Ayker.
         </Typography>
 
         <Typography sx={{ mt: 3, color: 'text.secondary', fontSize: { xs: '1.05rem', md: '1.2rem' }, lineHeight: 1.8 }}>
-          Lattice is a future city that calls itself peaceful. Hunger is gone. War is gone. Most fear is gone. But the city keeps that peace by correcting memories, rewriting records, and quietly removing choices that might destabilize the future.
+          Ayker is a city that calls itself peaceful. Hunger is down. Open war is gone. But peace is held together by managed records, curated memory, and historical narratives that leave whole communities unheard.
         </Typography>
 
         <Divider sx={{ my: 4 }} />
 
         <Stack spacing={3}>
           <CharacterBrief
-            initials="MV"
-            name="Mira Vale"
-            role="The Protector"
-            tone="Order, duty, and the cost of safety"
-            description="Mira is an officer of Lattice's memory order. She preserves civic stability, escorts public corrections, and believes the city is worth protecting even when its methods begin to disturb her."
+            initials="XR"
+            name="Xav Reivax"
+            role="Past timeline witness"
+            tone="Family, duty, and the cost of silence"
+            description="Xav is a Brinkton student trying to keep his family safe while impossible messages from the future force him to choose between comfort and truth."
           />
           <CharacterBrief
-            initials="SQ"
-            name="Soren Quill"
-            role="The Dissenter"
-            tone="Freedom, doubt, and the danger of rewriting history"
-            description="Soren is a covert time-traveler from the hidden edge of the future. He exposes buried truth, disrupts memory control, and risks breaking the timeline to stop Lattice from becoming permanent."
+            initials="YE"
+            name="Yve Ettevy"
+            role="Analyst and translator"
+            tone="Method, skepticism, and public accountability"
+            description="Yve turns fragments into evidence, keeps the team grounded, and translates propaganda language into plain terms communities can use."
+          />
+          <CharacterBrief
+            initials="ZA"
+            name="Zelda Adlez"
+            role="Future timeline witness"
+            tone="Memory, survival, and strategic rebellion"
+            description="Zelda sends warnings from a fractured future and helps build witness networks that can challenge official history without collapsing into chaos."
           />
           <Box>
             <Typography component="h2" variant="h6" sx={{ fontWeight: 700 }}>How to read your choices</Typography>

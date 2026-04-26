@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { Choice, TimelineVariable } from '@fractureline/shared-types';
+import { getEligibleNextChapterPack } from '@/lib/chapter-packs/chapter-pack-cache';
 import { useGameStore } from '@/store/game-store';
 
 const cueByVariable: Record<TimelineVariable, string> = {
@@ -64,6 +65,12 @@ const chapterTwoTitleByEnding: Record<string, string> = {
   'history-path': 'The Second Future',
 };
 
+const chapterThreeTitleByEnding: Record<string, string> = {
+  'signal-path': 'The Relay Accord',
+  'family-path': 'The Witness Ledger',
+  'history-path': 'The Public Memory Trial',
+};
+
 export function SceneRenderer() {
   const {
     state,
@@ -91,8 +98,12 @@ export function SceneRenderer() {
 
   const chapterOneComplete = state.flags['chapter-one-complete'];
   const chapterTwoComplete = state.flags['chapter-two-complete'];
-  const canContinueToChapterTwo = chapterOneComplete && state.chapter === 1 && Boolean(state.endingKey);
-  const chapterTwoTitle = state.endingKey ? chapterTwoTitleByEnding[state.endingKey] : undefined;
+  const chapterThreeComplete = state.flags['chapter-three-complete'];
+  const nextPack = getEligibleNextChapterPack(state);
+  const canContinue = Boolean(nextPack);
+  const nextChapterTitle = state.endingKey
+    ? (nextPack?.chapter === 2 ? chapterTwoTitleByEnding[state.endingKey] : chapterThreeTitleByEnding[state.endingKey])
+    : undefined;
 
   if (storyLoadError) {
     return (
@@ -173,22 +184,22 @@ export function SceneRenderer() {
           </Stack>
         ) : null}
 
-        {chapterOneComplete || chapterTwoComplete ? (
+        {chapterOneComplete || chapterTwoComplete || chapterThreeComplete ? (
           <Alert
             severity="success"
             sx={{ mt: 4 }}
-            action={canContinueToChapterTwo ? (
+            action={canContinue ? (
               <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()}>
-                Continue to Chapter 2
+                Continue to Chapter {nextPack?.chapter}
               </Button>
             ) : (
               <Button color="inherit" disabled={isChoosing} onClick={() => void reset()}>Replay</Button>
             )}
           >
-            <Typography sx={{ fontWeight: 700 }}>Chapter {chapterTwoComplete ? 2 : 1} complete.</Typography>
+            <Typography sx={{ fontWeight: 700 }}>Chapter {state.chapter} complete.</Typography>
             <Typography variant="body2">
-              {canContinueToChapterTwo
-                ? `Your ending unlocked Chapter 2${chapterTwoTitle ? `: ${chapterTwoTitle}.` : '.'}`
+              {canContinue
+                ? `Your ending unlocked Chapter ${nextPack?.chapter}${nextChapterTitle ? `: ${nextChapterTitle}.` : '.'}`
                 : 'Your choices will shape which future chapters become available.'}
             </Typography>
           </Alert>
