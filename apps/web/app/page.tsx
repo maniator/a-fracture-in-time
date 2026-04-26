@@ -24,7 +24,7 @@ export default function HomePage() {
             Alternate between the Protector and the Dissenter as each choice reshapes the other timeline. Preserve the beautiful lie, uncover the hidden truth, or find a third path forward.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 6 }}>
-            <Button component={Link} href="/play" color="secondary" variant="contained" size="large">
+            <Button component={Link} href="/play" prefetch={false} color="secondary" variant="contained" size="large">
               Start Chapter 1
             </Button>
             <Button component={Link} href="/help" color="inherit" variant="outlined" size="large">
