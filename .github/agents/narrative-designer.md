@@ -110,6 +110,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 
 - **→ UI Agent**: scene IDs, choice count per scene, special UI behaviors (POV switches, codex unlocks)
 - **→ QA Agent**: branch expectations, merge reachability, state keys written per route
+- **→ E2E Agent**: every new chapter route requires a Playwright end-to-end path test and updated screenshot — delegate to `.github/agents/e2e.md`
 - **← Architect**: engine constraints and valid state key list before writing
 
 ## Rules

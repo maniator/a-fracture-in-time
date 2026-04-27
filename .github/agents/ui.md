@@ -99,6 +99,7 @@ Some narrative scenes will replace choice buttons with an open-ended player text
 ## Handoffs
 
 - **→ QA Agent**: component names, interaction states, and accessibility requirements to test
+- **→ E2E Agent**: every new user-facing route or interaction flow requires a Playwright test — delegate to `.github/agents/e2e.md` before the feature is considered done
 - **→ Backend Agent**: flag any new persistence or analytics hooks needed by a UI feature
 - **← Architect**: contract updates or Vercel constraints before building
 - **← Narrative Designer**: scene structure (choice count, POV switches, codex unlocks) affecting rendering

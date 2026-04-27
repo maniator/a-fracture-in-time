@@ -1,4 +1,4 @@
-# Writing Standards — Fractureline
+# Writing Standards: Fractureline
 
 All agents that produce narrative prose, player-facing copy, documentation, or scene content must follow these standards. This is the canonical reference.
 
@@ -49,7 +49,7 @@ Every scene that follows a player choice must open with grounding prose before a
 - Write in a close third-person or intimate second-person voice that matches the established POV character
 - Prefer concrete, specific detail over abstract statement
 - Avoid repetition of the same sentence structure in consecutive paragraphs
-- Avoid over-explaining — trust the reader to carry emotional weight
+- Avoid over-explaining; trust the reader to carry emotional weight
 - Dialogue should feel earned, not expository
 
 ---

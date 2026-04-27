@@ -108,6 +108,7 @@ When free-form text scenes are approved by the Architect:
 ## Handoffs
 
 - **→ QA Agent**: save schema changes, migration behavior, and failure scenarios to test
+- **→ E2E Agent**: persistence changes that affect the save/load player flow require updated Playwright tests — delegate to `.github/agents/e2e.md`
 - **→ UI Agent**: new save slot API shape so UI can surface slot selection
 - **← Architect**: versioning strategy and contract changes before modifying schema
 - **← Product Manager**: analytics requirements and KPI definitions

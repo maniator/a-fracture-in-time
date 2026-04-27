@@ -109,6 +109,7 @@ Some narrative scenes will replace choice buttons with an open-ended player text
 - **→ UI Agent**: updated contracts, component boundaries, Vercel constraints
 - **→ Backend Agent**: persistence schema changes and versioning strategy
 - **→ QA Agent**: testing expectations for new contracts or migrations
+- **→ E2E Agent**: any contract change that affects a player-facing flow needs a corresponding Playwright regression — delegate to `.github/agents/e2e.md`
 - **← Product Manager**: non-functional requirements and scale expectations
 
 ## Rules
