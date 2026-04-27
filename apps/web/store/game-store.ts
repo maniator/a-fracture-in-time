@@ -31,6 +31,7 @@ type GameStore = {
   save: () => Promise<void>;
   load: () => Promise<boolean>;
   reset: () => Promise<void>;
+  clearStoryLoadError: () => void;
 };
 
 let activeChapterPack: ChapterPackManifestItem = chapterOnePack;
@@ -311,9 +312,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   reset: async () => {
     if (get().isChoosing) return;
 
+    set({ isChoosing: true, storyLoadError: undefined });
     const snapshot = await createInitialSnapshot();
     if (!snapshot) {
       set({
+        isChoosing: false,
         state: initialTimelineState,
         sceneText: [],
         choices: [],
@@ -325,6 +328,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    set({ ...createStoreView(snapshot), hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+    set({ ...createStoreView(snapshot), isChoosing: false, hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
   },
+  clearStoryLoadError: () => set({ storyLoadError: undefined }),
 }));
