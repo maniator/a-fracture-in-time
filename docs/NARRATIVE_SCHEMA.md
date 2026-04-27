@@ -53,6 +53,7 @@ Some scenes will present an open-ended text prompt instead of pre-set choices. T
   "onEnterEffects": [
     { "type": "markSceneSeen", "sceneId": "ch2_signal_042" }
   ],
+  "choices": [],
   "nextSceneId": "ch2_signal_043"
 }
 ```

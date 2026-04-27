@@ -78,7 +78,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 
 **Valid state keys** (numeric): `stability`, `controlIndex`, `rebellion`, `memoryFracture`, `magicEntropy`
 
-**Valid flag keys** (examples): `relayDoctrine`, `familyDoctrine`, `memoryDoctrine` — new flags must be snake-case strings.
+**Valid flag keys** (examples): `relayDoctrine`, `familyDoctrine`, `memoryDoctrine` — new flag keys must use camelCase strings to match the existing codebase convention.
 
 **Effect types**: `increment`, `decrement`, `setNumber`, `setFlag`, `unsetFlag`, `appendCodex`, `switchPOV`, `setChapter`, `markSceneSeen`, `setEnding`
 
