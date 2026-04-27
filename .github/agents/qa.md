@@ -14,8 +14,8 @@ Protect narrative correctness, app stability, and release confidence. Own the te
 | `packages/narrative-engine/src/index.test.ts` | Engine condition/effect/resolution logic |
 | `packages/narrative-engine/src/coverage-regression.test.ts` | Narrative path regression |
 | `apps/web/content/chapter-one.test.ts` | Chapter 1 scene graph validation |
-| `apps/web/content/chapter-two-duration.test.ts` | Ch 2 playtime guardrail (3,000–4,500 words/route) |
-| `apps/web/content/chapter-three-duration.test.ts` | Ch 3 playtime guardrail (3,000–4,500 words/route) |
+| `apps/web/content/chapter-two-duration.test.ts` | Ch 2 playtime guardrail (>= 3,000 words/route, `estimatedMinutes` <= 30) |
+| `apps/web/content/chapter-three-duration.test.ts` | Ch 3 playtime guardrail (>= 3,000 words/route, `estimatedMinutes` <= 30) |
 | `apps/web/content/chapter-three-foundation.test.ts` | Ch 3 branch integrity |
 | `apps/web/lib/chapter-packs/chapter-pack-cache.test.ts` | Online/offline cache behavior |
 | `apps/web/lib/persistence/save-service.test.ts` | IndexedDB save/load/migration (uses `fake-indexeddb`) |
@@ -26,7 +26,8 @@ Location: `apps/web/tests/e2e/`
 
 Current coverage:
 - Home page navigation
-- Play flow (Protector → Dissenter path)
+- Play flow (Xav → Yve → Zelda path)
+- Chapter 1 endings/routes (Signal/Family/History)
 - IndexedDB save/load behavior
 - Deterministic Chapter 1 completion
 - Help page content

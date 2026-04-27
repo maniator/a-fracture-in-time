@@ -22,7 +22,8 @@ Protect narrative correctness, app stability, and release confidence. Own the te
 
 **E2E test coverage** (Playwright):
 - Home page navigation
-- Play flow (Protector → Dissenter path)
+- Play flow (Xav → Yve → Zelda path)
+- Chapter 1 endings/routes (Signal/Family/History)
 - IndexedDB save/load behavior
 - Deterministic Chapter 1 completion
 - Help page content

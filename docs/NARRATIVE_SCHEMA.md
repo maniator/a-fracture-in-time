@@ -95,7 +95,7 @@ All chapters after Chapter 1 must target a **20–30 minute** play session:
 - Minimum: 3,000 words at ~150 WPM (≈ 20 min)
 - Target ceiling: 4,500 words at ~150 WPM (≈ 30 min)
 - Routes exceeding 4,500 words are flagged for pacing review before release.
-- Duration tests enforce the floor; QA flags the ceiling.
+- Automated duration tests enforce the 3,000-word floor and `estimatedMinutes <= 30`; the 4,500-word ceiling is a QA review threshold, not a hard automated max-word gate.
 
 ## Authoring Rules
 - Every scene must have a unique id.
