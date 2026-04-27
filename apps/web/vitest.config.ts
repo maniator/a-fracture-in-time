@@ -10,9 +10,12 @@ export default defineConfig({
     jsxImportSource: 'react',
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, '.'),
-    },
+    alias: [
+      {
+        find: /^@\//,
+        replacement: `${resolve(__dirname, '.')}/`,
+      },
+    ],
   },
   test: {
     exclude: [
