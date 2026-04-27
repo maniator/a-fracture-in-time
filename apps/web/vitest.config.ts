@@ -14,11 +14,13 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary'],
+      include: ['lib/**/*.ts'],
+      exclude: ['**/*.test.ts', 'lib/theme.ts'],
       thresholds: {
         lines: 90,
         statements: 90,
         functions: 90,
-        branches: 85,
+        branches: 90,
       },
     },
   },
