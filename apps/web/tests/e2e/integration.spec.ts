@@ -136,25 +136,33 @@ test.describe('Chapter 5 — governance reckoning path', () => {
 // ---------------------------------------------------------------------------
 
 test('all Chapter 4 and 5 pack files are served as static assets', async ({ page }) => {
-  const packs = [
-    'chapter-4-relay-legitimacy.ink',
-    'chapter-4-relay-compromised.ink',
-    'chapter-4-ledger-trust.ink',
-    'chapter-4-emergency-custody.ink',
-    'chapter-4-trial-credibility.ink',
-    'chapter-4-amnesty-conflict.ink',
-    'chapter-5-governance-reckoning.ink',
-    'chapter-5-lineage-protocol.ink',
-    'chapter-5-memory-settlement.ink',
+  const packs: Array<{ file: string; chapterLabel: RegExp; endingKey: string }> = [
+    { file: 'chapter-4-relay-legitimacy.ink', chapterLabel: /Chapter 4/, endingKey: 'relay-legitimacy-path' },
+    { file: 'chapter-4-relay-compromised.ink', chapterLabel: /Chapter 4/, endingKey: 'relay-compromised-path' },
+    { file: 'chapter-4-ledger-trust.ink', chapterLabel: /Chapter 4/, endingKey: 'ledger-trust-path' },
+    { file: 'chapter-4-emergency-custody.ink', chapterLabel: /Chapter 4/, endingKey: 'emergency-custody-path' },
+    { file: 'chapter-4-trial-credibility.ink', chapterLabel: /Chapter 4/, endingKey: 'trial-credibility-path' },
+    { file: 'chapter-4-amnesty-conflict.ink', chapterLabel: /Chapter 4/, endingKey: 'amnesty-conflict-path' },
+    { file: 'chapter-5-governance-reckoning.ink', chapterLabel: /Chapter 5/, endingKey: 'governance-reckoning-path' },
+    { file: 'chapter-5-lineage-protocol.ink', chapterLabel: /Chapter 5/, endingKey: 'lineage-protocol-path' },
+    { file: 'chapter-5-memory-settlement.ink', chapterLabel: /Chapter 5/, endingKey: 'memory-settlement-path' },
   ];
 
-  for (const pack of packs) {
-    const response = await page.request.get(`/chapter-packs/${pack}`);
-    expect(response.ok(), `Expected ${pack} to return 200`).toBeTruthy();
+  for (const { file, chapterLabel, endingKey } of packs) {
+    const response = await page.request.get(`/chapter-packs/${file}`);
+    expect(response.ok(), `Expected ${file} to return 200`).toBeTruthy();
     const body = await response.text();
-    expect(body, `Expected ${pack} to contain chapter variable`).toMatch(/VAR stability/);
-    expect(body).not.toContain('Mira Vale');
-    expect(body).not.toContain('Soren Quill');
+    // Required Ink runtime variables are present
+    expect(body, `Expected ${file} to contain stability variable`).toMatch(/VAR stability/);
+    expect(body, `Expected ${file} to contain chapterFourComplete or chapterFiveComplete`).toMatch(
+      /chapterFourComplete|chapterFiveComplete/,
+    );
+    // Chapter-specific content is present
+    expect(body, `Expected ${file} to reference correct chapter`).toMatch(chapterLabel);
+    expect(body, `Expected ${file} to set ending key "${endingKey}"`).toContain(endingKey);
+    // Retired character names are not present
+    expect(body, `${file} must not contain retired character "Mira Vale"`).not.toContain('Mira Vale');
+    expect(body, `${file} must not contain retired character "Soren Quill"`).not.toContain('Soren Quill');
   }
 });
 
