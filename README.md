@@ -77,7 +77,7 @@ Chapter 2 route packs currently included:
 - `The Firstborn Record` (`family-path`)
 - `The Second Future` (`history-path`)
 
-Each Chapter 2 route now targets a 20+ minute reading baseline (minimum 3,000 words at ~150 WPM), with manifest estimates set to 22 minutes per route.
+Each Chapter 2 route now targets a **20–30 minute** reading session (3,000–4,500 words at ~150 WPM), with manifest estimates set to 25 minutes per route.
 
 Chapter 3 foundation route packs currently included:
 
@@ -127,32 +127,48 @@ Supabase is kept only as optional future cloud-sync planning. It is not required
 
 ## BMAD Method
 
-BMAD files are included in two places:
+BMAD agent files live in two mirrored locations:
 
-- `.bmad-core/agents`: individual agent definitions
-- `.bmad-core/workflows`: launch workflow and handoff order
-- `.bmad-core/modules/nom`: BMAD NOM (Narrative Operations Matrix) review module
-- `docs/AGENT_PROMPTS.md`: prompt-facing agent descriptions
-- `docs/BMAD_WORKFLOW.md`: broader workflow explanation
+| Location | Purpose |
+|---|---|
+| `.github/agents/` | GitHub Copilot coding-agent personas (loaded automatically) |
+| `.bmad-core/agents/` | Full agent definitions with complete project context |
+| `.bmad-core/workflows/` | Launch workflow and handoff order |
+| `.bmad-core/modules/nom/` | NOM (Narrative Operations Matrix) cross-agent review module |
+| `docs/AGENT_PROMPTS.md` | Legacy prompt-facing descriptions |
+| `docs/BMAD_WORKFLOW.md` | Broader workflow explanation and review cadence |
 
-Initial agents include:
+Agents and their ownership:
 
-- Product Manager
-- Architect
-- Narrative Designer
-- UI Agent
-- Backend
-- QA
-- Growth
-- Producer
+| Agent | File | Owns |
+|---|---|---|
+| Product Manager | `product-manager.md` | Scope, KPIs, backlog, risk register |
+| Producer | `producer.md` | Sprint sequencing, dependency map, acceptance review |
+| Architect | `architect.md` | Package boundaries, save model, deployment constraints |
+| Narrative Designer | `narrative-designer.md` | Chapter content, scene graphs, merge-hub plans |
+| UI Agent | `ui.md` | MUI components, routes, Storybook stories |
+| Backend Agent | `backend.md` | Persistence, save versioning, analytics events |
+| QA Agent | `qa.md` | Unit tests, Playwright e2e, release gates |
+| Growth Agent | `growth.md` | Onboarding, replayability, analytics dashboard |
 
-Run the BMAD NOM review pass for Chapters 1-3 with:
+Run the BMAD NOM cross-agent review with:
 
 ```bash
 pnpm bmad:nom:review
 ```
 
 This writes `docs/reviews/CHAPTERS_1_3_AGENT_REVIEW.md` as a durable audit artifact.
+
+## MCP Servers
+
+`.vscode/mcp.json` configures two MCP servers for VS Code Copilot users:
+
+| Server | Purpose |
+|---|---|
+| `github` | GitHub remote MCP — PR management, issue tracking, CI status |
+| `playwright` | Playwright MCP — browser automation for QA and UI testing |
+
+`.github/workflows/copilot-setup-steps.yml` pre-installs Node 22, pnpm, all workspace dependencies, and the Playwright Chromium binary so GitHub Copilot coding-agent sessions start with a fully ready environment.
 
 ## Testing
 

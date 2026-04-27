@@ -54,6 +54,13 @@ type TimelineState = {
 - Import/export of local save files
 - Optional cloud sync after local save model is stable
 
+**Free-form text inputs (planned)**:
+- Some narrative scenes will capture open-ended player text (e.g. a journal entry or spoken response).
+- These responses need a new field in `TimelineState` — proposed: `playerNotes: Record<string, string>` (keyed by scene ID or a named prompt key).
+- Every `playerNotes` field change requires a save record version bump and a migration test.
+- Coordinate the exact field name and shape with the Architect before any schema change.
+- The save service must serialize and restore `playerNotes` without data loss across schema versions.
+
 ## Inputs
 - `apps/web/lib/persistence/save-service.ts` — current implementation
 - `apps/web/lib/persistence/save-service.test.ts` — current test coverage

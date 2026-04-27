@@ -38,6 +38,7 @@
 - Add deterministic continuation tests for Chapter 3 -> Chapter 4 consequence routing.
 - Add merge-hub tests for future chapters to ensure braided narrative recombination remains reachable.
 - Add codex review for unlock pacing and wording across Chapters 2-4.
+- **Duration standard**: all new chapter routes must target **20–30 minutes** (3,000–4,500 words at ~150 WPM). Duration tests enforce the floor; QA flags routes over 4,500 words for pacing review.
 
 ### 5. Implement branching complexity controls
 - Adopt the braided-branch architecture documented in `docs/STORY_ROADMAP.md`.
@@ -49,6 +50,14 @@
 - Add Supabase client dependency and app service adapter when ready to move beyond local-first saves.
 - Replace or augment local save service with authenticated cloud saves.
 - Add mocked tests for cloud save service behavior.
+
+### 7. Free-form text input
+- Design the `freeFormPrompt` scene field and `playerNotes` state key with the Architect before writing any content or UI.
+- Add `storePlayerNote` effect type to the narrative engine.
+- Build the `FreeFormInput` UI component (text field, character limit, submit, reduced-motion-safe echo).
+- Add `playerNotes` to `TimelineState` in `shared-types`, bump save record version, write migration test.
+- Add Storybook stories for the new component.
+- Add unit tests for the engine effect and persistence; add Playwright test for the save/load round-trip.
 
 ## BMAD Agent Routing
 - Product Manager: scope, KPIs, and MVP tradeoffs.

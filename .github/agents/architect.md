@@ -60,7 +60,16 @@ type TimelineState = {
 - Offline fallback: `apps/web/public/offline.html`
 - Generated SW files are not committed (build artifacts)
 
-## State Boundaries (non-negotiable)
+## Planned Feature: Free-Form Text Inputs
+Some narrative scenes will replace choice buttons with an open-ended player text prompt. Before any agent implements this:
+- Define a `freeFormPrompt` field in the scene schema (add to `NARRATIVE_SCHEMA.md` and `shared-types`).
+- Define where player responses are stored in `TimelineState` (proposed: `playerNotes: Record<string, string>`).
+- Specify whether responses can trigger flag effects (e.g. keyword detection or length thresholds).
+- Specify how downstream scenes embed the player's text (token substitution pattern).
+- Bump the save record version and write a migration test before merging.
+- All agents must wait for this contract before building free-form functionality.
+
+
 
 | Layer | Responsibility |
 |---|---|

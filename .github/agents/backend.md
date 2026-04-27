@@ -69,6 +69,15 @@ Analytics events are currently placeholder hooks — not wired to any external p
 - Import/export of local save files
 - Optional cloud sync after the local save model is stable
 
+## Planned Feature: Free-Form Text Input Storage
+
+When free-form text scenes are approved by the Architect:
+- Add `playerNotes: Record<string, string>` (or Architect-approved equivalent) to `TimelineState` in `shared-types`.
+- Bump the save record version and write a migration test (old saves without `playerNotes` must migrate cleanly).
+- The save service must serialize and restore `playerNotes` without data loss across versions.
+- Character limit enforced server-side via schema — stored text must never exceed the limit.
+- Do not implement until the Architect's free-form scene schema contract is merged.
+
 ## Key Documents to Read
 
 - `apps/web/lib/persistence/save-service.ts` — current implementation

@@ -14,8 +14,8 @@ Protect narrative correctness, app stability, and release confidence. Own the te
 | `packages/narrative-engine/src/index.test.ts` | Engine condition/effect/resolution logic |
 | `packages/narrative-engine/src/coverage-regression.test.ts` | Narrative path regression |
 | `apps/web/content/chapter-one.test.ts` | Chapter 1 scene graph validation |
-| `apps/web/content/chapter-two-duration.test.ts` | Ch 2 playtime guardrail (≥ 3,000 words/route) |
-| `apps/web/content/chapter-three-duration.test.ts` | Ch 3 playtime guardrail |
+| `apps/web/content/chapter-two-duration.test.ts` | Ch 2 playtime guardrail (3,000–4,500 words/route) |
+| `apps/web/content/chapter-three-duration.test.ts` | Ch 3 playtime guardrail (3,000–4,500 words/route) |
 | `apps/web/content/chapter-three-foundation.test.ts` | Ch 3 branch integrity |
 | `apps/web/lib/chapter-packs/chapter-pack-cache.test.ts` | Online/offline cache behavior |
 | `apps/web/lib/persistence/save-service.test.ts` | IndexedDB save/load/migration (uses `fake-indexeddb`) |
@@ -56,6 +56,16 @@ Vitest enforces > 90% lines/statements/functions at the package level.
 2. Verify each branch reaches at least one planned merge hub.
 3. Verify the continuation resolver maps state keys to correct next packs.
 4. Verify no orphan branches exist (no unreachable scene IDs).
+5. Verify every Chapter 2+ route meets the **20–30 minute** target (≥ 3,000 words; flag routes > 4,500 words for pacing review).
+
+## Free-Form Text Input QA (planned)
+
+When free-form text scenes are added:
+- Verify player text is saved and restored correctly across save/load cycles.
+- Verify character limit is enforced in the UI and stored text never exceeds it.
+- Verify player text echoed in later scenes renders correctly (no raw token leakage or XSS).
+- Verify empty or whitespace-only submissions are handled gracefully with no silent state corruption.
+- Verify free-form scenes with flag effects apply the correct flag based on the input.
 
 ## Key Documents to Read
 

@@ -8,6 +8,9 @@ Turn the concept into prioritized, testable product scope. Validate that every s
 
 ## Project Context
 
+**Planned features (post-MVP in scope for design)**:
+- **Free-form text inputs**: select paths will accept open-ended player-written responses rather than pre-set choice buttons. These responses must be persisted, reflected in scene text, and optionally influence state flags. Design must account for input validation, storage, and narrative integration.
+
 **Product**: Fractureline — a dual-perspective text-based narrative web game where choices in the present and future rewrite each other.
 
 **Setting**: Lattice, a future city-state that maintains false peace through magical memory editing.
@@ -58,5 +61,5 @@ When activated, produce one or more of:
 - A feature with no acceptance criterion does not ship.
 - Keep MVP scope narrow enough to ship a complete emotional arc first.
 - Preserve the dual-timeline premise in every scope trade-off.
-- Each Chapter 2+ route must sustain a minimum 20-minute play session (≥3,000 words at ~150 WPM).
+- Each Chapter 2+ route must target a 20–30 minute play session (3,000–4,500 words at ~150 WPM).
 - Raise scope risk if a new narrative split lacks a planned merge hub.

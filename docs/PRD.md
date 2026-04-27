@@ -42,6 +42,7 @@ Read scene -> choose action -> apply state change -> switch POV or advance -> un
 ## Core Mechanics
 - Branching scene graph
 - Conditional choices
+- **Free-form text inputs** (planned: select paths accept open-ended player responses instead of pre-set choices)
 - Timeline variables
 - POV alternation
 - Altered memories and contradiction reveals
@@ -55,11 +56,14 @@ Read scene -> choose action -> apply state change -> switch POV or advance -> un
 - Scenes can be hidden or replaced based on state.
 - Chapters can force POV switching.
 - Endings are selected via deterministic condition resolution.
+- **Free-form text inputs** (planned): select scenes present an open-ended text prompt instead of choice buttons. Player responses are persisted, may be echoed in later scenes, and may optionally influence state flags.
+- All chapters after Chapter 1 must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM).
 
 ### UI
 - Readable text-first interface
 - Animated text reveal with reduced-motion fallback
 - Accessible choice buttons
+- **Free-form text input component** (planned): text field with prompt, character limit, and submit action for open-ended player responses
 - Codex/history panel
 - Save/load menu
 - Mobile-first layout
