@@ -46,8 +46,8 @@ CI runs Playwright inside `mcr.microsoft.com/playwright:v1.59.1-noble` with 4 pa
 # 1. Bootstrap the Playwright browser (required in new environments)
 pnpm codex:bootstrap
 
-# 2. Start the Next.js dev server in the background
-cd apps/web && pnpm dev &
+# 2. Start the Next.js dev server in the background (subshell keeps working directory stable)
+(cd apps/web && pnpm dev) &
 sleep 15   # wait for the server to be ready at http://127.0.0.1:3000
 
 # 3. Run all e2e tests against the live dev server

@@ -53,8 +53,8 @@ CI runs inside Docker container `mcr.microsoft.com/playwright:v1.59.1-noble` wit
 # 1. Bootstrap the browser
 pnpm codex:bootstrap
 
-# 2. Start the dev server in the background
-cd apps/web && pnpm dev &
+# 2. Start the dev server in the background (subshell keeps working directory stable)
+(cd apps/web && pnpm dev) &
 sleep 15   # wait for http://127.0.0.1:3000 to be ready
 
 # 3. Run the full suite against the live server

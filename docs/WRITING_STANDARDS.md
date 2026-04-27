@@ -67,6 +67,6 @@ Every Chapter 2+ route must target a **20–30 minute** play session:
 All agents working in this repository follow the same git convention:
 
 - **Sub-agents CAN commit** changes locally using `git add` and `git commit`
-- **Sub-agents CANNOT push** to GitHub — `git push` is reserved for the root agent only
+- **Sub-agents CANNOT push** to GitHub; `git push` is reserved for the root agent only
 - The root agent uses the `report_progress` tool to push all commits to the remote branch
-- When you finish your work, commit locally and report that the work is done — do not attempt `git push` or `gh` push commands
+- When you finish your work, commit locally and report that the work is done. Do not attempt `git push` or `gh` push commands
