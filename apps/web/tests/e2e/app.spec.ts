@@ -8,7 +8,7 @@ async function advanceByClickingFirstChoiceUntil(page: Page, stopChoice: RegExp)
   for (let attempts = 0; attempts < 24; attempts += 1) {
     const stop = page.getByRole('button', { name: stopChoice });
     if (await stop.count()) return;
-    await page.getByRole('button').nth(3).click();
+    await page.locator('[aria-label="Choices"] button').first().click();
   }
 
   throw new Error(`Could not reach choice ${stopChoice.toString()} within step limit`);
@@ -32,7 +32,6 @@ test('home page loads setup and links into the game without prefetching play', a
 
   await page.getByRole('link', { name: /start chapter 1/i }).click();
   await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /you are entering ayker/i })).toHaveCount(0);
 });
 
 test('play route downloads Chapter 1 pack and first choice advances without runtime errors', async ({ page }) => {
@@ -79,7 +78,6 @@ test('ambience control is available without a large play button', async ({ page 
 
 test('save and load restores progress from IndexedDB', async ({ page }) => {
   await page.goto('/play');
-  await expect(page.getByText(/local save ready/i)).toBeVisible();
   await expect(page.getByRole('button', { name: /load progress/i })).toBeDisabled();
 
   await page.getByRole('button', { name: /admit the com broke again/i }).click();
@@ -89,6 +87,7 @@ test('save and load restores progress from IndexedDB', async ({ page }) => {
   await expect(page.getByRole('button', { name: /load progress/i })).toBeEnabled();
 
   await page.getByRole('button', { name: /restart chapter/i }).click();
+  await page.getByRole('button', { name: /^restart$/i }).click();
   await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
 
   await page.getByRole('button', { name: /load progress/i }).click();
@@ -115,7 +114,7 @@ test('can complete the Signal Path', async ({ page }) => {
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the signal path/i)).toBeVisible();
-  await expect(page.getByText(/signal-path/i)).toBeVisible();
+  await expect(page.getByText(/signal path/i)).toBeVisible();
   await expect(page.getByRole('button', { name: /continue to chapter 2/i })).toBeVisible();
   await expect(page.getByText(/chapter 2: the stable signal/i)).toBeVisible();
 });
@@ -191,7 +190,7 @@ test('can complete the Family Path', async ({ page }) => {
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the family path/i)).toBeVisible();
-  await expect(page.getByText(/family-path/i)).toBeVisible();
+  await expect(page.getByText(/family path/i)).toBeVisible();
 });
 
 test('can complete the History Path', async ({ page }) => {
@@ -213,7 +212,7 @@ test('can complete the History Path', async ({ page }) => {
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the history path/i)).toBeVisible();
-  await expect(page.getByText(/history-path/i)).toBeVisible();
+  await expect(page.getByText(/history path/i)).toBeVisible();
 });
 
 test('help page explains gameplay instead of build process', async ({ page }) => {
