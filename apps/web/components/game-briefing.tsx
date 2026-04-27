@@ -58,7 +58,7 @@ export function GameBriefing() {
           <Box>
             <Typography component="h2" variant="h6" sx={{ fontWeight: 700 }}>How to read your choices</Typography>
             <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>
-              Choices are not just good or bad. Some protect stability. Some reveal hidden memories. Some increase magical pressure on the timeline. The stats below each scene show what kind of future your choices are building.
+              Choices are not just good or bad. Some protect stability. Some reveal hidden memories. Some increase magical pressure on the timeline. The timeline signals below each scene show what kind of future your choices are building.
             </Typography>
           </Box>
         </Stack>
