@@ -177,21 +177,22 @@ test.describe('UI state chips', () => {
     await page.goto('/play');
     await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
 
-    // Initial POV is Past.
-    await expect(page.locator('[role="status"]').filter({ hasText: 'Past' })).toHaveCount(0);
-    // MUI Chip renders as a <div> — check by text content directly.
-    const chipText = await page.locator('.MuiChip-label').allTextContents();
-    expect(chipText).toContain('Past');
+    // Initial POV is Past — verify the "Past" chip label is present in the chip row.
+    // MUI Chip renders as a <div> with a child .MuiChip-label span.
+    const chipTextBefore = await page.locator('.MuiChip-label').allTextContents();
+    expect(chipTextBefore).toContain('Past');
 
     // Navigate to Zelda.
     await clickChoiceByPattern(page, /admit the com broke again/i);
     await clickChoiceByPattern(page, /ask why diderram needed cybol/i);
     await clickChoiceByPattern(page, /answer zelda before the signal dies/i);
 
-    // Now in a Zelda (future) scene.
+    // Now in a Zelda (future) scene — chip should switch to "Future".
     await expect(page.getByRole('heading', { name: 'Zelda Adlez' })).toBeVisible();
     const chipTextAfter = await page.locator('.MuiChip-label').allTextContents();
     expect(chipTextAfter).toContain('Future');
+    // "Past" chip should no longer be present.
+    expect(chipTextAfter).not.toContain('Past');
   });
 
   test('"No save" chip shows initially; "Local save ready" appears after saving', async ({ page }) => {
@@ -326,13 +327,20 @@ test.describe('accessibility landmarks', () => {
     await expect(page.getByRole('complementary', { name: /ambience controls/i })).toBeVisible();
   });
 
-  test('all three choice buttons are focusable via keyboard', async ({ page }) => {
+  test('choice buttons are all keyboard-focusable', async ({ page }) => {
     await page.goto('/play');
     await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
 
-    const firstChoice = page.locator('[aria-label="Choices"] button').first();
-    await firstChoice.focus();
-    await expect(firstChoice).toBeFocused();
+    const choiceButtons = page.locator('[aria-label="Choices"] button');
+    const count = await choiceButtons.count();
+    expect(count).toBeGreaterThan(0);
+
+    // Verify every choice button in the region can receive focus.
+    for (let i = 0; i < count; i++) {
+      const button = choiceButtons.nth(i);
+      await button.focus();
+      await expect(button).toBeFocused();
+    }
   });
 });
 
