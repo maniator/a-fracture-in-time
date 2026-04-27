@@ -313,22 +313,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (get().isChoosing) return;
 
     set({ isChoosing: true, storyLoadError: undefined });
-    const snapshot = await createInitialSnapshot();
-    if (!snapshot) {
-      set({
-        isChoosing: false,
-        state: initialTimelineState,
-        sceneText: [],
-        choices: [],
-        hasSave: await indexedDbSaveService.hasSave(),
-        isPersistenceReady: true,
-        isStoryReady: false,
-        storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
-      });
-      return;
-    }
+    try {
+      const snapshot = await createInitialSnapshot();
+      if (!snapshot) {
+        set({
+          isChoosing: false,
+          state: initialTimelineState,
+          sceneText: [],
+          choices: [],
+          hasSave: await indexedDbSaveService.hasSave(),
+          isPersistenceReady: true,
+          isStoryReady: false,
+          storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
+        });
+        return;
+      }
 
-    set({ ...createStoreView(snapshot), isChoosing: false, hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+      set({ ...createStoreView(snapshot), isChoosing: false, hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+    } catch (err) {
+      console.error('[game-store] reset() failed:', err);
+      set({ isChoosing: false, storyLoadError: 'Could not restart. Please try again.' });
+    }
   },
   clearStoryLoadError: () => set({ storyLoadError: undefined }),
 }));
