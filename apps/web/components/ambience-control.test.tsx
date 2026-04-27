@@ -185,7 +185,7 @@ describe('AmbienceControl', () => {
     expect(screen.queryByRole('slider')).toBeNull();
     await act(async () => { fireEvent.click(screen.getByText('Volume')); });
     expect(screen.getByRole('slider')).toBeDefined();
-    await act(async () => { fireEvent.click(screen.getByText('Hide')); });
+    await act(async () => { fireEvent.click(screen.getByText('Close')); });
     expect(screen.queryByRole('slider')).toBeNull();
   });
 

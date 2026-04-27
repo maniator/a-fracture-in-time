@@ -78,6 +78,14 @@ vi.mock('@mui/material/Typography', () => ({
     return <C>{children}</C>;
   },
 }));
+vi.mock('@mui/material/Dialog', () => ({
+  default: ({ children, open }: { children: React.ReactNode; open: boolean }) =>
+    open ? <div role="dialog">{children}</div> : null,
+}));
+vi.mock('@mui/material/DialogActions', () => ({ default: ({ children }: { children: React.ReactNode }) => <div>{children}</div> }));
+vi.mock('@mui/material/DialogContent', () => ({ default: ({ children }: { children: React.ReactNode }) => <div>{children}</div> }));
+vi.mock('@mui/material/DialogContentText', () => ({ default: ({ children }: { children: React.ReactNode }) => <p>{children}</p> }));
+vi.mock('@mui/material/DialogTitle', () => ({ default: ({ children }: { children: React.ReactNode }) => <h2>{children}</h2> }));
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 function makeStore(overrides: Partial<Record<string, unknown>> = {}) {
@@ -225,6 +233,7 @@ describe('SceneRenderer', () => {
     makeStore({ isStoryReady: true, sceneText: ['Scene.'], reset });
     await act(async () => { render(<SceneRenderer />); });
     await act(async () => { fireEvent.click(screen.getByText('Restart chapter')); });
+    await act(async () => { fireEvent.click(screen.getByText('Restart')); });
     expect(reset).toHaveBeenCalled();
   });
 
@@ -284,6 +293,7 @@ describe('SceneRenderer', () => {
     const replay = screen.getByText('Replay');
     expect(replay).toBeDefined();
     await act(async () => { fireEvent.click(replay); });
+    await act(async () => { fireEvent.click(screen.getByText('Restart')); });
     expect(reset).toHaveBeenCalled();
   });
 
@@ -305,7 +315,7 @@ describe('SceneRenderer', () => {
       state: { ...initialTimelineState, endingKey: 'signal-path' },
     });
     await act(async () => { render(<SceneRenderer />); });
-    expect(screen.getByText('signal-path')).toBeDefined();
+    expect(screen.getByText('Signal Path')).toBeDefined();
   });
 
   it('shows "Applying choice" chip when isChoosing', async () => {
@@ -314,16 +324,23 @@ describe('SceneRenderer', () => {
     expect(screen.getByText('Applying choice')).toBeDefined();
   });
 
-  it('shows "Local save ready" when persistence is ready', async () => {
-    makeStore({ isStoryReady: true, sceneText: ['Scene.'], isPersistenceReady: true });
+  it('shows "Local save ready" when persistence is ready and save exists', async () => {
+    makeStore({ isStoryReady: true, sceneText: ['Scene.'], isPersistenceReady: true, hasSave: true });
     await act(async () => { render(<SceneRenderer />); });
     expect(screen.getByText('Local save ready')).toBeDefined();
   });
 
-  it('shows "Checking saves" when persistence is not ready', async () => {
+  it('shows "No save" chip when persistence is ready but no save', async () => {
+    makeStore({ isStoryReady: true, sceneText: ['Scene.'], isPersistenceReady: true, hasSave: false });
+    await act(async () => { render(<SceneRenderer />); });
+    expect(screen.getByText('No save')).toBeDefined();
+  });
+
+  it('shows no save status chip when persistence is not ready', async () => {
     makeStore({ isStoryReady: true, sceneText: ['Scene.'], isPersistenceReady: false });
     await act(async () => { render(<SceneRenderer />); });
-    expect(screen.getByText('Checking saves')).toBeDefined();
+    expect(screen.queryByText('Local save ready')).toBeNull();
+    expect(screen.queryByText('No save')).toBeNull();
   });
 
   it('shows Past chip for past POV', async () => {

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { GameBriefing } from './game-briefing';
 
@@ -22,6 +22,7 @@ vi.mock('@mui/material/Typography', () => ({
 }));
 
 describe('GameBriefing', () => {
+  beforeEach(() => { localStorage.clear(); });
   it('renders the briefing card by default', () => {
     render(<GameBriefing />);
     expect(screen.getByText('You are entering Ayker.')).toBeDefined();
@@ -52,9 +53,9 @@ describe('GameBriefing', () => {
 
   it('renders role labels for characters', () => {
     render(<GameBriefing />);
-    expect(screen.getByText('Past timeline witness')).toBeDefined();
-    expect(screen.getByText('Analyst and translator')).toBeDefined();
-    expect(screen.getByText('Future timeline witness')).toBeDefined();
+    expect(screen.getByText('Student, University of Brinkton — 874cy')).toBeDefined();
+    expect(screen.getByText("Xav's classmate and collaborator — 874cy")).toBeDefined();
+    expect(screen.getByText('Survivor, ruins of old Brinkton — 23ac')).toBeDefined();
   });
 
   it('renders "How to read your choices" section', () => {
