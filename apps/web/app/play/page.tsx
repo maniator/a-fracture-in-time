@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import Box from '@mui/material/Box';
+
+export const metadata: Metadata = {
+  title: 'Play',
+};
 import Container from '@mui/material/Container';
 import { AmbienceControl } from '@/components/ambience-control';
 import { GameBriefing } from '@/components/game-briefing';

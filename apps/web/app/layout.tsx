@@ -4,7 +4,10 @@ import { AppProviders } from '@/components/app-providers';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Fractureline',
+  title: {
+    default: 'Fractureline',
+    template: '%s — Fractureline',
+  },
   description: 'A dual-perspective narrative web game where choices rewrite time.',
   manifest: '/manifest.webmanifest',
   applicationName: 'Fractureline',

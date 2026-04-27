@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import Box from '@mui/material/Box';
+
+export const metadata: Metadata = {
+  title: 'Help',
+};
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
