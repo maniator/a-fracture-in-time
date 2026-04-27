@@ -38,7 +38,7 @@
 - Add deterministic continuation tests for Chapter 3 -> Chapter 4 consequence routing.
 - Add merge-hub tests for future chapters to ensure braided narrative recombination remains reachable.
 - Add codex review for unlock pacing and wording across Chapters 2-4.
-- **Duration standard**: all new chapter routes must target **20–30 minutes** (3,000–4,500 words at ~150 WPM). Duration tests enforce the floor; QA flags routes over 4,500 words for pacing review.
+- **Duration standard**: all new chapter routes must target **20–30 minutes** (3,000–4,500 words at ~150 WPM). Duration tests enforce the 3,000-word floor and `estimatedMinutes <= 30`; routes over 4,500 words are flagged by QA for manual pacing review (no automated max-word gate).
 
 ### 5. Implement branching complexity controls
 - Adopt the braided-branch architecture documented in `docs/STORY_ROADMAP.md`.

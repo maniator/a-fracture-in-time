@@ -55,7 +55,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 
 ```ts
 // apps/web/public/chapter-packs/chapter-1.ink — reference implementation (ink format)
-// Scene IDs are set via Ink variables: ~ currentSceneId = "ch2_signal_start"
+// Scene IDs are set via Ink variables: ~ currentSceneId = "ch1_xav_quad"
 // POV values are 'past' | 'future': ~ currentPOV = "past"
 {
   id: "ch1_xav_quad",       // unique, named for scene/character context
