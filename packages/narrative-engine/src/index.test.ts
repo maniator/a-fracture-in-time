@@ -115,6 +115,12 @@ describe('narrative engine', () => {
     expect(() => evaluateCondition({ type: 'unknown' } as any, initialTimelineState)).toThrow('Unhandled variant');
   });
 
+  it('applyEffect returns same state when markSceneSeen is a duplicate', () => {
+    const state = { ...initialTimelineState, seenScenes: ['ch1_intro'] };
+    const result = applyEffect(state, { type: 'markSceneSeen', sceneId: 'ch1_intro' });
+    expect(result).toBe(state); // strict reference equality — no new object created
+  });
+
   it('applyEffect throws on unknown effect type via assertNever', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => applyEffect(initialTimelineState, { type: 'unknown' } as any)).toThrow('Unhandled variant');

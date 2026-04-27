@@ -161,4 +161,41 @@ describe('narrative engine coverage regression', () => {
     const snapshot = snapshotInkStory(story, ['pre-captured line']);
     expect(snapshot.text).toContain('pre-captured line');
   });
+
+  it('snapshotInkStory handles null currentTags and null choice tags', () => {
+    const mockStory = {
+      currentTags: null,
+      currentChoices: [
+        { index: 0, text: 'Choice A', tags: null },
+        { index: 1, text: 'Choice B', tags: ['tag1'] },
+      ],
+      variablesState: {},
+      state: { ToJson: () => '{}' },
+    };
+
+    const snapshot = snapshotInkStory(mockStory as never, ['line']);
+    expect(snapshot.tags).toEqual([]);
+    expect(snapshot.choices[0].tags).toEqual([]);
+    expect(snapshot.choices[1].tags).toEqual(['tag1']);
+  });
+
+  it('continueInkStory treats null return from Continue() as empty and skips it', () => {
+    let canContinue = true;
+    const mockStory = {
+      get canContinue() {
+        return canContinue;
+      },
+      Continue: () => {
+        canContinue = false;
+        return null as unknown as string;
+      },
+      currentTags: [],
+      currentChoices: [],
+      variablesState: {},
+      state: { ToJson: () => '{}' },
+    };
+
+    const snapshot = continueInkStory(mockStory as never);
+    expect(snapshot.text).toEqual([]);
+  });
 });
