@@ -259,14 +259,17 @@ Zelda's voice cut through the static.
 "Xav, listen to me. In my timeline, someone touched it early. No one agrees who. But the first change begins in your house."
 + [Tell Ari the truth and ask her not to touch it] # cue:stability
     ~ stability += 2
+    I told her everything I could in thirty seconds: the voice from the future, the family name on a burned record, Zelda's warning. Ari went very still. Then she put her hands behind her back.
     -> ch1_end_signal
 + [Open the notebook before Ari can reach it] # cue:memory
     ~ memoryFracture += 2
     ~ xavOpenedNotebook = true
+    I moved before she could cross the room, pulling the cloth away and breaking the lock with my thumbnail the way Da had shown me never to do. The pages fell open on their own.
     -> ch1_end_family
 + [Let Ari help, even if Zelda warned you] # cue:rebellion
     ~ rebellion += 2
     ~ ariTouchedNotebook = true
+    I stepped back. I told myself it was because she had the right to know, not because I was afraid to be the one who opened it. Ari reached out and touched the cover.
     -> ch1_end_history
 
 === ch1_end_signal ===
@@ -276,7 +279,6 @@ Zelda's voice cut through the static.
 In the ruins of Brinkton, Zelda watched the tunnel lights flicker from red to gold.
 Someone beside her gasped. On the wall, a patch of old Cybol script rewrote itself into a warning instead of a victory slogan.
 The future had not changed enough to save them. But it had changed enough to answer.
-Ending: The Signal Path. Xav, Yve, and Zelda have made contact carefully, and the first stable bridge between eras survives.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "signal-path"
@@ -290,7 +292,6 @@ The notebook opened in Xav's room and Zelda felt it in the future like a door un
 A new page appeared in the device case, written in Xav's hand and dated years after his exam.
 Zelda read the first line twice.
 If my grandchild is reading this, then I failed once and am trying again.
-Ending: The Family Path. The Reivax-Adlez connection is no longer theory. The family record has become a weapon, a warning, and a promise.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "family-path"
@@ -304,7 +305,6 @@ Ari touched the notebook.
 For one impossible second, Zelda remembered two childhoods: one under Diderram patrol curfew, one in a Cybol school that should not exist after the fall.
 Then the older memory began to fade.
 She dug her nails into her palm and whispered Xav's name until both timelines hurt.
-Ending: The History Path. The past has changed too quickly. Zelda still remembers the first future, but time is already trying to settle over the evidence.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "history-path"
