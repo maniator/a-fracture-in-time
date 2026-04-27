@@ -312,11 +312,14 @@ test('narrative stats update correctly when choices are made', async ({ page }) 
   await page.goto('/play');
   await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
 
-  await expect(page.getByRole('definition').filter({ hasText: '0' }).first()).toBeVisible();
+  // All signals start at Quiet (no points accumulated yet)
+  await expect(page.getByText('Quiet').first()).toBeVisible();
 
   await page.getByRole('button', { name: /admit the com broke again/i }).click();
   await expect(page.getByRole('heading', { name: 'Yve Ettevy' })).toBeVisible();
 
-  const stability = page.getByRole('term').filter({ hasText: 'Stability' }).locator('..').getByRole('definition');
-  await expect(stability).toHaveText('1');
+  // stability +1 → Order signal (stability + controlIndex = 1) should now be Rising
+  await expect(page.getByRole('heading', { name: /timeline signals/i })).toBeVisible();
+  const orderSignal = page.getByText('Order').locator('..').locator('..');
+  await expect(orderSignal.getByText('Rising')).toBeVisible();
 });
