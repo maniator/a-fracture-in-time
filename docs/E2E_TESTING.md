@@ -5,7 +5,7 @@ Fractureline uses Playwright for browser-level validation of the deployed user e
 
 ## Current Coverage
 - Home page loads and links into the game.
-- Play page renders Chapter 1 and advances from Protector to Dissenter.
+- Play page renders Chapter 1 and advances from Xav's opening scene through the first Zelda contact.
 - Local save/load restores progress after restarting the chapter.
 - A deterministic path completes all of Chapter 1.
 - Help page documents gameplay, offline play, and testing strategy.

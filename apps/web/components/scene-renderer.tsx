@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,6 +8,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -79,6 +84,10 @@ const chapterTitleByPackId: Record<string, string> = {
   'chapter-5-memory-settlement': 'The Cost of Utopia: Memory Settlement',
 };
 
+function formatEndingKey(key: string) {
+  return key.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export function SceneRenderer() {
   const {
     state,
@@ -98,6 +107,8 @@ export function SceneRenderer() {
     isChoosing,
     storyLoadError,
   } = useGameStore();
+
+  const [restartDialogOpen, setRestartDialogOpen] = useState(false);
 
   useEffect(() => {
     void hydrateSaveStatus();
@@ -123,7 +134,8 @@ export function SceneRenderer() {
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
   const timelineSignals = getTimelineSignals(state);
 
-  if (storyLoadError) {
+  // Story failed to load at all — show error in place of the loading card.
+  if (!isStoryReady && storyLoadError) {
     return (
       <Alert
         severity="warning"
@@ -153,107 +165,149 @@ export function SceneRenderer() {
   }
 
   return (
-    <Card component="section" aria-labelledby="scene-title" sx={{ boxShadow: '0 28px 80px rgba(0,0,0,0.45)' }}>
-      <CardContent sx={{ p: { xs: 3, md: 5 } }}>
-        <Stack direction="row" spacing={1.5} sx={{ mb: 4, flexWrap: 'wrap' }}>
-          <Chip label={`Chapter ${state.chapter}`} variant="outlined" />
-          <Chip label={formatEraLabel(state.currentPOV)} color="primary" variant="outlined" />
-          {state.endingKey ? <Chip label={state.endingKey} color="secondary" variant="outlined" /> : null}
-          <Chip label={isPersistenceReady ? 'Local save ready' : 'Checking saves'} color={hasSave ? 'secondary' : 'default'} variant="outlined" />
-          {isChoosing ? <Chip label="Applying choice" color="secondary" variant="filled" /> : null}
-        </Stack>
+    <>
+      <Card component="section" aria-labelledby="scene-title" sx={{ boxShadow: '0 28px 80px rgba(0,0,0,0.45)' }}>
+        <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+          {/* Inline error alert — story is loaded but a choose/load action failed */}
+          {storyLoadError ? (
+            <Alert
+              severity="warning"
+              sx={{ mb: 3 }}
+              action={<Button color="inherit" size="small" onClick={() => void initializeStory()}>Try again</Button>}
+            >
+              {storyLoadError}
+            </Alert>
+          ) : null}
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 4 }}>
-          <Button variant="contained" color="secondary" disabled={isChoosing} onClick={() => void save()}>Save progress</Button>
-          <Button variant="outlined" color="inherit" disabled={isChoosing || !isPersistenceReady || !hasSave} onClick={() => void load()}>Load progress</Button>
-          <Button variant="text" color="inherit" disabled={isChoosing} onClick={() => void reset()}>Restart chapter</Button>
-        </Stack>
+          <Stack direction="row" spacing={1.5} sx={{ mb: 4, flexWrap: 'wrap' }}>
+            <Chip label={`Chapter ${state.chapter}`} variant="outlined" />
+            <Chip label={formatEraLabel(state.currentPOV)} color="primary" variant="outlined" />
+            {state.endingKey ? <Chip label={formatEndingKey(state.endingKey)} color="secondary" variant="outlined" /> : null}
+            {isPersistenceReady ? (
+              <Chip label={hasSave ? 'Local save ready' : 'No save'} color={hasSave ? 'secondary' : 'default'} variant="outlined" />
+            ) : null}
+            {isChoosing ? <Chip label="Applying choice" color="secondary" variant="filled" /> : null}
+          </Stack>
 
-        <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
-          {speaker}
-        </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 4 }}>
+            <Button variant="contained" color="secondary" disabled={isChoosing} onClick={() => void save()}>Save progress</Button>
+            <Button variant="outlined" color="inherit" disabled={isChoosing || !isPersistenceReady || !hasSave} onClick={() => void load()}>Load progress</Button>
+            <Button variant="text" color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)}>Restart chapter</Button>
+          </Stack>
 
-        <Stack spacing={2.5} sx={{ mt: 4 }}>
-          {sceneText.map((paragraph, index) => (
-            <Typography key={index} sx={{ color: 'text.secondary', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.75 }}>
-              {paragraph}
-            </Typography>
-          ))}
-        </Stack>
+          <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
+            {speaker}
+          </Typography>
 
-        {choices.length ? (
-          <Stack spacing={2} sx={{ mt: 5 }} aria-label="Choices">
-            {choices.map((choice) => (
-              <Button
-                key={choice.id}
-                disabled={isChoosing}
-                onClick={() => {
-                  dispatchChoiceCue(choice);
-                  void choose(choice.id);
-                }}
-                variant="outlined"
-                color="inherit"
-                size="large"
-                sx={{ justifyContent: 'flex-start', borderRadius: 3, px: 3, py: 2, textAlign: 'left' }}
-              >
-                {choice.label}
-              </Button>
+          <Stack spacing={2.5} sx={{ mt: 4 }}>
+            {sceneText.map((paragraph, index) => (
+              <Typography key={index} sx={{ color: 'text.secondary', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.75 }}>
+                {paragraph}
+              </Typography>
             ))}
           </Stack>
-        ) : null}
 
-        {currentChapterComplete ? (
-          <Alert
-            severity="success"
-            sx={{ mt: 4 }}
-            action={canContinue ? (
-              <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()}>
-                Continue to Chapter {nextPack?.chapter}
-              </Button>
-            ) : (
-              <Button color="inherit" disabled={isChoosing} onClick={() => void reset()}>Replay</Button>
-            )}
-          >
-            <Typography sx={{ fontWeight: 700 }}>Chapter {state.chapter} complete.</Typography>
-            <Typography variant="body2">
-              {canContinue
-                ? `Your ending unlocked Chapter ${nextPack?.chapter}${nextChapterTitle ? `: ${nextChapterTitle}.` : '.'}`
-                : 'Your choices will shape which future chapters become available.'}
-            </Typography>
-          </Alert>
-        ) : null}
-
-        <Divider sx={{ my: 5 }} />
-
-        <Box component="section" aria-labelledby="timeline-signals-title">
-          <Typography
-            id="timeline-signals-title"
-            component="h2"
-            variant="overline"
-            sx={{ letterSpacing: '0.2em', color: 'text.secondary' }}
-          >
-            Timeline Signals
-          </Typography>
-          <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>
-            These signals are not scores. They describe the kind of timeline your choices are shaping.
-          </Typography>
-          <Grid container spacing={2} component="dl" sx={{ mt: 1 }}>
-            {timelineSignals.map((signal) => (
-              <SignalCard key={signal.key} signal={signal} />
-            ))}
-          </Grid>
-        </Box>
-
-        {state.codex.length ? (
-          <Box component="aside" sx={{ mt: 5, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, p: 3 }}>
-            <Typography variant="overline" sx={{ letterSpacing: '0.25em', color: 'text.secondary' }}>Codex</Typography>
-            <Stack component="ul" spacing={1} sx={{ mt: 1, pl: 3, color: 'text.secondary' }}>
-              {state.codex.map((entry) => <li key={entry}>{entry}</li>)}
+          {choices.length ? (
+            <Stack spacing={2} sx={{ mt: 5 }} aria-label="Choices">
+              {choices.map((choice) => (
+                <Button
+                  key={choice.id}
+                  type="button"
+                  disabled={isChoosing}
+                  onClick={() => {
+                    dispatchChoiceCue(choice);
+                    void choose(choice.id);
+                  }}
+                  variant="outlined"
+                  color="inherit"
+                  size="large"
+                  sx={{ justifyContent: 'flex-start', borderRadius: 3, px: 3, py: 2, textAlign: 'left' }}
+                >
+                  {choice.label}
+                </Button>
+              ))}
             </Stack>
+          ) : null}
+
+          {currentChapterComplete ? (
+            <Alert
+              severity="success"
+              sx={{ mt: 4 }}
+              action={canContinue ? (
+                <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()}>
+                  Continue to Chapter {nextPack?.chapter}
+                </Button>
+              ) : (
+                <Button color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)}>Replay</Button>
+              )}
+            >
+              <Typography sx={{ fontWeight: 700 }}>Chapter {state.chapter} complete.</Typography>
+              <Typography variant="body2">
+                {canContinue
+                  ? `Your ending unlocked Chapter ${nextPack?.chapter}${nextChapterTitle ? `: ${nextChapterTitle}.` : '.'}`
+                  : 'Your choices will shape which future chapters become available.'}
+              </Typography>
+            </Alert>
+          ) : null}
+
+          <Divider sx={{ my: 5 }} />
+
+          <Box component="section" aria-labelledby="timeline-signals-title">
+            <Typography
+              id="timeline-signals-title"
+              component="h2"
+              variant="overline"
+              sx={{ letterSpacing: '0.2em', color: 'text.secondary' }}
+            >
+              Timeline Signals
+            </Typography>
+            <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>
+              These signals are not scores. They describe the kind of timeline your choices are shaping.
+            </Typography>
+            <Grid container spacing={2} component="dl" sx={{ mt: 1 }}>
+              {timelineSignals.map((signal) => (
+                <SignalCard key={signal.key} signal={signal} />
+              ))}
+            </Grid>
           </Box>
-        ) : null}
-      </CardContent>
-    </Card>
+
+          {state.codex.length ? (
+            <Box component="aside" sx={{ mt: 5, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, p: 3 }}>
+              <Typography variant="overline" sx={{ letterSpacing: '0.25em', color: 'text.secondary' }}>Codex</Typography>
+              <Stack component="ul" spacing={1} sx={{ mt: 1, pl: 3, color: 'text.secondary' }}>
+                {state.codex.map((entry) => <li key={entry}>{entry}</li>)}
+              </Stack>
+            </Box>
+          ) : null}
+        </CardContent>
+      </Card>
+
+      <Dialog
+        open={restartDialogOpen}
+        onClose={() => setRestartDialogOpen(false)}
+        aria-labelledby="restart-dialog-title"
+        aria-describedby="restart-dialog-description"
+      >
+        <DialogTitle id="restart-dialog-title">Restart from Chapter 1?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="restart-dialog-description">
+            This will return to the very beginning of the story. Your saved progress is not deleted — you can still load it afterwards.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setRestartDialogOpen(false)}>Cancel</Button>
+          <Button
+            color="warning"
+            onClick={() => {
+              setRestartDialogOpen(false);
+              void reset();
+            }}
+          >
+            Restart
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 

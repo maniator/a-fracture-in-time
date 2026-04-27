@@ -177,7 +177,7 @@ Unit tests live in package-level test files, including Chapter 2 duration guardr
 End-to-end tests live in `apps/web/tests/e2e` and cover:
 
 - home page navigation
-- play flow from Protector to Dissenter
+- play flow through Chapter 1 (Signal, Family, and History path endings)
 - IndexedDB save/load behavior
 - deterministic Chapter 1 completion
 - help page content
