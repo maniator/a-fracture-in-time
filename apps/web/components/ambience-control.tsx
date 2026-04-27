@@ -12,8 +12,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 const MAX_GAIN = 0.22;
-// Normalized 0–1 initial volume; maps to a raw gain of ≈0.07.
-const INITIAL_VOLUME = 0.32;
+// Normalized 0–1 initial volume; maps to a raw gain of ≈0.11.
+const INITIAL_VOLUME = 0.5;
 const CHAPTER_NOTE_SCALES: Record<number, number[]> = {
   1: [196, 220, 246.94, 293.66, 329.63, 392],
   2: [174.61, 196, 220, 261.63, 293.66, 349.23],
@@ -292,8 +292,10 @@ export function AmbienceControl() {
       window.removeEventListener('fractureline:scene-context', handleSceneContext);
       if (schedulerRef.current !== null) {
         window.clearInterval(schedulerRef.current);
+        schedulerRef.current = null;
       }
       const nodes = nodesRef.current;
+      nodesRef.current = null;
       if (!nodes) return;
       nodes.textureSource.stop();
       void nodes.context.close();
