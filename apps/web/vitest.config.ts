@@ -13,7 +13,7 @@ export default defineConfig({
     passWithNoTests: true,
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json-summary'],
+      reporter: ['text', 'json-summary', 'lcov'],
       include: ['lib/**/*.ts'],
       exclude: ['**/*.test.ts', 'lib/theme.ts'],
       thresholds: {

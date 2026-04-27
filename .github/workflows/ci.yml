@@ -30,7 +30,7 @@ jobs:
         run: pnpm lint
 
   unit-tests:
-    name: Unit tests
+    name: Unit tests + coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,8 +44,17 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Run unit tests
-        run: pnpm test
+      - name: Run unit tests with coverage (enforces ≥90% branch threshold)
+        run: pnpm test:coverage
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            packages/narrative-engine/coverage
+            apps/web/coverage
+          retention-days: 14
 
   build:
     name: Build app
