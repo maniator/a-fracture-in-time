@@ -7,17 +7,17 @@ Provide a single authoring contract for all story content.
 
 ```json
 {
-  "id": "ch1_p_001",
+  "id": "ch1_xav_quad",
   "chapter": 1,
-  "pov": "protector",
-  "speaker": "Protector",
+  "pov": "past",
+  "speaker": "Xav Reivax",
   "text": [
     "The bells did not ring in Lattice unless something had been corrected.",
     "Today they rang three times."
   ],
   "conditions": [],
   "onEnterEffects": [
-    { "type": "markSceneSeen", "sceneId": "ch1_p_001" }
+    { "type": "markSceneSeen", "sceneId": "ch1_xav_quad" }
   ],
   "choices": [
     {
@@ -26,7 +26,7 @@ Provide a single authoring contract for all story content.
       "effects": [
         { "type": "increment", "key": "stability", "value": 1 }
       ],
-      "nextSceneId": "ch1_p_002"
+      "nextSceneId": "ch1_next_scene"
     }
   ]
 }
@@ -40,10 +40,10 @@ Some scenes will present an open-ended text prompt instead of pre-set choices. T
 
 ```json
 {
-  "id": "ch2_p_042",
+  "id": "ch2_signal_042",
   "chapter": 2,
-  "pov": "protector",
-  "speaker": "Protector",
+  "pov": "past",
+  "speaker": "Xav Reivax",
   "text": ["The officer asked you to describe what you saw. In your own words."],
   "freeFormPrompt": {
     "promptKey": "ch2_testimony",
@@ -51,9 +51,9 @@ Some scenes will present an open-ended text prompt instead of pre-set choices. T
     "maxLength": 500
   },
   "onEnterEffects": [
-    { "type": "markSceneSeen", "sceneId": "ch2_p_042" }
+    { "type": "markSceneSeen", "sceneId": "ch2_signal_042" }
   ],
-  "nextSceneId": "ch2_p_043"
+  "nextSceneId": "ch2_signal_043"
 }
 ```
 
@@ -98,6 +98,7 @@ All chapters after Chapter 1 must target a **20–30 minute** play session:
 
 ## Authoring Rules
 - Every scene must have a unique id.
+- The `pov` field must be `"past"` or `"future"` — matching the `POV` type in `packages/shared-types/src/game.ts`. Do not use character-role labels such as `"protector"` or `"dissenter"`.
 - Every choice must resolve to a valid nextSceneId unless it ends the chapter or game.
 - Free-form scenes must also have a valid nextSceneId.
 - No orphan scenes.

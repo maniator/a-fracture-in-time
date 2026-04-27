@@ -26,21 +26,28 @@ type LocalSaveRecord = {
 };
 ```
 
-**TimelineState** (from `packages/shared-types/src/game.ts`):
+**TimelineState** — always read the canonical definition from `packages/shared-types/src/game.ts`. Do **not** rely on a duplicated field list in this agent file. The key fields for persistence purposes are:
+
 ```ts
-type TimelineState = {
-  stability: number;
-  controlIndex: number;
-  rebellion: number;
-  memoryFracture: number;
-  magicEntropy: number;
+// packages/shared-types/src/game.ts — abbreviated for reference
+export type POV = 'past' | 'future';
+
+export type TimelineState = Record<TimelineVariable, number> & {
   flags: Record<string, boolean>;
   seenScenes: string[];
+  codex: string[];
   chapter: number;
   currentSceneId: string;
-  currentPOV: 'protector' | 'dissenter';
+  currentPOV: POV;           // 'past' | 'future'
+  currentSpeaker?: string;
+  currentText?: string[];
+  endingKey?: string;
+  chapterPackId?: string;
+  inkStateJson?: string;
 };
 ```
+
+When updating save payloads, migrations, tests, or adapters, read the current exported `TimelineState` directly from `packages/shared-types/src/game.ts`.
 
 **Legacy migration**: `localStorage` key `fractureline:save:v1` → IndexedDB on first load, then deleted.
 

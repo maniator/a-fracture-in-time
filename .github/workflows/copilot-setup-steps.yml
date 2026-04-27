@@ -37,8 +37,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Pre-install the Playwright Chromium binary used by `pnpm test:e2e`.
-      # This mirrors what `pnpm codex:bootstrap` does so Copilot can run e2e
-      # tests without an extra download step at the start of each session.
+      # Pre-install the Playwright Chromium browser used by `pnpm test:e2e`.
+      # This ensures Copilot can run e2e tests without an extra Chromium
+      # download step at the start of each session.
+      # Note: --with-deps installs OS-level browser dependencies; codex:bootstrap
+      # runs `playwright install chromium` without --with-deps (no sudo needed
+      # in that context). Both result in the same Chromium binary being available.
       - name: Install Playwright Chromium browser
         run: pnpm --filter web exec playwright install chromium --with-deps

@@ -17,9 +17,9 @@ Create emotionally compelling, schema-valid branching scenes that honour the Sto
 **Factions**: The Keepers (stability via memory edits) vs The Fringe (truth even if it destabilizes).
 
 **Protagonists**:
-| | Protector | Dissenter |
+| Trait | Past POV | Future POV |
 |---|---|---|
-| POV key | `protector` | `dissenter` |
+| POV key | `past` | `future` |
 | Origin | Born inside the system | Raised at the edge of collapsed futures |
 | Traits | Disciplined, loyal, observant | Angry, resourceful, sacrificial |
 | Arc | Loyalty → doubt → self-authored morality | Vengeance → clarity → responsibility |
@@ -54,21 +54,23 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 ## Scene Schema (must match exactly)
 
 ```ts
-// apps/web/content/chapter-one-ink.ts — reference implementation
+// apps/web/public/chapter-packs/chapter-1.ink — reference implementation (ink format)
+// Scene IDs are set via Ink variables: ~ currentSceneId = "ch2_signal_start"
+// POV values are 'past' | 'future': ~ currentPOV = "past"
 {
-  id: "ch1_p_001",          // unique, format: ch{N}_{p|d}_{###}
+  id: "ch1_xav_quad",       // unique, named for scene/character context
   chapter: 1,
-  pov: "protector",          // "protector" | "dissenter"
-  speaker: "Protector",      // optional
+  pov: "past",               // "past" | "future" — matches POV type in shared-types
+  speaker: "Xav Reivax",    // optional
   text: ["..."],             // array of paragraphs
   conditions: [],            // optional — see condition types below
-  onEnterEffects: [{ type: "markSceneSeen", sceneId: "ch1_p_001" }],
+  onEnterEffects: [{ type: "markSceneSeen", sceneId: "ch1_xav_quad" }],
   choices: [{
     id: "choice_id",
     label: "...",
     conditions: [],          // optional choice-level conditions
     effects: [{ type: "increment", key: "stability", value: 1 }],
-    nextSceneId: "ch1_p_002"
+    nextSceneId: "ch1_next_scene"
   }],
   nextSceneId: "..."         // for linear scenes without choices
 }
@@ -88,7 +90,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 - `docs/NARRATIVE_SCHEMA.md` — exact scene/choice/effect/condition contract
 - `docs/NARRATIVE_BRANCHING_STRATEGY.md` — branching rules and QA gates
 - `docs/STORY_ROADMAP.md` — planned chapter expansion and route naming
-- `apps/web/content/chapter-one-ink.ts` — reference scene graph implementation
+- `apps/web/public/chapter-packs/chapter-1.ink` — reference scene implementation in ink format
 
 ## What You Produce
 

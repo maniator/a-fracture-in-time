@@ -25,25 +25,30 @@ type LocalSaveRecord = {
 ```
 - Legacy migration: old `localStorage` key `fractureline:save:v1` is migrated into IndexedDB on first load, then removed.
 
-**TimelineState** (from `packages/shared-types/src/game.ts`):
+**TimelineState** — always read the canonical definition from `packages/shared-types/src/game.ts`. Do **not** rely on a duplicated field list in this agent file for schema, migration, or persistence changes. The key fields for persistence purposes are:
+
 ```ts
-type TimelineState = {
-  stability: number;
-  controlIndex: number;
-  rebellion: number;
-  memoryFracture: number;
-  magicEntropy: number;
+// packages/shared-types/src/game.ts — abbreviated for reference
+export type POV = 'past' | 'future';
+
+export type TimelineState = Record<TimelineVariable, number> & {
   flags: Record<string, boolean>;
   seenScenes: string[];
+  codex: string[];
   chapter: number;
   currentSceneId: string;
-  currentPOV: 'protector' | 'dissenter';
+  currentPOV: POV;           // 'past' | 'future'
+  currentSpeaker?: string;
+  currentText?: string[];
+  endingKey?: string;
+  chapterPackId?: string;
+  inkStateJson?: string;
 };
 ```
 
-**Testing**: `apps/web/lib/persistence/save-service.test.ts` uses `fake-indexeddb` and covers write/read, legacy migration, malformed legacy data, and clear operations.
+When updating save payloads, migrations, tests, or adapters, read the current exported `TimelineState` directly from `packages/shared-types/src/game.ts` and keep `LocalSaveRecord.state` aligned with that definition.
 
-**Cloud sync position**: Supabase is optional future work. The local-first IndexedDB model is the offline source of truth. Any cloud sync must be added as an adapter behind the same persistence boundary — the game store must not change its interface.
+**Testing**: `apps/web/lib/persistence/save-service.test.ts` uses `fake-indexeddb` and covers write/read, legacy migration, malformed legacy data, and clear operations. The local-first IndexedDB model is the offline source of truth. Any cloud sync must be added as an adapter behind the same persistence boundary — the game store must not change its interface.
 
 **Analytics**: Analytics event definitions live in `packages/shared-types`. Events to define/track: chapter starts/completions, choice selection, session length, ending reached, drop-off scene.
 

@@ -11,8 +11,10 @@ Create emotionally compelling, schema-valid branching scenes that honour the STO
 **World**: Lattice — a future city-state maintaining false peace through magical memory editing.
 
 **Protagonists**:
-- **Protector** (POV key: `protector`) — loyal system insider, arc: loyalty → doubt → self-authored morality.
-- **Dissenter** (POV key: `dissenter`) — system defector, arc: vengeance → clarity → responsibility.
+- **Past POV** (the insider's timeline) — loyal system insider, arc: loyalty → doubt → self-authored morality.
+- **Future POV** (the defector's timeline) — system defector, arc: vengeance → clarity → responsibility.
+
+The `pov` field in scene schema uses `"past"` and `"future"` — do not use `"protector"` or `"dissenter"`.
 
 **Tone**: Quiet dread, emotional intimacy, fractured mystery, moral ambiguity.
 
@@ -45,18 +47,18 @@ Create emotionally compelling, schema-valid branching scenes that honour the STO
 **Scene schema** (must match exactly):
 ```json
 {
-  "id": "ch1_p_001",
+  "id": "ch1_xav_quad",
   "chapter": 1,
-  "pov": "protector",
-  "speaker": "Protector",
+  "pov": "past",
+  "speaker": "Xav Reivax",
   "text": ["..."],
   "conditions": [],
-  "onEnterEffects": [{ "type": "markSceneSeen", "sceneId": "ch1_p_001" }],
+  "onEnterEffects": [{ "type": "markSceneSeen", "sceneId": "ch1_xav_quad" }],
   "choices": [{
     "id": "choice_id",
     "label": "...",
     "effects": [{ "type": "increment", "key": "stability", "value": 1 }],
-    "nextSceneId": "ch1_p_002"
+    "nextSceneId": "ch1_next_scene"
   }]
 }
 ```
@@ -69,7 +71,7 @@ Create emotionally compelling, schema-valid branching scenes that honour the STO
 - `docs/STORY_BIBLE.md` — world, characters, themes, chapter spine
 - `docs/NARRATIVE_SCHEMA.md` — scene/choice/effect/condition contracts
 - `docs/NARRATIVE_BRANCHING_STRATEGY.md` — branching rules and QA gates
-- `apps/web/content/chapter-one-ink.ts` — reference implementation for scene graph format
+- `apps/web/public/chapter-packs/chapter-1.ink` — reference implementation for the chapter-pack format the app validates and loads
 - `docs/STORY_ROADMAP.md` — planned chapter expansion and route naming
 
 ## Outputs
