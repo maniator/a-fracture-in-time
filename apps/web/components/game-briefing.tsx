@@ -12,16 +12,32 @@ import Typography from '@mui/material/Typography';
 
 const BRIEFING_DISMISSED_KEY = 'fractureline:briefing-dismissed';
 
+function safeLocalStorageGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeLocalStorageSet(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Silently ignore storage errors (private mode, quota exceeded, blocked storage).
+  }
+}
+
 export function GameBriefing() {
   // null = hydrating (unknown), true = dismissed, false = not dismissed
   const [dismissed, setDismissed] = useState<boolean | null>(null);
 
   useEffect(() => {
-    setDismissed(localStorage.getItem(BRIEFING_DISMISSED_KEY) === '1');
+    setDismissed(safeLocalStorageGet(BRIEFING_DISMISSED_KEY) === '1');
   }, []);
 
   const dismiss = () => {
-    localStorage.setItem(BRIEFING_DISMISSED_KEY, '1');
+    safeLocalStorageSet(BRIEFING_DISMISSED_KEY, '1');
     setDismissed(true);
   };
 
@@ -109,7 +125,7 @@ function CharacterBrief({ initials, name, role, tone, description }: { initials:
         <Typography sx={{ fontWeight: 800, letterSpacing: '0.08em' }}>{initials}</Typography>
       </Box>
       <Box>
-        <Typography component="h3" variant="h6" sx={{ fontWeight: 800 }}>{name}</Typography>
+        <Typography component="p" variant="h6" sx={{ fontWeight: 800 }}>{name}</Typography>
         <Typography sx={{ mt: 0.25, color: 'secondary.main', fontWeight: 700 }}>{role}</Typography>
         <Typography variant="body2" sx={{ mt: 0.5, color: 'text.secondary', fontStyle: 'italic' }}>{tone}</Typography>
         <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>{description}</Typography>
