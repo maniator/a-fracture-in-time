@@ -48,7 +48,8 @@ describe('Chapter 1 ink pack', () => {
 
     expect(snapshot.variables.chapterOneComplete).toBe(true);
     expect(snapshot.variables.endingKey).toBe('signal-path');
-    expect(snapshot.text.join(' ')).toContain('bridge now existed between eras that had no right to speak to each other');
+    expect(snapshot.variables.currentSceneId).toBe('ch1_complete_signal');
+    expect(snapshot.choices.length).toBe(0);
   });
 
   it('can complete the Family Path ending', () => {
@@ -64,6 +65,7 @@ describe('Chapter 1 ink pack', () => {
 
     expect(snapshot.variables.chapterOneComplete).toBe(true);
     expect(snapshot.variables.endingKey).toBe('family-path');
-    expect(snapshot.text.join(' ')).toContain('memorized his letters');
+    expect(snapshot.variables.currentSceneId).toBe('ch1_complete_family');
+    expect(snapshot.choices.length).toBe(0);
   });
 });
