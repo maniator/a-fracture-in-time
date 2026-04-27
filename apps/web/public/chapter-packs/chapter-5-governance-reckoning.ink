@@ -27,8 +27,9 @@ Yve proposes rotating review tribunals; district crews argue for permanent civil
 === ch5_governance_resolution ===
 ~ currentSceneId = "ch5_governance_resolution"
 ~ currentSpeaker = "Yve Ettevy"
+The debate stretched into evening and past it. By the time the vote landed, everyone in the room had argued themselves quiet.
 The revised charter passes only after Ari adds one line no one can dilute: every override must publish a repair plan.
-In practice, the city learns that power does not disappear when exposed—it reorganizes.
+In practice, the city learns that power does not disappear when exposed. It reorganizes.
 The chapter closes with a live dashboard showing unresolved harms beside every celebrated metric.
 + [End Chapter 5] # cue:ending
     ~ chapterFiveComplete = true

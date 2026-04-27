@@ -72,3 +72,4 @@ Improve onboarding, replayability, and measurement. Recommend small, measurable 
 - Replayability recommendations must align with the three-ending structure — do not propose new endings without PM sign-off.
 - Do not wire analytics to an external platform without PM and privacy review sign-off.
 - Copy changes to `page.tsx` or `help/` must not break existing Playwright tests.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

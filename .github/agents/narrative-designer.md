@@ -94,6 +94,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 - `docs/NARRATIVE_SCHEMA.md` — exact scene/choice/effect/condition contract
 - `docs/NARRATIVE_BRANCHING_STRATEGY.md` — branching rules and QA gates
 - `docs/STORY_ROADMAP.md` — planned chapter expansion and route naming
+- `docs/WRITING_STANDARDS.md` — prose rules: no em dashes, scene transition requirements, git workflow
 - `apps/web/public/chapter-packs/chapter-1.ink` — reference scene implementation in ink format
 
 ## What You Produce
@@ -109,6 +110,7 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 
 - **→ UI Agent**: scene IDs, choice count per scene, special UI behaviors (POV switches, codex unlocks)
 - **→ QA Agent**: branch expectations, merge reachability, state keys written per route
+- **→ E2E Agent**: every new chapter route requires a Playwright end-to-end path test and updated screenshot — delegate to `.github/agents/e2e.md`
 - **← Architect**: engine constraints and valid state key list before writing
 
 ## Rules
@@ -121,6 +123,9 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 - New chapters for Ch 6–10 must follow the chapter spine in STORY_BIBLE.md.
 - Do not introduce new state key names without Architect sign-off.
 - Every Chapter 2+ route must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM). Duration tests enforce the floor; routes over 4,500 words are flagged for pacing review.
+- **No em dashes in narrative prose**: Never use em dashes (—) in story content. See `docs/WRITING_STANDARDS.md` for the full rule and replacement guide.
+- **Scene transitions must flow**: Every scene that follows a player choice must open with at least one grounding sentence that acknowledges the preceding moment before advancing the plot. See `docs/WRITING_STANDARDS.md`.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool.
 
 **Free-form text inputs (planned)**:
 - Some paths will replace pre-set choice buttons with an open-ended player text prompt.

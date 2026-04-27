@@ -88,3 +88,4 @@ When activated, produce one or more of:
 - Never remove existing tests to make CI pass — fix the code or the test expectation.
 - Do not raise coverage thresholds without first confirming the new threshold is achievable on CI.
 - Screenshot tests in e2e are documentation artifacts — keep them but do not let them block on pixel differences.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.

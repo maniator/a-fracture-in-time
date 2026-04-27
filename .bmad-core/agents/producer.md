@@ -75,6 +75,7 @@ When activated, produce one or more of:
 - Put blockers in a visible doc immediately — do not leave them in PR comments only.
 - Block narrative agents from adding new irreversible splits unless a merge hub is planned.
 - Run a BMAD NOM review (`pnpm bmad:nom:review`) after each chapter content sprint.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.
 
 ## Release Gates
 

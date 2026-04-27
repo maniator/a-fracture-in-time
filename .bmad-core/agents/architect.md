@@ -95,3 +95,4 @@ When activated, produce one or more of:
 - Storage access must go through `apps/web/lib/persistence` — no direct IndexedDB calls from components.
 - Every architectural change must consider Vercel build constraints and PWA offline behavior.
 - If adding a new package dependency, check for known CVEs before committing.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.

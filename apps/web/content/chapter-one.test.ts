@@ -48,7 +48,8 @@ describe('Chapter 1 ink pack', () => {
 
     expect(snapshot.variables.chapterOneComplete).toBe(true);
     expect(snapshot.variables.endingKey).toBe('signal-path');
-    expect(snapshot.text.join(' ')).toContain('Chapter 1 complete');
+    expect(snapshot.variables.currentSceneId).toBe('ch1_complete_signal');
+    expect(snapshot.choices.length).toBe(0);
   });
 
   it('can complete the Family Path ending', () => {
@@ -64,6 +65,24 @@ describe('Chapter 1 ink pack', () => {
 
     expect(snapshot.variables.chapterOneComplete).toBe(true);
     expect(snapshot.variables.endingKey).toBe('family-path');
-    expect(snapshot.text.join(' ')).toContain('Chapter 1 complete');
+    expect(snapshot.variables.currentSceneId).toBe('ch1_complete_family');
+    expect(snapshot.choices.length).toBe(0);
+  });
+
+  it('can complete the History Path ending', () => {
+    const snapshot = advanceByChoiceLabels([
+      'Admit the com broke again',
+      'Ask why Diderram needed Cybol\'s peace in the first place',
+      'Answer Zelda before the signal dies',
+      'Tell Xav the truth: Cybol falls',
+      'Ask what event starts the fall',
+      'Let Ari help, even if Zelda warned you',
+      'End Chapter 1',
+    ]);
+
+    expect(snapshot.variables.chapterOneComplete).toBe(true);
+    expect(snapshot.variables.endingKey).toBe('history-path');
+    expect(snapshot.variables.currentSceneId).toBe('ch1_complete_history');
+    expect(snapshot.choices.length).toBe(0);
   });
 });

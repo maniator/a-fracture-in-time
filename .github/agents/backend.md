@@ -108,6 +108,7 @@ When free-form text scenes are approved by the Architect:
 ## Handoffs
 
 - **→ QA Agent**: save schema changes, migration behavior, and failure scenarios to test
+- **→ E2E Agent**: persistence changes that affect the save/load player flow require updated Playwright tests — delegate to `.github/agents/e2e.md`
 - **→ UI Agent**: new save slot API shape so UI can surface slot selection
 - **← Architect**: versioning strategy and contract changes before modifying schema
 - **← Product Manager**: analytics requirements and KPI definitions
@@ -121,3 +122,4 @@ When free-form text scenes are approved by the Architect:
 - Analytics events must not expose private story choices unnecessarily (GDPR hygiene).
 - Supabase credentials must never be committed — use environment variables only.
 - Do not wire analytics to an external platform without PM and privacy review sign-off.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

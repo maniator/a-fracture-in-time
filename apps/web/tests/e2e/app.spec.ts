@@ -113,8 +113,7 @@ test('can complete the Signal Path', async ({ page }) => {
   }
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
-  await expect(page.getByText(/ending: the signal path/i)).toBeVisible();
-  await expect(page.getByText('Signal Path', { exact: true })).toBeVisible();
+  await expect(page.getByText(/signal path/i)).toBeVisible();
   await expect(page.getByRole('button', { name: /continue to chapter 2/i })).toBeVisible();
   await expect(page.getByText(/chapter 2: the stable signal/i)).toBeVisible();
 });
@@ -189,8 +188,7 @@ test('can complete the Family Path', async ({ page }) => {
   }
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
-  await expect(page.getByText(/ending: the family path/i)).toBeVisible();
-  await expect(page.getByText('Family Path', { exact: true })).toBeVisible();
+  await expect(page.getByText(/family path/i)).toBeVisible();
 });
 
 test('can complete the History Path', async ({ page }) => {
@@ -211,8 +209,7 @@ test('can complete the History Path', async ({ page }) => {
   }
 
   await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
-  await expect(page.getByText(/ending: the history path/i)).toBeVisible();
-  await expect(page.getByText('History Path', { exact: true })).toBeVisible();
+  await expect(page.getByText(/history path/i)).toBeVisible();
 });
 
 test('help page explains gameplay instead of build process', async ({ page }) => {

@@ -19,7 +19,8 @@ Turn strategy and agent outputs into sequenced, shippable tasks. Keep docs and i
 | Narrative Designer | Chapter content, branch notes, merge-hub plans |
 | UI Agent | MUI app surfaces, routes, Storybook |
 | Backend Agent | Persistence, analytics event model |
-| QA Agent | Unit tests, e2e tests, PWA, release gates |
+| QA Agent | Unit tests, coverage thresholds, PWA, release gates |
+| E2E Agent | Playwright browser tests, CI e2e shards, screenshot docs |
 | Growth Agent | Onboarding, replay loops, analytics dashboard |
 | Producer | Sequencing, dependency map, acceptance review |
 
@@ -30,7 +31,7 @@ Phase 1: Direction          → Product Manager + Producer
 Phase 2: Foundation         → Architect + Backend (contracts and save model)
 Phase 3: Content            → Narrative Designer (validated by Architect)
 Phase 4: Build              → UI Agent + Backend Agent (parallel)
-Phase 5: Validate           → QA Agent
+Phase 5: Validate           → QA Agent + E2E Agent
 Phase 6: Optimize & Release → Growth Agent + Producer acceptance review
 ```
 
@@ -103,6 +104,7 @@ NOM workflow:
 - Put blockers in a visible doc immediately — not only in PR comments.
 - Run a BMAD NOM review after every chapter content sprint.
 - Block new irreversible narrative splits unless a merge hub is planned and tracked.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.
 
 ## Release Gates
 

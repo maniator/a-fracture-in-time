@@ -66,3 +66,4 @@ When activated, produce one or more of:
 - Track player progress without exposing private story choices unnecessarily (GDPR hygiene).
 - Replayability recommendations must align with the three-ending structure — do not suggest new endings without PM sign-off.
 - Analytics events must not be wired to external platforms until auth/privacy review is complete.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.

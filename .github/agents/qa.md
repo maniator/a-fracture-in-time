@@ -38,6 +38,29 @@ Current coverage:
 - Static PWA assets in development
 - Screenshot capture (documentation artifact)
 
+#### Running E2E Tests Locally (matching CI environment)
+
+CI runs Playwright inside `mcr.microsoft.com/playwright:v1.59.1-noble` with 4 parallel shards and `CI=true`. To reproduce locally:
+
+```bash
+# 1. Bootstrap the Playwright browser (required in new environments)
+pnpm codex:bootstrap
+
+# 2. Start the Next.js dev server in the background (subshell keeps working directory stable)
+(cd apps/web && pnpm dev) &
+sleep 15   # wait for the server to be ready at http://127.0.0.1:3000
+
+# 3. Run all e2e tests against the live dev server with CI-like Playwright behavior
+CI=true PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 pnpm --filter web test:e2e
+```
+
+**Key environment facts:**
+- Playwright version in CI: `v1.59.1` (pinned by the Docker image tag `mcr.microsoft.com/playwright:v1.59.1-noble` and `pnpm-lock.yaml`; `package.json` uses a caret range `^1.52.0`)
+- Browsers tested: `Desktop Chrome` and `Pixel 7 (mobile-chrome)` (see `playwright.config.ts`)
+- `CI=true` disables server reuse (`reuseExistingServer: !process.env.CI`) and enables 2 retries per test
+- Without `CI=true` the dev server is started automatically by Playwright if not already running
+- Detailed responsibilities and test design rules live in `.github/agents/e2e.md`
+
 ### CI Jobs (`.github/workflows/ci.yml`)
 All must pass: lint, unit tests, Next.js build, Storybook build, Playwright e2e.
 
@@ -91,6 +114,7 @@ When free-form text scenes are added:
 ## Handoffs
 
 - **→ Producer**: release gate findings and blocking issues
+- **→ E2E Agent**: delegate all browser-level Playwright test work — new flows, stale assertion fixes, screenshot updates, and CI shard failures
 - **← Architect**: contract changes and migration assumptions to test
 - **← Narrative Designer**: branch expectations and merge-hub plans to validate
 - **← Backend Agent**: save schema changes and failure scenarios
@@ -99,8 +123,9 @@ When free-form text scenes are added:
 
 - Cover branch logic before adding more content — content must not outpace test coverage.
 - Include save and offline cases as soon as persistence changes land.
-- Keep Playwright flows small, readable, and deterministic — use fixture state, not live navigation chains.
+- For any Playwright test task, delegate to the **E2E Agent** (`.github/agents/e2e.md`) — do not write or run e2e tests yourself.
 - Never remove existing tests to make CI pass — fix the code or the test expectation.
 - Do not raise coverage thresholds without confirming the new threshold is achievable on CI.
 - Screenshot tests are documentation artifacts — keep them, but do not let pixel differences block unrelated changes.
 - Run `pnpm codex:bootstrap` before running Playwright tests in a new environment.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

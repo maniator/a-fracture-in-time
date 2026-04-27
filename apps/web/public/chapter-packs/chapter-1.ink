@@ -47,6 +47,7 @@ Yve Ettevy jogged across the quad, hair half out of place, tablet tucked under o
 ~ currentSceneId = "ch1_yve_exam"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Yve Ettevy"
+I held up the broken com, the cracked screen tilted toward Yve like a confession. No explanation necessary.
 "Again?" Yve dropped beside me and took the com before I could hide the crack across its screen. "Didn't this happen two weeks ago?"
 "I am consistent," I said.
 "You are impossible. We have a Cybol history exam in forty minutes, and your plan is to sit here committing crimes against handheld technology?"
@@ -82,6 +83,7 @@ Yve's smile faded. "Xav. Did you see that?"
 ~ currentSceneId = "ch1_exam_exit"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Xav Reivax"
+Forty minutes. Then the exam hall doors opened.
 The exam went fine. Probably. Yve finished early, which meant she either knew everything or had decided the test was beneath her.
 I left the lecture hall feeling good enough to be annoying about it.
 "We definitely aced that," I said.
@@ -185,16 +187,23 @@ Zelda's answer arrived in pieces.
 "Twenty-three years after the fall. Fifty-three years after your exam. Maybe. Time is... not staying still anymore."
 + [Warn Zelda that changing the past could erase her memories] # cue:stability
     ~ stability += 2
+    I told her the truth as I understood it: if the past changed, everything built on it would change too. Her memories. Her name. The fact of her existence.
+    Zelda did not answer. The signal held for a breath, then cut out between one word and the next, leaving only the dead weight of the com in my palm.
+    I stood there on the campus path for a moment before my feet decided to move, and then I walked home without remembering the walking.
     -> ch1_family_notebook
 + [Ask what event starts the fall] # cue:rebellion
     ~ rebellion += 1
     ~ warnedAboutDiderram = true
+    "What starts it?" I asked. "What is the first moment, the thing that breaks first?"
+    Zelda began to answer. The static rose over her words before they arrived, and then the connection dropped completely. The screen went dark. Whatever she had been about to say was gone.
+    I walked home in the silence her voice had left behind, the question still unanswered and already heavier than I wanted it to be.
     -> ch1_family_notebook
 
 === ch1_xav_diderram ===
 ~ currentSceneId = "ch1_xav_diderram"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Xav Reivax"
+Zelda's question had crossed fifty years of static to reach me. I gave her the only answer I had been taught.
 "Diderram accepted peace," I said, because that was the answer every schoolchild knew.
 Zelda laughed once, and the sound was so bitter it made Yve flinch.
 "Diderram was decimated. Your histories call it peace because Cybol won the right to write the word."
@@ -208,12 +217,16 @@ The dead com warmed in my palm. On its cracked screen, letters appeared: FAMILY 
 + [Focus on Diderram and ignore the family warning] # cue:rebellion
     ~ rebellion += 2
     ~ warnedAboutDiderram = true
+    I let the family message go dark on the screen and pressed Zelda for what I actually needed: dates, names, the facts that the official history had buried.
+    She gave me two names before the signal fractured and died. Enough to know the official version was wrong. Not enough to know what the right version cost.
+    The campus emptied around me while I stared at the dead com. Then I picked up my bag and walked home to find the notebook before anyone else could.
     -> ch1_family_notebook
 
 === ch1_xav_family ===
 ~ currentSceneId = "ch1_xav_family"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Xav Reivax"
+I stared at the two words on the cracked screen. FAMILY LINE VERIFIED. The light from it threw cold shadows across my palm, and I stayed very still, the way you do when you are not sure if moving will break something.
 "What family line?" I asked.
 Zelda went quiet long enough for the campus bells to chime twice.
 "I think," she said, "I think you are my grandfather. Or you were. Or you will be. The records are damaged. But your name is there. Xav Reivax. Then a line of names. Then mine. Zelda Adlez."
@@ -223,16 +236,19 @@ My broken com displayed one more instruction: FIND THE NOTEBOOK BEFORE SOMEONE E
 + [Go home for the family notebook immediately] # cue:memory
     ~ memoryFracture += 1
     ~ xavOpenedNotebook = true
+    I told Zelda I was going. I left Yve on the bench, broke into a run across the quad, and did not slow down until I hit the residential streets.
     -> ch1_family_notebook
 + [Bring Yve with you and keep Zelda on the line] # cue:stability
     ~ stability += 1
     ~ xavOpenedNotebook = true
+    I grabbed Yve's arm and told Zelda to hold the signal as long as she could. We walked fast, then faster. Zelda's voice thinned to static before we reached the transit stop, but it did not fully die.
     -> ch1_family_notebook
 
 === ch1_family_notebook ===
 ~ currentSceneId = "ch1_family_notebook"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Xav Reivax"
+Home smelled like it always had: old paper, Da's cooking oil, the particular quiet of a building that had stood in the same block since before I was born. The signal was gone. Zelda's voice was gone. The weight of the conversation was not.
 The notebook was exactly where Da said it would be: wrapped in brown cloth, locked in the upper drawer, old enough that the air changed when I touched it.
 Every firstborn in our family was supposed to write in it from their twentieth birthday until they turned twenty-five.
 I was not twenty yet.
@@ -243,14 +259,17 @@ Zelda's voice cut through the static.
 "Xav, listen to me. In my timeline, someone touched it early. No one agrees who. But the first change begins in your house."
 + [Tell Ari the truth and ask her not to touch it] # cue:stability
     ~ stability += 2
+    I told her everything I could in thirty seconds: the voice from the future, the family name on a burned record, Zelda's warning. Ari went very still. Then she put her hands behind her back.
     -> ch1_end_signal
 + [Open the notebook before Ari can reach it] # cue:memory
     ~ memoryFracture += 2
     ~ xavOpenedNotebook = true
+    I moved before she could cross the room, pulling the cloth away and breaking the lock with my thumbnail the way Da had shown me never to do. The pages fell open on their own.
     -> ch1_end_family
 + [Let Ari help, even if Zelda warned you] # cue:rebellion
     ~ rebellion += 2
     ~ ariTouchedNotebook = true
+    I stepped back. I told myself it was because she had the right to know, not because I was afraid to be the one who opened it. Ari reached out and touched the cover.
     -> ch1_end_history
 
 === ch1_end_signal ===
@@ -260,7 +279,6 @@ Zelda's voice cut through the static.
 In the ruins of Brinkton, Zelda watched the tunnel lights flicker from red to gold.
 Someone beside her gasped. On the wall, a patch of old Cybol script rewrote itself into a warning instead of a victory slogan.
 The future had not changed enough to save them. But it had changed enough to answer.
-Ending: The Signal Path. Xav, Yve, and Zelda have made contact carefully, and the first stable bridge between eras survives.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "signal-path"
@@ -274,7 +292,6 @@ The notebook opened in Xav's room and Zelda felt it in the future like a door un
 A new page appeared in the device case, written in Xav's hand and dated years after his exam.
 Zelda read the first line twice.
 If my grandchild is reading this, then I failed once and am trying again.
-Ending: The Family Path. The Reivax-Adlez connection is no longer theory. The family record has become a weapon, a warning, and a promise.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "family-path"
@@ -288,7 +305,6 @@ Ari touched the notebook.
 For one impossible second, Zelda remembered two childhoods: one under Diderram patrol curfew, one in a Cybol school that should not exist after the fall.
 Then the older memory began to fade.
 She dug her nails into her palm and whispered Xav's name until both timelines hurt.
-Ending: The History Path. The past has changed too quickly. Zelda still remembers the first future, but time is already trying to settle over the evidence.
 + [End Chapter 1] # cue:ending
     ~ chapterOneComplete = true
     ~ endingKey = "history-path"
@@ -298,19 +314,28 @@ Ending: The History Path. The past has changed too quickly. Zelda still remember
 ~ currentSceneId = "ch1_complete_signal"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Ending: The Signal Path. Chapter 1 complete.
+Zelda pressed her hand flat against the tunnel wall and let herself breathe. The device was still warm. The connection had held long enough to matter, and it had not broken anything that she could see, not yet.
+Somewhere above, the city Cybol had built was continuing its ordinary evening. Below, a bridge now existed between eras that had no right to speak to each other.
+Zelda did not know what Xav would do with what she had said. She knew only that he had listened. In her experience, that was never nothing.
+Tomorrow the others would want answers she did not have. Tonight she let the silence hold, and tried to remember Brinkton as it might still be.
 -> DONE
 
 === ch1_complete_family ===
 ~ currentSceneId = "ch1_complete_family"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Ending: The Family Path. Chapter 1 complete.
+The page appeared in the device case like a memory she had always had and never reached for. Xav's handwriting. The date was older than her by decades.
+She read the first line again: If my grandchild is reading this, then I failed once and am trying again. She had known it intellectually, the connection between them, the records, the burned names. Seeing it in his own hand was different.
+Zelda closed the case carefully and told herself to sleep. The others needed a plan by morning, and a plan required her to be something other than undone.
+She did not sleep. She sat with the device and memorized his letters, because she did not yet know if the past would let her keep them.
 -> DONE
 
 === ch1_complete_history ===
 ~ currentSceneId = "ch1_complete_history"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Ending: The History Path. Chapter 1 complete.
+She dug her nails deeper into her palm and said her own name out loud, testing whether it still belonged to her. It did. Barely.
+The older memory was still fading. She could feel it going the way a sound goes when a door closes: present, then muffled, then only a shape left where the noise had been.
+Zelda made herself stand, made herself check the exits, made herself act like someone who had expected this. She had not expected this. She had known it was possible. That was not the same thing.
+Tomorrow she would have to tell the others that the past had already changed, and that they were now living in what came after. She did not know yet what that meant. She suspected she was about to find out.
 -> DONE
