@@ -290,12 +290,11 @@ export function SceneRenderer() {
         aria-describedby="restart-dialog-description"
         fullWidth
         maxWidth="xs"
-        PaperProps={{ sx: { borderRadius: 3 } }}
       >
-        <DialogTitle id="restart-dialog-title" sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' }, fontWeight: 700, pb: 1 }}>
+        <DialogTitle id="restart-dialog-title" sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' }, fontWeight: 700, pt: 3, px: 3, pb: 1 }}>
           Restart from Chapter 1?
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ px: 3, pb: 1 }}>
           <DialogContentText
             id="restart-dialog-description"
             sx={{ color: 'text.primary', fontSize: { xs: '1rem', md: '1.05rem' }, lineHeight: 1.65 }}
@@ -303,7 +302,7 @@ export function SceneRenderer() {
             This will return to the very beginning of the story. Your saved progress is not deleted — you can still load it afterwards.
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 3, gap: 1, flexDirection: { xs: 'column-reverse', sm: 'row' } }}>
+        <DialogActions sx={{ px: 3, pb: 3, gap: 1.5, flexDirection: { xs: 'column-reverse', sm: 'row' } }}>
           <Button
             sx={{ minWidth: { xs: '100%', sm: 'auto' } }}
             size="large"
