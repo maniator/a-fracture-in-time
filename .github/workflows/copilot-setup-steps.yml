@@ -39,12 +39,13 @@ jobs:
 
       # Cache the Playwright Chromium binary so it is only re-downloaded when
       # the lockfile (and therefore the Playwright version) changes.
+      # Include runner OS/arch because Playwright browser downloads are platform-specific.
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       # Cache miss: download Chromium and install all OS-level browser dependencies.
       - name: Install Playwright Chromium browser (with OS deps)
