@@ -34,7 +34,7 @@ Improve onboarding, replayability, and measurement. Recommend small, measurable 
 - Event types are defined in `packages/shared-types` but not wired to any analytics platform yet.
 - Events to track: chapter starts/completions, choice selection frequency, session length, ending reached, drop-off scene.
 
-**Content rule**: Each Chapter 2+ route must sustain ≥ 20 minutes of play (≥ 3,000 words at ~150 WPM). This is enforced by duration tests.
+**Content rule**: Each Chapter 2+ route should target **20–30 minutes** of play (~3,000–4,500 words at ~150 WPM); routes over 4,500 words should be flagged for pacing review. Duration tests enforce the 20-minute floor.
 
 ## Key Documents to Read
 

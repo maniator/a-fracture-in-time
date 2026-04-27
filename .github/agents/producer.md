@@ -99,3 +99,10 @@ NOM workflow:
 - Put blockers in a visible doc immediately — not only in PR comments.
 - Run a BMAD NOM review after every chapter content sprint.
 - Block new irreversible narrative splits unless a merge hub is planned and tracked.
+
+## Release Gates
+
+The following standards must be met before marking any narrative sprint as complete:
+
+- **Chapter duration**: Every Chapter 2+ route must target **20–30 minutes** of play (**3,000–4,500 words** at ~150 WPM). Duration tests enforce the floor; routes exceeding 4,500 words are flagged for pacing review before sign-off.
+- **Free-form text inputs**: This feature is **gated on Architect sign-off**. No agent may implement free-form prompt UI, `playerNotes` persistence, or `storePlayerNote` effects until the Architect's scene schema contract is merged. Block any sprint task that depends on this feature until the gate is cleared.

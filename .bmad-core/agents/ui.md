@@ -80,7 +80,7 @@ When activated, produce one or more of:
 - **← Narrative Designer**: receive scene structure (choice count, POV switches, codex unlocks) that affects rendering
 
 ## Decision Rules
-- Never import from `packages/narrative-engine` for UI logic — only for type imports if truly needed.
+- Do not re-implement branching logic in components — always call `packages/narrative-engine` through the Zustand store (`store/game-store.ts`), which uses it internally. Direct imports of `packages/narrative-engine` inside UI components are discouraged; use only the store API.
 - Never access IndexedDB directly — always call through `lib/persistence/save-service.ts`.
 - Never duplicate MUI component logic — compose from MUI primitives.
 - Keep narrative text rendering isolated in `scene-renderer.tsx`.
