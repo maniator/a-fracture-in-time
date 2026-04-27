@@ -202,7 +202,7 @@ function createSoundscape(volume: number): SoundscapeNodes {
 
   masterGain.connect(limiter);
   limiter.connect(context.destination);
-  setGain(masterGain, volume * MAX_GAIN);
+  setGain(masterGain, volume);
 
   return { context, masterGain, cueGain, textureSource, textureFilter, delay, delayFeedback };
 }
