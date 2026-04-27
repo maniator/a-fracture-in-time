@@ -57,7 +57,7 @@ Every scene that follows a player choice must open with grounding prose before a
 ## Chapter Duration
 
 Every Chapter 2+ route must target a **20–30 minute** play session:
-- Minimum: 3,000 words at ~150 WPM (20 min) — enforced by duration tests
+- Minimum: 3,000 words at ~150 WPM (20 min) — enforced by duration tests for Chapters 2–3; Chapters 4+ should follow the same floor
 - Maximum guideline: 4,500 words at ~150 WPM (30 min) — routes over this are flagged for pacing review
 
 ---
