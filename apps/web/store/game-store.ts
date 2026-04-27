@@ -276,25 +276,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ hasSave: true, isPersistenceReady: true });
   },
   load: async () => {
-    const saved = await indexedDbSaveService.read();
-    if (!saved) {
-      set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
+    try {
+      const saved = await indexedDbSaveService.read();
+      if (!saved) {
+        set({ hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true });
+        return false;
+      }
+
+      setActiveChapterPack(getChapterPackForState(saved) ?? chapterOnePack);
+      const snapshot = await restoreSnapshotFromState(saved);
+      if (!snapshot) {
+        set({
+          hasSave: true,
+          isPersistenceReady: true,
+          storyLoadError: `Your save exists, but Chapter ${saved.chapter} must be downloaded before it can be loaded on this device.`,
+        });
+        return false;
+      }
+
+      set({ ...createStoreView(snapshot, saved), hasSave: true, isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+      return true;
+    } catch {
+      set({ storyLoadError: 'Could not load save. Please try again.' });
       return false;
     }
-
-    setActiveChapterPack(getChapterPackForState(saved) ?? chapterOnePack);
-    const snapshot = await restoreSnapshotFromState(saved);
-    if (!snapshot) {
-      set({
-        hasSave: true,
-        isPersistenceReady: true,
-        storyLoadError: `Your save exists, but Chapter ${saved.chapter} must be downloaded before it can be loaded on this device.`,
-      });
-      return false;
-    }
-
-    set({ ...createStoreView(snapshot, saved), hasSave: true, isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
-    return true;
   },
   reset: async () => {
     const snapshot = await createInitialSnapshot();
