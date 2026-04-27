@@ -1,7 +1,6 @@
 import { Compiler } from 'inkjs/compiler/Compiler';
 import { Story } from 'inkjs/engine/Story';
 
-type CompiledInkStory = ConstructorParameters<typeof Story>[0];
 type InkVariableValue = string | number | boolean;
 
 export type InkChoiceView = {
@@ -47,8 +46,19 @@ export function compileInkStory(source: string): Story {
   return new Compiler(source).Compile();
 }
 
-export function createInkStory(compiledStory: CompiledInkStory, variables: InkVariableMap = {}) {
-  const story = new Story(compiledStory);
+export type CompiledInkJson = {
+  inkVersion: number;
+  [key: string]: unknown;
+};
+
+export function createInkStory(compiledJson: CompiledInkJson, variables: InkVariableMap = {}) {
+  if (typeof (compiledJson as Record<string, unknown>)?.inkVersion !== 'number') {
+    throw new Error(
+      'createInkStory requires a compiled ink JSON object with an inkVersion field. ' +
+        'Did you accidentally pass a live Story instance or uncompiled source?',
+    );
+  }
+  const story = new Story(compiledJson as Record<string, any>);
 
   for (const [key, value] of Object.entries(variables)) {
     story.variablesState[key] = value;
@@ -77,8 +87,7 @@ export function chooseInkChoice(story: Story, choiceIndex: number): InkStorySnap
   return continueInkStory(story);
 }
 
-export function restoreInkStory(compiledStory: CompiledInkStory, stateJson: string): Story {
-  const story = new Story(compiledStory);
+export function restoreInkStory(story: Story, stateJson: string): Story {
   story.state.LoadJson(stateJson);
   return story;
 }

@@ -8,6 +8,7 @@ test.describe('documentation screenshots', () => {
       /answer the impossible voice/i,
       /start carefully and ask/i,
       /ask zelda what the family line means/i,
+      /bring yve with you/i,
       /tell ari the truth/i,
       /end chapter 1/i,
     ]) {

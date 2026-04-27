@@ -9,7 +9,7 @@ import {
   getAvailableChoices,
   resolveChoice,
 } from './index';
-import { chooseInkChoice, compileInkStory, continueInkStory, createInkStory, restoreInkStory, snapshotInkStory } from './ink-adapter';
+import { chooseInkChoice, compileInkStory, continueInkStory, createInkStory, restoreInkStory, snapshotInkStory, type CompiledInkJson } from './ink-adapter';
 
 const MINIMAL_INK_SOURCE = `
 VAR stability = 0
@@ -128,13 +128,14 @@ describe('narrative engine coverage regression', () => {
   });
 
   it('compiles, continues, and restores ink stories via createInkStory', () => {
-    const compiledStory = new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as unknown as Record<string, any>;
-    const story = createInkStory(compiledStory);
+    const compiledJson = JSON.parse(new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as string) as CompiledInkJson;
+    const story = createInkStory(compiledJson);
     const first = continueInkStory(story);
     expect(first.text.join(' ')).toContain('Line one.');
     expect(first.choices).toHaveLength(1);
 
-    const restored = restoreInkStory(compiledStory, first.stateJson);
+    const freshStory = createInkStory(compiledJson);
+    const restored = restoreInkStory(freshStory, first.stateJson);
     const second = chooseInkChoice(restored, 0);
     expect(second.variables.currentPOV).toBe('future');
     expect(second.variables.currentSpeaker).toBe('Zelda Adlez');
@@ -147,9 +148,15 @@ describe('narrative engine coverage regression', () => {
     expect(snapshot.choices).toHaveLength(1);
   });
 
+  it('createInkStory throws when passed an object without inkVersion', () => {
+    expect(() => createInkStory({} as CompiledInkJson)).toThrow(
+      'createInkStory requires a compiled ink JSON object with an inkVersion field.',
+    );
+  });
+
   it('createInkStory applies initial variable overrides', () => {
-    const compiledStory = new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as unknown as Record<string, any>;
-    const story = createInkStory(compiledStory, { stability: 7 });
+    const compiledJson = JSON.parse(new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as string) as CompiledInkJson;
+    const story = createInkStory(compiledJson, { stability: 7 });
     const snapshot = continueInkStory(story);
     // stability starts at 7, then +1 in the ink story → 8
     expect(snapshot.variables.stability).toBe(8);
