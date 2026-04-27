@@ -1,5 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 
+/** Opaque surface colour used for modal dialogs (Paper surfaces are near-transparent by default). */
+const DIALOG_SURFACE = '#1c1628';
+
 export const fracturelineTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -37,6 +40,14 @@ export const fracturelineTheme = createTheme({
     borderRadius: 24,
   },
   components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: DIALOG_SURFACE,
+          border: '1px solid rgba(255,255,255,0.12)',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
