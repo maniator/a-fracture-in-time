@@ -140,7 +140,7 @@ export function SceneRenderer() {
     return (
       <Alert
         severity="warning"
-        action={<Button color="inherit" onClick={() => void initializeStory()}>Try again</Button>}
+        action={<Button type="button" color="inherit" onClick={() => void initializeStory()}>Try again</Button>}
       >
         {storyLoadError}
       </Alert>
@@ -174,7 +174,7 @@ export function SceneRenderer() {
             <Alert
               severity="warning"
               sx={{ mb: 3 }}
-              action={<Button color="inherit" size="small" onClick={clearStoryLoadError}>Dismiss</Button>}
+              action={<Button color="inherit" size="small" onClick={clearStoryLoadError} type="button">Dismiss</Button>}
             >
               {storyLoadError}
             </Alert>
@@ -191,9 +191,9 @@ export function SceneRenderer() {
           </Stack>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 4 }}>
-            <Button variant="contained" color="secondary" disabled={isChoosing} onClick={() => void save()}>Save progress</Button>
-            <Button variant="outlined" color="inherit" disabled={isChoosing || !isPersistenceReady || !hasSave} onClick={() => void load()}>Load progress</Button>
-            <Button variant="text" color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)}>Restart chapter</Button>
+            <Button type="button" variant="contained" color="secondary" disabled={isChoosing} onClick={() => void save()} aria-label="Save progress to local storage">Save progress</Button>
+            <Button type="button" variant="outlined" color="inherit" disabled={isChoosing || !isPersistenceReady || !hasSave} onClick={() => void load()} aria-label="Load previously saved progress">Load progress</Button>
+            <Button type="button" variant="text" color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)} aria-label="Restart chapter from the beginning">Restart chapter</Button>
           </Stack>
 
           <Typography id="scene-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
@@ -235,11 +235,11 @@ export function SceneRenderer() {
               severity="success"
               sx={{ mt: 4 }}
               action={canContinue ? (
-                <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()}>
+                <Button color="inherit" disabled={isChoosing} onClick={() => void continueToNextChapter()} type="button">
                   Continue to Chapter {nextPack?.chapter}
                 </Button>
               ) : (
-                <Button color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)}>Replay</Button>
+                <Button color="inherit" disabled={isChoosing} onClick={() => setRestartDialogOpen(true)} type="button">Replay</Button>
               )}
             >
               <Typography sx={{ fontWeight: 700 }}>Chapter {state.chapter} complete.</Typography>
@@ -304,6 +304,7 @@ export function SceneRenderer() {
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3, gap: 1.5, flexDirection: { xs: 'column-reverse', sm: 'row' } }}>
           <Button
+            type="button"
             sx={{ minWidth: { xs: '100%', sm: 'auto' } }}
             size="large"
             onClick={() => setRestartDialogOpen(false)}
@@ -311,6 +312,7 @@ export function SceneRenderer() {
             Cancel
           </Button>
           <Button
+            type="button"
             color="warning"
             variant="contained"
             size="large"
