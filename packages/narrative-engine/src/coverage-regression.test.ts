@@ -9,7 +9,28 @@ import {
   getAvailableChoices,
   resolveChoice,
 } from './index';
-import { chooseInkChoice, continueInkStory, createInkStory, restoreInkStory, type CompiledInkJson } from './ink-adapter';
+import { chooseInkChoice, compileInkStory, continueInkStory, createInkStory, restoreInkStory, snapshotInkStory, type CompiledInkJson } from './ink-adapter';
+
+const MINIMAL_INK_SOURCE = `
+VAR stability = 0
+VAR currentSceneId = "open"
+VAR currentPOV = "past"
+VAR currentSpeaker = "Xav Reivax"
+-> start
+
+=== start ===
+~ stability = stability + 1
+Line one.
++ [Next]
+    ~ currentSceneId = "end"
+    -> end
+
+=== end ===
+~ currentPOV = "future"
+~ currentSpeaker = "Zelda Adlez"
+Done.
+-> DONE
+`;
 
 describe('narrative engine coverage regression', () => {
   it('evaluates compound conditions and available choices', () => {
@@ -106,28 +127,8 @@ describe('narrative engine coverage regression', () => {
     expect(resolveChoice(graph, { ...initialTimelineState, currentSceneId: 'start' }, 'go').rebellion).toBe(1);
   });
 
-  it('compiles, continues, and restores ink stories', () => {
-    const source = `
-VAR stability = 0
-VAR currentSceneId = "open"
-VAR currentPOV = "past"
-VAR currentSpeaker = "Xav Reivax"
--> start
-
-=== start ===
-~ stability = stability + 1
-Line one.
-+ [Next]
-    ~ currentSceneId = "end"
-    -> end
-
-=== end ===
-~ currentPOV = "future"
-~ currentSpeaker = "Zelda Adlez"
-Done.
--> DONE
-`;
-    const compiledJson = JSON.parse(new Compiler(source).Compile().ToJson() as string) as CompiledInkJson;
+  it('compiles, continues, and restores ink stories via createInkStory', () => {
+    const compiledJson = JSON.parse(new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as string) as CompiledInkJson;
     const story = createInkStory(compiledJson);
     const first = continueInkStory(story);
     expect(first.text.join(' ')).toContain('Line one.');
@@ -138,5 +139,70 @@ Done.
     const second = chooseInkChoice(restored, 0);
     expect(second.variables.currentPOV).toBe('future');
     expect(second.variables.currentSpeaker).toBe('Zelda Adlez');
+  });
+
+  it('compileInkStory produces a story that can be continued', () => {
+    const story = compileInkStory(MINIMAL_INK_SOURCE);
+    const snapshot = continueInkStory(story);
+    expect(snapshot.text.join(' ')).toContain('Line one.');
+    expect(snapshot.choices).toHaveLength(1);
+  });
+
+  it('createInkStory throws when passed an object without inkVersion', () => {
+    expect(() => createInkStory({} as CompiledInkJson)).toThrow(
+      'createInkStory requires a compiled ink JSON object with an inkVersion field.',
+    );
+  });
+
+  it('createInkStory applies initial variable overrides', () => {
+    const compiledJson = JSON.parse(new Compiler(MINIMAL_INK_SOURCE).Compile().ToJson() as string) as CompiledInkJson;
+    const story = createInkStory(compiledJson, { stability: 7 });
+    const snapshot = continueInkStory(story);
+    // stability starts at 7, then +1 in the ink story → 8
+    expect(snapshot.variables.stability).toBe(8);
+  });
+
+  it('snapshotInkStory preserves caller-supplied text lines', () => {
+    const story = compileInkStory(MINIMAL_INK_SOURCE);
+    story.Continue();
+    const snapshot = snapshotInkStory(story, ['pre-captured line']);
+    expect(snapshot.text).toContain('pre-captured line');
+  });
+
+  it('snapshotInkStory handles null currentTags and null choice tags', () => {
+    const mockStory = {
+      currentTags: null,
+      currentChoices: [
+        { index: 0, text: 'Choice A', tags: null },
+        { index: 1, text: 'Choice B', tags: ['tag1'] },
+      ],
+      variablesState: {},
+      state: { ToJson: () => '{}' },
+    };
+
+    const snapshot = snapshotInkStory(mockStory as never, ['line']);
+    expect(snapshot.tags).toEqual([]);
+    expect(snapshot.choices[0].tags).toEqual([]);
+    expect(snapshot.choices[1].tags).toEqual(['tag1']);
+  });
+
+  it('continueInkStory treats null return from Continue() as empty and skips it', () => {
+    let canContinue = true;
+    const mockStory = {
+      get canContinue() {
+        return canContinue;
+      },
+      Continue: () => {
+        canContinue = false;
+        return null as unknown as string;
+      },
+      currentTags: [],
+      currentChoices: [],
+      variablesState: {},
+      state: { ToJson: () => '{}' },
+    };
+
+    const snapshot = continueInkStory(mockStory as never);
+    expect(snapshot.text).toEqual([]);
   });
 });

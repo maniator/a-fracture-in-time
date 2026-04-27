@@ -174,8 +174,8 @@ export function SceneRenderer() {
         </Typography>
 
         <Stack spacing={2.5} sx={{ mt: 4 }}>
-          {sceneText.map((paragraph) => (
-            <Typography key={paragraph} sx={{ color: 'text.secondary', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.75 }}>
+          {sceneText.map((paragraph, index) => (
+            <Typography key={index} sx={{ color: 'text.secondary', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.75 }}>
               {paragraph}
             </Typography>
           ))}

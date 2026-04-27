@@ -261,7 +261,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!snapshot) {
       set({
         isChoosing: false,
-        storyLoadError: 'Chapter 2 is not available offline yet. Connect to the internet once to download it.',
+        storyLoadError: `Chapter ${pack.chapter} is not available offline yet. Connect to the internet once to download it.`,
       });
       return;
     }
