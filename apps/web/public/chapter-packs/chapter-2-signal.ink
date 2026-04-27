@@ -95,7 +95,7 @@ The tunnel wall had rewritten itself while Zelda slept.
 Yesterday, it held a Cybol victory slogan: ORDER MADE AYKER WHOLE.
 Now the same wall read: IF CYBOL BROUGHT PEACE, WHY DID DIDERRAM BURN?
 Zelda ran her fingers over the letters. They were not painted on. They had grown through the stone like roots.
-Behind her, one of the other scavengers whispered that they should seal the device back in its case and pretend they had found nothing.
+Behind her, Marek — the oldest of the tunnel scavengers, the one who knew which walls had ears — whispered that they should seal the device back in its case and pretend they had found nothing.
 Zelda almost understood.
 + [Map the changed tunnel before anyone can erase it] # cue:memory
     ~ memoryFracture += 1
@@ -430,7 +430,7 @@ Marek exhaled like a man hearing an old door unlock.
 ~ currentSceneId = "ch2_signal_final"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Xav Reivax"
-By nightfall, Yve had built a protocol, Zelda had found the peace archive, and my family notebook had stopped pretending to be a notebook.
+By nightfall, Yve had built a protocol, Zelda had traced the shape of what Cybol had hidden, and my family notebook had stopped pretending to be a notebook.
 Nala Renn's recording played once through my broken com.
 The actor list glowed on Yve's tablet.
 Professor Halden's name sat between Cybol's official history and Diderram's erased objection like a bridge no one wanted to admit existed.
