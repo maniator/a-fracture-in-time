@@ -77,7 +77,7 @@ Chapter 2 route packs currently included:
 - `The Firstborn Record` (`family-path`)
 - `The Second Future` (`history-path`)
 
-Each Chapter 2 route now targets a **20–30 minute** reading session (3,000–4,500 words at ~150 WPM), with manifest estimates set to 25 minutes per route.
+Each Chapter 2 route now targets a **20–30 minute** reading session (3,000–4,500 words at ~150 WPM), with manifest estimates set to 22 minutes per route.
 
 Chapter 3 foundation route packs currently included:
 

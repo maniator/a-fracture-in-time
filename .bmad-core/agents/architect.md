@@ -24,17 +24,23 @@ packages/shared-types         Shared TypeScript contracts
 
 **Core state type** (`packages/shared-types/src/game.ts`):
 ```ts
-type TimelineState = {
-  stability: number;
-  controlIndex: number;
-  rebellion: number;
-  memoryFracture: number;
-  magicEntropy: number;
+export type POV = 'past' | 'future';
+
+export type TimelineVariable =
+  | 'stability' | 'controlIndex' | 'rebellion' | 'memoryFracture' | 'magicEntropy';
+
+export type TimelineState = Record<TimelineVariable, number> & {
   flags: Record<string, boolean>;
   seenScenes: string[];
+  codex: string[];
   chapter: number;
   currentSceneId: string;
-  currentPOV: 'protector' | 'dissenter';
+  currentPOV: POV;           // 'past' | 'future'
+  currentSpeaker?: string;
+  currentText?: string[];
+  endingKey?: string;
+  chapterPackId?: string;
+  inkStateJson?: string;
 };
 ```
 
