@@ -9,7 +9,7 @@ import {
   getAvailableChoices,
   resolveChoice,
 } from './index';
-import { chooseInkChoice, continueInkStory, createInkStory, restoreInkStory } from './ink-adapter';
+import { chooseInkChoice, continueInkStory, createInkStory, restoreInkStory, type CompiledInkJson } from './ink-adapter';
 
 describe('narrative engine coverage regression', () => {
   it('evaluates compound conditions and available choices', () => {
@@ -127,13 +127,13 @@ Line one.
 Done.
 -> DONE
 `;
-    const compiledStory = new Compiler(source).Compile().ToJson() as unknown as Record<string, any>;
-    const story = createInkStory(compiledStory);
+    const compiledJson = JSON.parse(new Compiler(source).Compile().ToJson() as string) as CompiledInkJson;
+    const story = createInkStory(compiledJson);
     const first = continueInkStory(story);
     expect(first.text.join(' ')).toContain('Line one.');
     expect(first.choices).toHaveLength(1);
 
-    const freshStory = createInkStory(compiledStory);
+    const freshStory = createInkStory(compiledJson);
     const restored = restoreInkStory(freshStory, first.stateJson);
     const second = chooseInkChoice(restored, 0);
     expect(second.variables.currentPOV).toBe('future');

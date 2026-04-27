@@ -46,7 +46,18 @@ export function compileInkStory(source: string): Story {
   return new Compiler(source).Compile();
 }
 
-export function createInkStory(compiledJson: Record<string, unknown>, variables: InkVariableMap = {}) {
+export type CompiledInkJson = {
+  inkVersion: number;
+  [key: string]: unknown;
+};
+
+export function createInkStory(compiledJson: CompiledInkJson, variables: InkVariableMap = {}) {
+  if (typeof (compiledJson as Record<string, unknown>)?.inkVersion !== 'number') {
+    throw new Error(
+      'createInkStory requires a compiled ink JSON object with an inkVersion field. ' +
+        'Did you accidentally pass a live Story instance or uncompiled source?',
+    );
+  }
   const story = new Story(compiledJson as Record<string, any>);
 
   for (const [key, value] of Object.entries(variables)) {
