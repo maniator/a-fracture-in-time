@@ -37,11 +37,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Pre-install the Playwright Chromium browser used by `pnpm test:e2e`.
-      # This ensures Copilot can run e2e tests without an extra Chromium
-      # download step at the start of each session.
-      # Note: --with-deps installs OS-level browser dependencies; codex:bootstrap
-      # runs `playwright install chromium` without --with-deps (no sudo needed
-      # in that context). Both result in the same Chromium binary being available.
-      - name: Install Playwright Chromium browser
+      # Cache the Playwright Chromium binary so it is only re-downloaded when
+      # the lockfile (and therefore the Playwright version) changes.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      # Cache miss: download Chromium and install all OS-level browser dependencies.
+      - name: Install Playwright Chromium browser (with OS deps)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm --filter web exec playwright install chromium --with-deps
+
+      # Cache hit: browser binary is restored; only reinstall OS-level deps
+      # (fast, no network download of the browser binary).
+      - name: Install Playwright OS dependencies (browser cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter web exec playwright install-deps chromium
