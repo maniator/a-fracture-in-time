@@ -133,7 +133,8 @@ Done.
     expect(first.text.join(' ')).toContain('Line one.');
     expect(first.choices).toHaveLength(1);
 
-    const restored = restoreInkStory(compiledStory, first.stateJson);
+    const freshStory = createInkStory(compiledStory);
+    const restored = restoreInkStory(freshStory, first.stateJson);
     const second = chooseInkChoice(restored, 0);
     expect(second.variables.currentPOV).toBe('future');
     expect(second.variables.currentSpeaker).toBe('Zelda Adlez');

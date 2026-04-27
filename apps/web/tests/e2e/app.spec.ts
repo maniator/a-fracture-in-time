@@ -25,9 +25,9 @@ test('home page loads setup and links into the game without prefetching play', a
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /a utopia in the past/i })).toBeVisible();
   await expect(page.getByRole('heading', { name: /you are entering ayker/i })).toBeVisible();
-  await expect(page.getByText(/xav reivax/i)).toBeVisible();
-  await expect(page.getByText(/yve ettevy/i)).toBeVisible();
-  await expect(page.getByText(/zelda adlez/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Yve Ettevy' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Zelda Adlez' })).toBeVisible();
   expect(chapterPackRequests).toHaveLength(0);
 
   await page.getByRole('link', { name: /start chapter 1/i }).click();
@@ -104,6 +104,7 @@ test('can complete the Signal Path', async ({ page }) => {
     /answer the impossible voice/i,
     /start carefully and ask/i,
     /ask zelda what the family line means/i,
+    /bring yve with you/i,
     /tell ari the truth/i,
     /end chapter 1/i,
   ];
@@ -112,7 +113,7 @@ test('can complete the Signal Path', async ({ page }) => {
     await page.getByRole('button', { name: choice }).click();
   }
 
-  await expect(page.getByText(/chapter 1 complete/i)).toBeVisible();
+  await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the signal path/i)).toBeVisible();
   await expect(page.getByText(/signal-path/i)).toBeVisible();
   await expect(page.getByRole('button', { name: /continue to chapter 2/i })).toBeVisible();
@@ -128,6 +129,7 @@ test('can continue from Chapter 1 into Chapter 2 Signal route', async ({ page })
     /answer the impossible voice/i,
     /start carefully and ask/i,
     /ask zelda what the family line means/i,
+    /bring yve with you/i,
     /tell ari the truth/i,
     /end chapter 1/i,
   ];
@@ -151,6 +153,7 @@ test('full flow can progress from Chapter 1 Signal path through Chapter 3', asyn
     /answer the impossible voice/i,
     /start carefully and ask/i,
     /ask zelda what the family line means/i,
+    /bring yve with you/i,
     /tell ari the truth/i,
     /end chapter 1/i,
   ]) {
@@ -162,11 +165,11 @@ test('full flow can progress from Chapter 1 Signal path through Chapter 3', asyn
 
   await advanceByClickingFirstChoiceUntil(page, /end chapter 2/i);
   await clickChoiceByPattern(page, /end chapter 2/i);
-  await expect(page.getByText(/chapter 2 complete/i)).toBeVisible();
+  await expect(page.getByText('Chapter 2 complete.', { exact: true })).toBeVisible();
 
   await clickChoiceByPattern(page, /continue to chapter 3/i);
   await expect(page.getByText(/chapter 3: the relay accord/i)).toBeVisible();
-  await expect(page.getByRole('button', { name: /route the first clean signal/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /route the first clean signal through university/i })).toBeVisible();
 });
 
 test('can complete the Family Path', async ({ page }) => {
@@ -186,7 +189,7 @@ test('can complete the Family Path', async ({ page }) => {
     await page.getByRole('button', { name: choice }).click();
   }
 
-  await expect(page.getByText(/chapter 1 complete/i)).toBeVisible();
+  await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the family path/i)).toBeVisible();
   await expect(page.getByText(/family-path/i)).toBeVisible();
 });
@@ -208,7 +211,7 @@ test('can complete the History Path', async ({ page }) => {
     await page.getByRole('button', { name: choice }).click();
   }
 
-  await expect(page.getByText(/chapter 1 complete/i)).toBeVisible();
+  await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
   await expect(page.getByText(/ending: the history path/i)).toBeVisible();
   await expect(page.getByText(/history-path/i)).toBeVisible();
 });
@@ -229,9 +232,9 @@ test('static PWA assets and chapter packs are available in dev', async ({ page }
   const manifest = await page.locator('body').textContent();
   expect(manifest).toContain('Fractureline');
 
-  const chapterPackResponse = await page.goto('/chapter-packs/chapter-1.ink');
-  expect(chapterPackResponse?.ok()).toBeTruthy();
-  const chapterPack = await page.locator('body').textContent();
+  const chapterPackResponse = await page.request.get('/chapter-packs/chapter-1.ink');
+  expect(chapterPackResponse.ok()).toBeTruthy();
+  const chapterPack = await chapterPackResponse.text();
   expect(chapterPack).toContain('VAR stability');
   expect(chapterPack).toContain('Xav Reivax');
   expect(chapterPack).toContain('Zelda Adlez');
@@ -246,9 +249,9 @@ test('static PWA assets and chapter packs are available in dev', async ({ page }
     'chapter-3-family.ink',
     'chapter-3-history.ink',
   ]) {
-    const response = await page.goto(`/chapter-packs/${pack}`);
-    expect(response?.ok()).toBeTruthy();
-    const body = await page.locator('body').textContent();
+    const response = await page.request.get(`/chapter-packs/${pack}`);
+    expect(response.ok()).toBeTruthy();
+    const body = await response.text();
     expect(body).toMatch(/Chapter [23]/);
     expect(body).not.toContain('Mira Vale');
     expect(body).not.toContain('Soren Quill');
@@ -257,4 +260,63 @@ test('static PWA assets and chapter packs are available in dev', async ({ page }
   const offlineResponse = await page.goto('/offline.html');
   expect(offlineResponse?.ok()).toBeTruthy();
   await expect(page.getByText(/timeline is offline/i)).toBeVisible();
+});
+
+test('can continue from Chapter 1 Family Path into Chapter 2', async ({ page }) => {
+  await page.goto('/play');
+
+  for (const choice of [
+    /joke that cybol technology/i,
+    /tell yve exactly what appeared/i,
+    /answer zelda before the signal dies/i,
+    /tell xav the truth/i,
+    /ask what event starts the fall/i,
+    /open the notebook before ari/i,
+    /end chapter 1/i,
+  ]) {
+    await page.getByRole('button', { name: choice }).click();
+  }
+
+  await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the firstborn record/i)).toBeVisible();
+
+  await page.getByRole('button', { name: /continue to chapter 2/i }).click();
+  await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the firstborn record/i)).toBeVisible();
+});
+
+test('can continue from Chapter 1 History Path into Chapter 2', async ({ page }) => {
+  await page.goto('/play');
+
+  for (const choice of [
+    /admit the com broke again/i,
+    /ask why diderram needed cybol/i,
+    /answer zelda before the signal dies/i,
+    /tell xav the truth/i,
+    /ask what event starts the fall/i,
+    /let ari help/i,
+    /end chapter 1/i,
+  ]) {
+    await page.getByRole('button', { name: choice }).click();
+  }
+
+  await expect(page.getByText('Chapter 1 complete.', { exact: true })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the second future/i)).toBeVisible();
+
+  await page.getByRole('button', { name: /continue to chapter 2/i }).click();
+  await expect(page.getByRole('heading', { name: 'Zelda Adlez' })).toBeVisible();
+  await expect(page.getByText(/chapter 2: the second future/i)).toBeVisible();
+});
+
+test('narrative stats update correctly when choices are made', async ({ page }) => {
+  await page.goto('/play');
+  await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
+
+  await expect(page.getByRole('definition').filter({ hasText: '0' }).first()).toBeVisible();
+
+  await page.getByRole('button', { name: /admit the com broke again/i }).click();
+  await expect(page.getByRole('heading', { name: 'Yve Ettevy' })).toBeVisible();
+
+  const stability = page.getByRole('term').filter({ hasText: 'Stability' }).locator('..').getByRole('definition');
+  await expect(stability).toHaveText('1');
 });
