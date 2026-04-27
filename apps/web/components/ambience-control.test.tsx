@@ -213,7 +213,7 @@ describe('AmbienceControl', () => {
   });
 
   it('cleans up AudioContext on unmount', async () => {
-    const { unmount } = await act(async () => render(<AmbienceControl />));
+    const { unmount } = render(<AmbienceControl />);
     await act(async () => { unmount(); });
     expect(mockCtx.close).toHaveBeenCalled();
   });

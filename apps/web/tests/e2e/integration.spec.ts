@@ -189,14 +189,14 @@ test.describe('Navigation', () => {
     await page.goto('/play');
     await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
     await page.getByRole('link', { name: /fractureline/i }).click();
-    await expect(page).toHaveURL(/^\//);
+    await expect(page).toHaveURL('/');
     await expect(page.getByRole('heading', { name: /a utopia in the past/i })).toBeVisible();
   });
 
   test('"Fractureline" logo link returns to the home page from help', async ({ page }) => {
     await page.goto('/help');
     await page.getByRole('link', { name: /fractureline/i }).click();
-    await expect(page).toHaveURL(/^\//);
+    await expect(page).toHaveURL('/');
     await expect(page.getByRole('heading', { name: /a utopia in the past/i })).toBeVisible();
   });
 });
@@ -258,26 +258,6 @@ test.describe('Timeline signals', () => {
     await clickChoice(page, /joke that cybol technology/i);
     const disruptionSignal = page.locator('dl').getByText('Disruption', { exact: true }).locator('../..');
     await expect(disruptionSignal.getByText('Rising')).toBeVisible();
-  });
-});
-
-// ---------------------------------------------------------------------------
-// Codex display
-// ---------------------------------------------------------------------------
-
-test.describe('Codex', () => {
-  test('codex section appears when codex entries have been unlocked', async ({ page }) => {
-    await page.goto('/play');
-    await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
-    // Advance into the chapter to trigger codex entries
-    await clickChoice(page, /admit the com broke again/i);
-    await clickChoice(page, /study the official history/i);
-    // The codex aside should eventually appear as the player progresses
-    await clickChoice(page, /answer the impossible voice/i);
-    // Check if codex section exists (it may or may not appear depending on story progression)
-    const codex = page.getByText('Codex', { exact: true });
-    // We only assert it's reachable — some paths surface it, others don't by this point
-    await expect(codex.or(page.getByRole('heading', { name: 'Xav Reivax' }))).toBeVisible();
   });
 });
 

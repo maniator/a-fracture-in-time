@@ -220,7 +220,9 @@ describe('game-store', () => {
       useGameStore = mod.useGameStore;
 
       await useGameStore.getState().choose('0');
-      // Should handle gracefully (either error or no-op since choices is empty)
+      // choices is empty after module reset, so the bounds check fires
+      expect(useGameStore.getState().storyLoadError).toContain('no longer available');
+      expect(useGameStore.getState().isChoosing).toBe(false);
     });
 
     it('sets storyLoadError when getActiveStoryForChoice returns null (offline)', async () => {
