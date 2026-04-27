@@ -129,7 +129,7 @@ Screenshots are saved to `apps/web/test-results/screenshots/` and uploaded as CI
 - `page.getByRole('button', { name: /pattern/i })` — choice buttons
 - `page.getByRole('heading', { name: /pattern/i })` — speaker name or page heading
 - `page.getByText('Chapter 1 complete.', { exact: true })` — UI-rendered completion label (from `scene-renderer.tsx`, not from ink prose)
-- `page.getByText(/signal-path/i)` — the `endingKey` chip value (stable ink variable, not prose)
+- `page.getByText(/signal path/i)` — the formatted `endingKey` chip value as rendered in the UI (stable ink variable, not prose)
 - `page.getByRole('complementary', { name: /ambience controls/i })` — ARIA landmark
 
 **Avoid**:
@@ -153,7 +153,7 @@ Screenshots are saved to `apps/web/test-results/screenshots/` and uploaded as CI
 
 When a chapter pack adds or renames a knot that represents chapter completion:
 - Check for the UI-rendered `Chapter N complete.` text (from `scene-renderer.tsx`) — **not** from ink prose
-- Check for the `endingKey` chip value (e.g. `/signal-path/i`) — **not** for a formatted "Ending: The Signal Path" label
+- Check for the UI-rendered `endingKey` chip text that Playwright can see (e.g. `/signal path/i` for `signal-path`) — **not** the raw hyphenated key or a prefixed label like "Ending: The Signal Path"
 - Do not assert on prose fragments from `.ink` files — those belong in unit tests (`content/chapter-one.test.ts` etc.)
 
 ---
