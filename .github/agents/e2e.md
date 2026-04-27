@@ -78,7 +78,7 @@ PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 pnpm --filter web test:e2e --grep "Sig
 | Setting | Value |
 |---|---|
 | Docker image | `mcr.microsoft.com/playwright:v1.59.1-noble` |
-| Playwright version | `v1.59.1` (pinned in `package.json`) |
+| Playwright version | `v1.59.1` (pinned by the Docker image tag and `pnpm-lock.yaml`; `package.json` specifies `^1.52.0`) |
 | Browsers | `Desktop Chrome`, `Pixel 7 / mobile-chrome` |
 | Shards | 4 (tests split evenly across shard matrix) |
 | Retries | 2 per test when `CI=true` |

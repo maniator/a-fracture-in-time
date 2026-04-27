@@ -55,7 +55,7 @@ PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 pnpm --filter web test:e2e
 ```
 
 **Key environment facts:**
-- Playwright version: `v1.59.1` (pinned in `package.json`)
+- Playwright version in CI: `v1.59.1` (pinned by the Docker image tag `mcr.microsoft.com/playwright:v1.59.1-noble` and `pnpm-lock.yaml`; `package.json` uses a caret range `^1.52.0`)
 - Browsers tested: `Desktop Chrome` and `Pixel 7 (mobile-chrome)` (see `playwright.config.ts`)
 - `CI=true` disables server reuse (`reuseExistingServer: !process.env.CI`) and enables 2 retries per test
 - Without `CI=true` the dev server is started automatically by Playwright if not already running

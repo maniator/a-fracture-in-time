@@ -46,7 +46,7 @@ Every scene that follows a player choice must open with grounding prose before a
 
 ## Prose Voice
 
-- Write in a close third-person or intimate second-person voice that matches the established POV character
+- Write in the POV character's established voice: the shipped chapters use close first-person ("I sat under the blueleaf trees…"). Close third-person or intimate second-person are also valid where the chapter already uses them. Never switch POV convention mid-chapter.
 - Prefer concrete, specific detail over abstract statement
 - Avoid repetition of the same sentence structure in consecutive paragraphs
 - Avoid over-explaining; trust the reader to carry emotional weight
