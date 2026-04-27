@@ -106,6 +106,7 @@ export function SceneRenderer() {
     isStoryReady,
     isChoosing,
     storyLoadError,
+    clearStoryLoadError,
   } = useGameStore();
 
   const [restartDialogOpen, setRestartDialogOpen] = useState(false);
@@ -173,7 +174,7 @@ export function SceneRenderer() {
             <Alert
               severity="warning"
               sx={{ mb: 3 }}
-              action={<Button color="inherit" size="small" onClick={() => void initializeStory()}>Try again</Button>}
+              action={<Button color="inherit" size="small" onClick={clearStoryLoadError}>Dismiss</Button>}
             >
               {storyLoadError}
             </Alert>

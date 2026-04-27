@@ -36,7 +36,7 @@ export function GameBriefing() {
           <Chip label="Chapters 1–3" variant="outlined" />
         </Stack>
 
-        <Typography id="briefing-title" component="h1" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3.25rem' } }}>
+        <Typography id="briefing-title" component="h2" variant="h3" sx={{ fontSize: { xs: '2rem', md: '3.25rem' } }}>
           You are entering Ayker.
         </Typography>
 
@@ -69,7 +69,7 @@ export function GameBriefing() {
             description="Zelda is living fifty-three years after Xav's exam, in the ruins of the city he recognises. She found a device under a lecture hall that can contact the past. She believes she is Xav's descendant. She is trying to understand why Cybol fell — and whether reaching into the past makes her a rescuer or a catastrophe."
           />
           <Box>
-            <Typography component="h2" variant="h6" sx={{ fontWeight: 700 }}>How to read your choices</Typography>
+            <Typography component="h3" variant="h6" sx={{ fontWeight: 700 }}>How to read your choices</Typography>
             <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>
               Choices are not simply right or wrong. Some protect stability. Some pull hidden records into the open. Some apply pressure to the timeline through memory, evidence, and historical consequence. The timeline signals below each scene describe the kind of future your choices are shaping — not a score, but a direction.
             </Typography>
@@ -109,7 +109,7 @@ function CharacterBrief({ initials, name, role, tone, description }: { initials:
         <Typography sx={{ fontWeight: 800, letterSpacing: '0.08em' }}>{initials}</Typography>
       </Box>
       <Box>
-        <Typography component="h2" variant="h6" sx={{ fontWeight: 800 }}>{name}</Typography>
+        <Typography component="h3" variant="h6" sx={{ fontWeight: 800 }}>{name}</Typography>
         <Typography sx={{ mt: 0.25, color: 'secondary.main', fontWeight: 700 }}>{role}</Typography>
         <Typography variant="body2" sx={{ mt: 0.5, color: 'text.secondary', fontStyle: 'italic' }}>{tone}</Typography>
         <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>{description}</Typography>
