@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import type { Choice, TimelineVariable } from '@fractureline/shared-types';
 import { getEligibleNextChapterPack } from '@/lib/chapter-packs/chapter-pack-cache';
 import { isChapterComplete } from '@/lib/chapter-completion';
+import { getTimelineSignals, type TimelineSignal } from '@/lib/timeline-signals';
 import { useGameStore } from '@/store/game-store';
 
 const cueByVariable: Record<TimelineVariable, string> = {
@@ -120,6 +121,7 @@ export function SceneRenderer() {
   const nextPack = getEligibleNextChapterPack(state);
   const canContinue = currentChapterComplete && Boolean(nextPack);
   const nextChapterTitle = nextPack ? chapterTitleByPackId[nextPack.id] : undefined;
+  const timelineSignals = getTimelineSignals(state);
 
   if (storyLoadError) {
     return (
@@ -223,13 +225,24 @@ export function SceneRenderer() {
 
         <Divider sx={{ my: 5 }} />
 
-        <Grid container spacing={2} component="dl">
-          <Metric label="Stability" value={state.stability} />
-          <Metric label="Control" value={state.controlIndex} />
-          <Metric label="Rebellion" value={state.rebellion} />
-          <Metric label="Memory" value={state.memoryFracture} />
-          <Metric label="Entropy" value={state.magicEntropy} />
-        </Grid>
+        <Box component="section" aria-labelledby="timeline-signals-title">
+          <Typography
+            id="timeline-signals-title"
+            component="h2"
+            variant="overline"
+            sx={{ letterSpacing: '0.2em', color: 'text.secondary' }}
+          >
+            Timeline Signals
+          </Typography>
+          <Typography sx={{ mt: 1, color: 'text.secondary', lineHeight: 1.7 }}>
+            These signals are not scores. They describe the kind of timeline your choices are shaping.
+          </Typography>
+          <Grid container spacing={2} component="dl" sx={{ mt: 1 }}>
+            {timelineSignals.map((signal) => (
+              <SignalCard key={signal.key} signal={signal} />
+            ))}
+          </Grid>
+        </Box>
 
         {state.codex.length ? (
           <Box component="aside" sx={{ mt: 5, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, p: 3 }}>
@@ -244,16 +257,19 @@ export function SceneRenderer() {
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
+function SignalCard({ signal }: { signal: TimelineSignal }) {
   return (
-    <Grid size={{ xs: 6, md: 2 }} component="div">
+    <Grid size={{ xs: 12, md: 4 }} component="div">
       <Card variant="outlined" sx={{ background: 'rgba(8,7,11,0.32)' }}>
         <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
           <Typography component="dt" variant="caption" sx={{ letterSpacing: '0.16em', textTransform: 'uppercase', color: 'text.secondary' }}>
-            {label}
+            {signal.label}
           </Typography>
-          <Typography component="dd" variant="h5" sx={{ m: 0, mt: 0.5 }}>
-            {value}
+          <Typography component="dd" variant="h5" sx={{ m: 0, mt: 0.5 }} aria-label={`${signal.label} signal ${signal.level} (${signal.value})`}>
+            {signal.level}
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 0.75, color: 'text.secondary', lineHeight: 1.6 }}>
+            {signal.description}
           </Typography>
         </CardContent>
       </Card>

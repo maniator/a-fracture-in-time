@@ -170,6 +170,8 @@ End-to-end tests live in `apps/web/tests/e2e` and cover:
 
 ## GitHub Workflows
 
+CodeQL code-scanning runs are defined in `.github/workflows/codeql.yml`. See `docs/CODE_SCANNING.md` for trigger and reporting details.
+
 `.github/workflows/ci.yml` contains separate jobs for:
 
 - linting

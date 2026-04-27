@@ -30,8 +30,8 @@ const sections = [
     body: 'The ambience control in the bottom corner is optional. Use the mute button or volume slider if you want the background sound quieter or off.',
   },
   {
-    title: 'Reading the stats',
-    body: 'Stability, Control, Rebellion, Memory, and Entropy are not scores. They show what kind of timeline your choices are shaping.',
+    title: 'Reading the timeline signals',
+    body: 'Order, Truth, and Disruption are not scores. They summarize the kind of timeline your choices are shaping, based on the choices you make across stability, control, memory, rebellion, and magical pressure.',
   },
 ];
 
