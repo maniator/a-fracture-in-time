@@ -50,8 +50,8 @@ pnpm codex:bootstrap
 (cd apps/web && pnpm dev) &
 sleep 15   # wait for the server to be ready at http://127.0.0.1:3000
 
-# 3. Run all e2e tests against the live dev server
-PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 pnpm --filter web test:e2e
+# 3. Run all e2e tests against the live dev server with CI-like Playwright behavior
+CI=true PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 pnpm --filter web test:e2e
 ```
 
 **Key environment facts:**
