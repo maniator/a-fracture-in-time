@@ -1,4 +1,4 @@
-# Fractureline — Copilot Agent Guide
+# Fractureline - Copilot Agent Guide
 
 ## Bootstrap (run at the start of every session)
 
