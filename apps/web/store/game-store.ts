@@ -296,8 +296,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set({ ...createStoreView(snapshot, saved), hasSave: true, isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
       return true;
-    } catch {
-      set({ storyLoadError: 'Could not load save. Please try again.' });
+    } catch (err) {
+      console.error('[game-store] load() failed:', err);
+      set({ storyLoadError: 'Could not load save. Please try again.', isPersistenceReady: true });
       return false;
     }
   },
