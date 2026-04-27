@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { AmbienceControl } from '@/components/ambience-control';
+import { GameBriefing } from '@/components/game-briefing';
 import { SceneRenderer } from '@/components/scene-renderer';
 import { SiteNav } from '@/components/site-nav';
 import { PwaRegister } from '@/components/pwa-register';
@@ -11,6 +12,7 @@ export default function PlayPage() {
       <PwaRegister />
       <SiteNav />
       <Container maxWidth="lg" sx={{ py: 5, pb: { xs: 20, sm: 16 } }}>
+        <GameBriefing />
         <SceneRenderer />
       </Container>
       <AmbienceControl />

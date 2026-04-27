@@ -25,22 +25,23 @@ function StyleGuide() {
 
       <Stack direction="row" spacing={1.5} sx={{ mt: 4 }}>
         <Chip label="Chapter 1" variant="outlined" />
-        <Chip label="Protector" color="primary" variant="outlined" />
-        <Chip label="Dissenter" color="secondary" variant="outlined" />
+        <Chip label="Xav Reivax" color="primary" variant="outlined" />
+        <Chip label="Zelda Adlez" color="secondary" variant="outlined" />
+        <Chip label="Signal Path" color="secondary" variant="outlined" />
       </Stack>
 
       <Card sx={{ mt: 4 }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography variant="h4">Protector</Typography>
+          <Typography variant="h4">Xav Reivax</Typography>
           <Typography sx={{ mt: 2, color: 'text.secondary', lineHeight: 1.8 }}>
-            The bells did not ring in Lattice unless something had been corrected.
+            The quad looked exactly the way the city brochures said it should: glass lecture towers, clean paths through bright moss, students laughing like Cybol had already solved every serious problem on Ayker.
           </Typography>
           <Stack spacing={2} sx={{ mt: 4 }}>
             <Button variant="outlined" color="inherit" sx={{ justifyContent: 'flex-start', borderRadius: 3 }}>
-              Study the crowd before speaking
+              Admit the com broke again
             </Button>
             <Button variant="outlined" color="inherit" sx={{ justifyContent: 'flex-start', borderRadius: 3 }}>
-              Go directly to the correction dais
+              Joke that Cybol technology clearly fears you
             </Button>
           </Stack>
         </CardContent>

@@ -180,6 +180,9 @@ async function getActiveStoryForChoice(state: TimelineState) {
   if (!restored) return null;
 
   if (restored.currentChoices.length === 0 && restored.canContinue) {
+    // Advance the ink pointer to reach choices. The snapshot text is intentionally
+    // discarded here: intermediate paragraphs between a save point and the next
+    // choice are not displayed on restore. See F-26 in POST_PR16_QA_REVIEW.md.
     continueInkStory(restored);
   }
 
@@ -266,6 +269,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
+    // inkStateJson is intentionally cleared from `previous` when starting a new
+    // chapter so that the next chapter begins from its own opening knot rather than
+    // restoring a stale ink state from the prior chapter. See F-29 in POST_PR16_QA_REVIEW.md.
     set({ ...createStoreView(snapshot, { ...current, inkStateJson: undefined }), isChoosing: false, isStoryReady: true, storyLoadError: undefined });
   },
   hydrateSaveStatus: async () => {
@@ -303,6 +309,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
   reset: async () => {
+    if (get().isChoosing) return;
+
     const snapshot = await createInitialSnapshot();
     if (!snapshot) {
       set({
