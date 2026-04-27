@@ -66,6 +66,17 @@ Storybook config lives in `apps/web/.storybook/`. Existing stories:
 
 **Rule**: every new reusable component needs a Storybook story covering at minimum: default, loading/error, and any significant state variant (codex unlocked, chapter complete, etc.).
 
+## Planned Feature: Free-Form Text Input
+
+Some narrative scenes will replace choice buttons with an open-ended player text prompt. When the Architect approves the engine contract:
+- Build a `FreeFormInput` component: prompt text, configurable character limit, submit button, accessible label.
+- Player text must flow through `store/game-store.ts` and persist via `lib/persistence/save-service.ts`.
+- Later scenes may echo the player's text — the renderer must safely interpolate stored strings (no XSS).
+- Include Storybook stories for: empty, filled, submitted, and read-back (echo) states.
+- Full keyboard accessibility: Tab to input field, Enter to submit.
+- Respect `prefers-reduced-motion` on any reveal animation for the echoed text.
+- Do not build until the Architect's free-form scene schema is merged.
+
 ## Key Documents to Read
 
 - `docs/ARCHITECTURE.md` — state boundaries and component responsibilities

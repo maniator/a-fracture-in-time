@@ -94,3 +94,11 @@ When activated, produce one or more of:
 - Lore dumps without player agency are forbidden.
 - Avoid branching complexity beyond the budget: one major split per route segment, max two active branch families per chapter depth.
 - New chapters for Ch 6–10 must follow the chapter spine in STORY_BIBLE.md.
+- Every Chapter 2+ route must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM).
+
+**Free-form text inputs (planned)**:
+- Some paths will replace pre-set choice buttons with an open-ended player text prompt.
+- Authoring pattern: a scene may include a `freeFormPrompt` field with a question and optional character limit.
+- The player's response is stored (key TBD with Architect) and can be echoed back in later scenes.
+- Free-form scenes still require a deterministic `nextSceneId` — the text does not fork the graph unless a flag effect is applied (TBD with Architect).
+- Do not author free-form scenes until the engine contract is defined and approved by the Architect.

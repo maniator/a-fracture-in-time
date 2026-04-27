@@ -114,4 +114,11 @@ Fractureline uses a **braided narrative** — not a full tree — to prevent exp
 - Lore dumps without player agency are forbidden.
 - New chapters for Ch 6–10 must follow the chapter spine in STORY_BIBLE.md.
 - Do not introduce new state key names without Architect sign-off.
-- Every Chapter 2+ route must sustain ≥ 20 minutes of play (≥ 3,000 words at ~150 WPM).
+- Every Chapter 2+ route must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM). Duration tests enforce the floor; routes over 4,500 words are flagged for pacing review.
+
+**Free-form text inputs (planned)**:
+- Some paths will replace pre-set choice buttons with an open-ended player text prompt.
+- Authoring pattern: a scene may include a `freeFormPrompt` field with a question and optional character limit.
+- The player's response is stored (storage key TBD — wait for Architect contract) and may be echoed in later scenes.
+- Free-form scenes still require a deterministic `nextSceneId`; text does not fork the graph unless a flag effect is applied (TBD with Architect).
+- Do not author free-form scenes until the engine schema is approved.

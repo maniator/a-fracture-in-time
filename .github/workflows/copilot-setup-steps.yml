@@ -1,0 +1,44 @@
+name: "Copilot Setup Steps"
+
+# Runs automatically when this file changes (for easy validation).
+# Can also be triggered manually from the Actions tab.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # This job name MUST be `copilot-setup-steps` for GitHub Copilot to pick it up.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Match the Node version used in ci.yml
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Install all workspace dependencies (narrative-engine, shared-types, web)
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Pre-install the Playwright Chromium binary used by `pnpm test:e2e`.
+      # This mirrors what `pnpm codex:bootstrap` does so Copilot can run e2e
+      # tests without an extra download step at the start of each session.
+      - name: Install Playwright Chromium browser
+        run: pnpm --filter web exec playwright install chromium --with-deps

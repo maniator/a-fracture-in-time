@@ -48,6 +48,15 @@ Protect narrative correctness, app stability, and release confidence. Own the te
 2. Verify each branch reaches at least one planned merge hub.
 3. Verify continuation resolver maps state keys to correct next packs.
 4. Verify no orphan branches exist.
+5. Verify every Chapter 2+ route meets the **20–30 minute** duration target (duration tests must enforce ≥ 3,000 words and flag routes exceeding 4,500 words for pacing review).
+
+**Free-form text input QA (planned)**:
+When free-form text scenes are added, test:
+- Player text is saved and restored correctly across save/load cycles.
+- Character limit is enforced in the UI and stored text never exceeds it.
+- Player text echoed in later scenes renders correctly (no raw token leakage).
+- Free-form scenes with flag effects apply the correct flag based on the input.
+- Empty or whitespace-only submissions are handled gracefully (no silent state corruption).
 
 ## Inputs
 - `docs/TEST_STRATEGY.md` — test pyramid and manual check areas

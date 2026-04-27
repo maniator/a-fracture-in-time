@@ -54,8 +54,14 @@ type TimelineState = {
 - `apps/web/lib/persistence` — all storage access.
 - `apps/web/store` — client session state via Zustand.
 
-## Inputs
-- `docs/ARCHITECTURE.md` — full technical architecture
+**Technical considerations for planned features**:
+- **Free-form text inputs**: some narrative paths will accept open-ended player text instead of choice buttons. This requires:
+  - A new `freeFormInput` effect/scene type in the narrative schema and engine
+  - A text-input UI component with validation, character limits, and `prefers-reduced-motion`-safe reveal
+  - Storage of player-authored text within the `TimelineState` (likely as a new `playerNotes: Record<string, string>` field — coordinate with Backend Agent before adding)
+  - A way for subsequent scenes to embed or react to the stored text
+
+
 - `docs/NARRATIVE_SCHEMA.md` — scene/choice/effect/condition contracts
 - `docs/LOCAL_FIRST_STORAGE.md` — persistence model and migration plan
 - `packages/shared-types/src/` — current contracts

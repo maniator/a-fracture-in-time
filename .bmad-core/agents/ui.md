@@ -57,6 +57,14 @@ stories/              Storybook stories (style guide, SiteNav, SceneRenderer)
 - `docs/UI_ACCESSIBILITY.md` — accessibility notes
 - `docs/STORYBOOK.md` — next style-guide tasks
 
+## Planned Feature: Free-Form Text Input
+Some narrative paths will present an open-ended text prompt instead of choice buttons. When the engine contract is approved:
+- Build a `FreeFormInput` component with: prompt text, configurable character limit, submit button, and `prefers-reduced-motion`-safe reveal of the player's response in subsequent scenes.
+- All input must flow through `store/game-store.ts` and persist via `lib/persistence/save-service.ts`.
+- Include a Storybook story covering: empty, filled, and submitted states.
+- Ensure full keyboard accessibility (Tab to field, Enter to submit).
+- Do not build until the Architect approves the scene schema for free-form prompts.
+
 ## Outputs
 When activated, produce one or more of:
 1. **New or updated React components** — in `apps/web/components/`

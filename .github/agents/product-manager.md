@@ -34,7 +34,9 @@ You translate vision and player needs into prioritized, testable scope. You own 
 
 **Out of scope for MVP**: combat, procedural narrative generation, multiplayer, voice acting, browser narrative editor.
 
-**Chapter 2+ content rule**: Every route must sustain ≥ 20 minutes of play (≥ 3,000 words at ~150 WPM).
+**Chapter 2+ content rule**: Every route must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM). Duration tests enforce the floor; routes exceeding 4,500 words are flagged for pacing review.
+
+**Planned feature — Free-form text inputs**: Select paths will accept open-ended player-written responses rather than pre-set choice buttons. Responses must be persisted, can be echoed in later scenes, and may optionally influence state flags. This requires Architect sign-off on the schema before any agent implements it.
 
 ## Key Documents to Read
 
