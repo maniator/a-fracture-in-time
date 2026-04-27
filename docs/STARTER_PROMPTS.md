@@ -44,8 +44,8 @@ Requirements:
 Write Chapter 1 for Fractureline with 8 scenes.
 
 Requirements:
-- Alternate POV between Protector and Dissenter
-- End with a reveal that one remembers a choice the player never made
+- Alternate POV between past (Xav Reivax, 874cy Brinkton) and future (Zelda Adlez, 23ac ruins)
+- End with a reveal about the family notebook and how it connects the two timelines
 - Return a schema-valid scene graph
 - Use the approved timeline variables
 ```

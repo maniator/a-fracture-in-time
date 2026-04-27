@@ -31,6 +31,7 @@ type GameStore = {
   save: () => Promise<void>;
   load: () => Promise<boolean>;
   reset: () => Promise<void>;
+  clearStoryLoadError: () => void;
 };
 
 let activeChapterPack: ChapterPackManifestItem = chapterOnePack;
@@ -180,6 +181,9 @@ async function getActiveStoryForChoice(state: TimelineState) {
   if (!restored) return null;
 
   if (restored.currentChoices.length === 0 && restored.canContinue) {
+    // Advance the ink pointer to reach choices. The snapshot text is intentionally
+    // discarded here: intermediate paragraphs between a save point and the next
+    // choice are not displayed on restore. See F-26 in POST_PR16_QA_REVIEW.md.
     continueInkStory(restored);
   }
 
@@ -266,6 +270,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
+    // inkStateJson is intentionally cleared from `previous` when starting a new
+    // chapter so that the next chapter begins from its own opening knot rather than
+    // restoring a stale ink state from the prior chapter. See F-29 in POST_PR16_QA_REVIEW.md.
     set({ ...createStoreView(snapshot, { ...current, inkStateJson: undefined }), isChoosing: false, isStoryReady: true, storyLoadError: undefined });
   },
   hydrateSaveStatus: async () => {
@@ -303,20 +310,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
   reset: async () => {
-    const snapshot = await createInitialSnapshot();
-    if (!snapshot) {
-      set({
-        state: initialTimelineState,
-        sceneText: [],
-        choices: [],
-        hasSave: await indexedDbSaveService.hasSave(),
-        isPersistenceReady: true,
-        isStoryReady: false,
-        storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
-      });
-      return;
-    }
+    if (get().isChoosing) return;
 
-    set({ ...createStoreView(snapshot), hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+    set({ isChoosing: true, storyLoadError: undefined });
+    try {
+      const snapshot = await createInitialSnapshot();
+      if (!snapshot) {
+        set({
+          isChoosing: false,
+          state: initialTimelineState,
+          sceneText: [],
+          choices: [],
+          hasSave: await indexedDbSaveService.hasSave(),
+          isPersistenceReady: true,
+          isStoryReady: false,
+          storyLoadError: 'Chapter 1 is not available yet. Connect to the internet once to download it for offline play.',
+        });
+        return;
+      }
+
+      set({ ...createStoreView(snapshot), isChoosing: false, hasSave: await indexedDbSaveService.hasSave(), isPersistenceReady: true, isStoryReady: true, storyLoadError: undefined });
+    } catch (err) {
+      console.error('[game-store] reset() failed:', err);
+      set({ isChoosing: false, storyLoadError: 'Could not restart. Please try again.' });
+    }
   },
+  clearStoryLoadError: () => set({ storyLoadError: undefined }),
 }));

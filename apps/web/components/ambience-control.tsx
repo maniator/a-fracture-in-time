@@ -11,7 +11,9 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-const INITIAL_VOLUME = 0.07;
+const MAX_GAIN = 0.22;
+// Normalized 0–1 initial volume; maps to a raw gain of ≈0.11.
+const INITIAL_VOLUME = 0.5;
 const CHAPTER_NOTE_SCALES: Record<number, number[]> = {
   1: [196, 220, 246.94, 293.66, 329.63, 392],
   2: [174.61, 196, 220, 261.63, 293.66, 349.23],
@@ -227,14 +229,20 @@ function scheduleMusic(nodes: SoundscapeNodes, step: number, mood: SceneMood) {
   nodes.delayFeedback.gain.setTargetAtTime(0.18 + Math.min(0.2, mood.rebellion * 0.015), now, 1);
 }
 
+function getEffectiveGain(volume: number, isMuted: boolean) {
+  return isMuted ? 0 : volume * MAX_GAIN;
+}
+
 export function AmbienceControl() {
   const nodesRef = useRef<SoundscapeNodes | null>(null);
   const schedulerRef = useRef<number | null>(null);
   const stepRef = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const isMutedRef = useRef(false);
   const [needsGesture, setNeedsGesture] = useState(false);
   const [volume, setVolume] = useState(INITIAL_VOLUME);
+  const volumeRef = useRef(INITIAL_VOLUME);
   const moodRef = useRef<SceneMood>({ chapter: 1, pov: 'past', memory: 0, rebellion: 0 });
 
   const startScheduler = useCallback(() => {
@@ -250,10 +258,19 @@ export function AmbienceControl() {
     }, 4200);
   }, []);
 
+  // Keep refs in sync with state so effect closures always see current values.
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
+
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
+
   useEffect(() => {
     const startAutomatically = async () => {
       try {
-        nodesRef.current = createSoundscape(INITIAL_VOLUME);
+        nodesRef.current = createSoundscape(getEffectiveGain(volumeRef.current, isMutedRef.current));
         await nodesRef.current.context.resume();
         const running = nodesRef.current.context.state === 'running';
         setNeedsGesture(!running);
@@ -266,7 +283,7 @@ export function AmbienceControl() {
     const handleChoiceCue = (event: Event) => {
       const cue = event instanceof CustomEvent ? event.detail?.cue : undefined;
       const nodes = nodesRef.current;
-      if (!nodes || isMuted || nodes.context.state !== 'running') return;
+      if (!nodes || isMutedRef.current || nodes.context.state !== 'running') return;
       playCue(nodes, typeof cue === 'string' ? cue : 'choice');
     };
 
@@ -290,20 +307,22 @@ export function AmbienceControl() {
       window.removeEventListener('fractureline:scene-context', handleSceneContext);
       if (schedulerRef.current !== null) {
         window.clearInterval(schedulerRef.current);
+        schedulerRef.current = null;
       }
       const nodes = nodesRef.current;
+      nodesRef.current = null;
       if (!nodes) return;
       nodes.textureSource.stop();
       void nodes.context.close();
     };
-  }, [isMuted, startScheduler]);
+  }, [startScheduler]);
 
   const enableSound = async () => {
     if (!nodesRef.current) {
-      nodesRef.current = createSoundscape(volume);
+      nodesRef.current = createSoundscape(getEffectiveGain(volumeRef.current, isMutedRef.current));
     }
     await nodesRef.current.context.resume();
-    setGain(nodesRef.current.masterGain, isMuted ? 0 : volume);
+    setGain(nodesRef.current.masterGain, getEffectiveGain(volumeRef.current, isMutedRef.current));
     const running = nodesRef.current.context.state === 'running';
     setNeedsGesture(!running);
     if (running) startScheduler();
@@ -316,17 +335,19 @@ export function AmbienceControl() {
     }
 
     const nextMuted = !isMuted;
+    isMutedRef.current = nextMuted;
     setIsMuted(nextMuted);
     if (nodesRef.current) {
-      setGain(nodesRef.current.masterGain, nextMuted ? 0 : volume);
+      setGain(nodesRef.current.masterGain, getEffectiveGain(volumeRef.current, nextMuted));
     }
   };
 
   const updateVolume = (_: Event, nextValue: number | number[]) => {
     const nextVolume = Array.isArray(nextValue) ? nextValue[0] : nextValue;
+    volumeRef.current = nextVolume;
     setVolume(nextVolume);
-    if (nodesRef.current && !isMuted) {
-      setGain(nodesRef.current.masterGain, nextVolume);
+    if (nodesRef.current && !isMutedRef.current) {
+      setGain(nodesRef.current.masterGain, nextVolume * MAX_GAIN);
     }
   };
 
@@ -360,12 +381,12 @@ export function AmbienceControl() {
               </Typography>
             </Box>
             <Button size="small" color="inherit" variant="text" onClick={() => setIsOpen((value) => !value)} sx={{ minWidth: 76 }}>
-              {isOpen ? 'Hide' : 'Volume'}
+              {isOpen ? 'Close' : 'Volume'}
             </Button>
           </Stack>
           <Collapse in={isOpen} unmountOnExit>
             <Box sx={{ px: 1, pt: 1.5 }}>
-              <Slider aria-label="Ambience volume" min={0} max={0.22} step={0.005} value={volume} onChange={updateVolume} size="small" />
+              <Slider aria-label="Ambience volume" min={0} max={1} step={0.01} value={volume} onChange={updateVolume} size="small" />
             </Box>
           </Collapse>
         </CardContent>

@@ -23,7 +23,7 @@ test.describe('documentation screenshots', () => {
         await chapterTwoEnd.click();
         break;
       }
-      await page.getByRole('button').nth(3).click();
+      await page.locator('[aria-label="Choices"] button').first().click();
     }
 
     await page.getByRole('button', { name: /continue to chapter 3/i }).click();
