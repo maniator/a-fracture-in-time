@@ -73,6 +73,7 @@ The `pov` field in scene schema uses `"past"` and `"future"` — do not use `"pr
 - `docs/NARRATIVE_BRANCHING_STRATEGY.md` — branching rules and QA gates
 - `apps/web/public/chapter-packs/chapter-1.ink` — reference implementation for the chapter-pack format the app validates and loads
 - `docs/STORY_ROADMAP.md` — planned chapter expansion and route naming
+- `docs/WRITING_STANDARDS.md` — prose rules: no em dashes, scene transition requirements, git workflow
 
 ## Outputs
 When activated, produce one or more of:
@@ -97,6 +98,9 @@ When activated, produce one or more of:
 - Avoid branching complexity beyond the budget: one major split per route segment, max two active branch families per chapter depth.
 - New chapters for Ch 6–10 must follow the chapter spine in STORY_BIBLE.md.
 - Every Chapter 2+ route must target a **20–30 minute** play session (**3,000–4,500 words** at ~150 WPM).
+- **No em dashes in narrative prose**: Never use em dashes (—) in any scene content or player-facing copy. See `docs/WRITING_STANDARDS.md` for the full rule and replacement guide.
+- **Scene transitions must flow**: Every scene after a player choice must open with grounding prose before advancing the plot. See `docs/WRITING_STANDARDS.md`.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.
 
 **Free-form text inputs (planned)**:
 - Some paths will replace pre-set choice buttons with an open-ended player text prompt.

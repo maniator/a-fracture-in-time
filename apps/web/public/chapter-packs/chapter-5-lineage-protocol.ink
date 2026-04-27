@@ -26,6 +26,7 @@ Archive councils propose a lineage protocol that validates witness continuity wi
 === ch5_lineage_resolution ===
 ~ currentSceneId = "ch5_lineage_resolution"
 ~ currentSpeaker = "Zelda Adlez"
+When the council finally voted, the room went quiet before anyone spoke. The kind of quiet that means something just changed and everyone felt it.
 The final protocol rejects purity myths and publishes a right-to-contest path any family can use.
 Ari records the first training packet herself, reminding every district that inheritance is responsibility, not entitlement.
 + [End Chapter 5] # cue:ending

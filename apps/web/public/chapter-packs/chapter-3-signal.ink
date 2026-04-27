@@ -221,11 +221,11 @@ This Chapter 3 route now includes its first irreversible policy split and seeds 
 ~ currentPOV = "future"
 ~ currentSpeaker = "Yve Ettevy"
 The councils held a long debrief before closure. The voices that arrived over the relay that night were not triumphant. They were tired, specific, and honest.
-Community log — Rail District Coordinator: The verification-first decision cost us speed in the first week. Three testimony packets arrived too late to stop a property seizure in my district. We have named the gap, documented it, and are building a faster appeal channel. We do not pretend the cost was small.
-Community log — Signal Market Student Crew: The reach-first choice meant forged advisories confused our relay for forty-eight hours before moderators caught the pattern. We caught it because we rotated watch shifts. Rotation saved us. We are writing that into the permanent handbook.
-Community log — Floodplain Elder: My granddaughter asked why the relay bothered with rules when emergency was everywhere. I told her: rules exist precisely because emergency is everywhere. If you only follow process when it is easy, you never learn to maintain it when it matters.
-Community log — Quarry District Shift Lead: The accord draft survived because nobody let one person hold the keys. I have seen movements die when one charismatic voice became the whole thing. We spent three sessions making sure we were not doing that. It was slow. It was the right slow.
-Community log — Yve Ettevy (archived addendum): The relay is not finished. It is in service. There is a difference. A finished relay sits on a shelf. A relay in service breaks, gets repaired, and gets better. Document the breaks. That is how tomorrow's volunteers know they are not starting from scratch.
+Community log, Rail District Coordinator: The verification-first decision cost us speed in the first week. Three testimony packets arrived too late to stop a property seizure in my district. We have named the gap, documented it, and are building a faster appeal channel. We do not pretend the cost was small.
+Community log, Signal Market Student Crew: The reach-first choice meant forged advisories confused our relay for forty-eight hours before moderators caught the pattern. We caught it because we rotated watch shifts. Rotation saved us. We are writing that into the permanent handbook.
+Community log, Floodplain Elder: My granddaughter asked why the relay bothered with rules when emergency was everywhere. I told her: rules exist precisely because emergency is everywhere. If you only follow process when it is easy, you never learn to maintain it when it matters.
+Community log, Quarry District Shift Lead: The accord draft survived because nobody let one person hold the keys. I have seen movements die when one charismatic voice became the whole thing. We spent three sessions making sure we were not doing that. It was slow. It was the right slow.
+Community log, Yve Ettevy (archived addendum): The relay is not finished. It is in service. There is a difference. A finished relay sits on a shelf. A relay in service breaks, gets repaired, and gets better. Document the breaks. That is how tomorrow's volunteers know they are not starting from scratch.
 + [Close the chapter and carry these commitments forward] # cue:ending
     ~ chapterThreeComplete = true
     -> DONE

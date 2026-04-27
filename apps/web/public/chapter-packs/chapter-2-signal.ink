@@ -68,6 +68,7 @@ Nala. Nahlah. Nala Renn.
 ~ currentSceneId = "ch2_signal_protocol"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Yve Ettevy"
+Yve was already writing before I finished agreeing.
 Yve wrote three rules in the first column.
 One: verify every claim across both eras.
 Two: never give Zelda names she does not already know.
@@ -95,7 +96,7 @@ The tunnel wall had rewritten itself while Zelda slept.
 Yesterday, it held a Cybol victory slogan: ORDER MADE AYKER WHOLE.
 Now the same wall read: IF CYBOL BROUGHT PEACE, WHY DID DIDERRAM BURN?
 Zelda ran her fingers over the letters. They were not painted on. They had grown through the stone like roots.
-Behind her, Marek — the oldest of the tunnel scavengers, the one who knew which walls had ears — whispered that they should seal the device back in its case and pretend they had found nothing.
+Behind her, Marek, the oldest of the tunnel scavengers, the one who knew which walls had ears, whispered that they should seal the device back in its case and pretend they had found nothing.
 Zelda almost understood.
 + [Map the changed tunnel before anyone can erase it] # cue:memory
     ~ memoryFracture += 1

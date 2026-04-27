@@ -15,7 +15,7 @@ VAR chapterFourComplete = false
 ~ currentSceneId = "ch4_emergency-custody_start"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Chapter 4: A City That Remembers Nothing — Emergency Custody.
+Chapter 4: A City That Remembers Nothing. Emergency Custody.
 The extraction-first vote moved fourteen families out of Cybol reach inside seventy-two hours. Thirteen of them are still safe. One family was traced to the relay station they sheltered at and reported to Cybol district monitors within four hours of arrival.
 Cybol's official statement does not mention the family. It mentions unauthorized custody operations, disruption of child welfare protocols, and coordinated interference with registered social services. The movement is now a legal target.
 Zelda opens the coordination board. Last week's incidents: two families successfully transitioned to long-term shelter, three relay stations flagged as potentially surveilled, one citation from a district magistrate demanding accounting of who authorized the emergency transfers.
@@ -33,7 +33,7 @@ Ari asks the question no one can dodge: "If we stop because we are afraid of wha
 ~ currentSceneId = "ch4_emergency-custody_transparent"
 ~ currentPOV = "past"
 ~ currentSpeaker = "Yve Ettevy"
-The documentation package takes three days to prepare. It includes risk assessments, consent records, and intake timelines — everything except current shelter locations, which are submitted under a sealed protocol that three district court precedents support.
+The documentation package takes three days to prepare. It includes risk assessments, consent records, and intake timelines: everything except current shelter locations, which are submitted under a sealed protocol that three district court precedents support.
 The magistrate reviews the package for two weeks. Her ruling does not endorse the movement's methods. It does not condemn them either. It says the evidence of imminent harm changes the legal calculus and schedules a full review hearing in sixty days.
 Sixty days is not safety. Sixty days is a window. The movement builds inside it.
 The chapter closes on one hard truth: transparency is not the same as safety. But without transparency, there is no legal floor left to stand on.

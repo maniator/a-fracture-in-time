@@ -15,7 +15,7 @@ VAR chapterFourComplete = false
 ~ currentSceneId = "ch4_ledger-trust_start"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Chapter 4: A City That Remembers Nothing — Ledger Trust.
+Chapter 4: A City That Remembers Nothing. Ledger Trust.
 The process-first vote created a witness ledger with verified consent at every step. It was the slowest path available. It is now the path that Cybol's legal division cannot successfully challenge in three different district courts.
 Cybol's attorneys have responded by weaponizing process: they file procedural objections to every ledger entry, not because the objections have merit, but because sustained legal attrition is itself a suppression strategy. The movement's volunteer legal team is burning out.
 Zelda opens the coordination board. Last week's incidents: fourteen court filings successfully defended, six stalled on procedural grounds, one intake coordinator who sent a message at 2 a.m. asking how much longer this can go on.

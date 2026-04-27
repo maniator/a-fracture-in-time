@@ -94,3 +94,4 @@ When activated, produce one or more of:
 - Migration logic must be tested with `fake-indexeddb` before shipping.
 - Analytics events must not expose private story choices unnecessarily (GDPR hygiene).
 - Supabase credentials must never be committed to source — use environment variables only.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.

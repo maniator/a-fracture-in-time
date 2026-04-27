@@ -63,3 +63,4 @@ When activated, produce one or more of:
 - Preserve the dual-timeline premise in every scope trade-off.
 - Each Chapter 2+ route must target a 20–30 minute play session (3,000–4,500 words at ~150 WPM).
 - Raise scope risk if a new narrative split lacks a planned merge hub.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full convention.

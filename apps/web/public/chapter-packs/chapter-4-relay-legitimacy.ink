@@ -15,7 +15,7 @@ VAR chapterFourComplete = false
 ~ currentSceneId = "ch4_relay-legitimacy_start"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Chapter 4: A City That Remembers Nothing — Relay Legitimacy.
+Chapter 4: A City That Remembers Nothing. Relay Legitimacy.
 The verification-first relay accord held. Packet integrity stayed above ninety-six percent. The historical record is clean, and no forged testimony has passed undetected.
 The cost is visible every morning: districts with urgent relay needs wait longer than comfortable, and two community coordinators resigned last week because the process felt too slow to save anyone specific.
 Zelda opens the coordination board and reads last week's incidents out loud: one legal victory, three fragile ceasefires, twenty-two unresolved repair requests, and one note from a riverside coordinator that simply says we are losing people to exhaustion not defeat.

@@ -119,3 +119,4 @@ Some narrative scenes will replace choice buttons with an open-ended player text
 - All storage access goes through `apps/web/lib/persistence`.
 - Every architectural change must consider Vercel build constraints and PWA offline behavior.
 - Check for known CVEs before adding any new dependency.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

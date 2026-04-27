@@ -103,6 +103,7 @@ NOM workflow:
 - Put blockers in a visible doc immediately — not only in PR comments.
 - Run a BMAD NOM review after every chapter content sprint.
 - Block new irreversible narrative splits unless a merge hub is planned and tracked.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.
 
 ## Release Gates
 

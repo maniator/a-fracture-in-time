@@ -112,3 +112,4 @@ Some narrative scenes will replace choice buttons with an open-ended player text
 - Every new user-facing interaction must have a keyboard path.
 - Do not remove or bypass the `prefers-reduced-motion` animation guard.
 - Run `pnpm lint` and `pnpm test` in `apps/web` before marking any UI task done.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

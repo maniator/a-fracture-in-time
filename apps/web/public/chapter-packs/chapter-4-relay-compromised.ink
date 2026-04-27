@@ -15,7 +15,7 @@ VAR chapterFourComplete = false
 ~ currentSceneId = "ch4_relay-compromised_start"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Chapter 4: A City That Remembers Nothing — Relay Compromised.
+Chapter 4: A City That Remembers Nothing. Relay Compromised.
 The reach-first decision opened the relay to unverified submissions. For six days, the network moved testimony across every district faster than Cybol could suppress it.
 On day seven, a coordinated spoofing attack flooded the relay with forged witness accounts. By morning, two neighborhoods had acted on false information. Three families were evacuated unnecessarily. One community coordinator received an anonymous threat using language from a testimony she had submitted under her real name.
 Zelda opens the coordination board and reads last week's incidents out loud: one legal victory, three fragile ceasefires, a spoofing postmortem that filled eleven pages, and a message from the coordinator who was threatened that says simply: I am still here, but I am not fine.

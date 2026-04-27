@@ -26,6 +26,7 @@ Marek presents three ledgers: material losses, institutional fraud, and generati
 === ch5_memory_resolution ===
 ~ currentSceneId = "ch5_memory_resolution"
 ~ currentSpeaker = "Yve Ettevy"
+Three days of negotiation. Then a vote, and a long silence after.
 The settlement framework passes as a living document that cannot close while harms remain unresolved.
 Its preamble states the core lesson of the last three chapters: memory is a civic utility, and utilities must be maintained.
 + [End Chapter 5] # cue:ending

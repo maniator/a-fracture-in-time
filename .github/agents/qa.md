@@ -104,3 +104,4 @@ When free-form text scenes are added:
 - Do not raise coverage thresholds without confirming the new threshold is achievable on CI.
 - Screenshot tests are documentation artifacts — keep them, but do not let pixel differences block unrelated changes.
 - Run `pnpm codex:bootstrap` before running Playwright tests in a new environment.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

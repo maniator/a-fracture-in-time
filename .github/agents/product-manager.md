@@ -73,3 +73,4 @@ Depending on the task, produce one or more of:
 - Keep MVP scope narrow enough to deliver a complete emotional arc first.
 - Raise scope risk whenever a new narrative split lacks a planned merge hub.
 - Do not accept analytics instrumentation that exposes private story choices unnecessarily.
+- **Sub-agent git workflow**: You may commit changes locally with `git add` and `git commit`. Do not push — all pushes are handled by the root agent via the `report_progress` tool. See `docs/WRITING_STANDARDS.md` for the full agent git convention.

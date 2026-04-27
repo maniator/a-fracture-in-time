@@ -15,7 +15,7 @@ VAR chapterFourComplete = false
 ~ currentSceneId = "ch4_trial-credibility_start"
 ~ currentPOV = "future"
 ~ currentSpeaker = "Zelda Adlez"
-Chapter 4: A City That Remembers Nothing — Trial Credibility.
+Chapter 4: A City That Remembers Nothing. Trial Credibility.
 The conditional amnesty track produced forty-seven defectors. Their testimony filled six evidence rooms and identified the internal architecture of three decades of memory revision policy.
 It also divided the movement. Eleven former movement members, whose families appear in evidence that the amnesty defectors helped suppress, have filed formal objections to the conditional terms. They want the people who edited their families' memories to face full accountability before receiving any protection.
 Zelda opens the coordination board. Last week's incidents: evidence review sessions running eight hours past schedule, two community moderators stepping back from active facilitator roles, one formal objection hearing scheduled for next month, and a message from a defector who says they are afraid to leave the building where they are staying.
