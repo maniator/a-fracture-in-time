@@ -66,7 +66,7 @@ test('play flow branches from Xav to Yve and then Zelda', async ({ page }) => {
   await page.getByRole('button', { name: /answer zelda before the signal dies/i }).click();
 
   await expect(page.getByRole('heading', { name: 'Zelda Adlez' })).toBeVisible();
-  await expect(page.getByText(/ruins of old brinkton/i)).toBeVisible();
+  await expect(page.locator('[aria-labelledby="scene-title"]').getByText(/ruins of old brinkton/i)).toBeVisible();
 });
 
 test('ambience control is available without a large play button', async ({ page }) => {
