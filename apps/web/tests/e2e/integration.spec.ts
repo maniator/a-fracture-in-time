@@ -17,13 +17,13 @@ async function clickChoice(page: Page, pattern: RegExp) {
 }
 
 /** Fast-forward through a chapter by always picking the first choice button
- *  (index 3 skips the nav + save/load/restart buttons) until a stop choice
- *  appears or the max attempts are exhausted. */
+ *  until a stop choice appears or the max attempts are exhausted. */
 async function advanceUntil(page: Page, stopChoice: RegExp, maxAttempts = 40) {
+  const choices = page.getByLabel('Choices');
   for (let i = 0; i < maxAttempts; i++) {
-    const stop = page.getByRole('button', { name: stopChoice });
+    const stop = choices.getByRole('button', { name: stopChoice });
     if (await stop.count()) return;
-    await page.getByRole('button').nth(3).click();
+    await choices.getByRole('button').first().click();
   }
   throw new Error(`Could not reach "${stopChoice.toString()}" within ${maxAttempts} steps`);
 }
@@ -87,7 +87,7 @@ test.describe('Chapter 4 — relay-legitimacy path', () => {
     await clickChoice(page, /end chapter 4/i);
 
     await expect(page.getByText('Chapter 4 complete.', { exact: true })).toBeVisible();
-    await expect(page.getByText(/relay-legitimacy-path/i)).toBeVisible();
+    await expect(page.getByText(/relay legitimacy path/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /continue to chapter 5/i })).toBeVisible();
     await expect(page.getByText(/chapter 5: the cost of utopia/i)).toBeVisible();
   });
@@ -127,7 +127,7 @@ test.describe('Chapter 5 — governance reckoning path', () => {
     await clickChoice(page, /end chapter 5/i);
 
     await expect(page.getByText('Chapter 5 complete.', { exact: true })).toBeVisible();
-    await expect(page.getByText(/governance-reckoning-path/i)).toBeVisible();
+    await expect(page.getByText(/governance reckoning path/i)).toBeVisible();
   });
 });
 
@@ -239,11 +239,11 @@ test.describe('Chapter badge display', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('Timeline signals', () => {
-  test('all five signal labels are visible on the play page', async ({ page }) => {
+  test('shows all three timeline signal labels', async ({ page }) => {
     await page.goto('/play');
     await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
-    for (const label of ['Order', 'Dissent', 'Memory', 'Entropy', 'Control']) {
-      await expect(page.getByText(label, { exact: true })).toBeVisible();
+    for (const label of ['Order', 'Truth', 'Disruption']) {
+      await expect(page.getByText(label, { exact: true }).first()).toBeVisible();
     }
   });
 
@@ -252,12 +252,12 @@ test.describe('Timeline signals', () => {
     await expect(page.getByRole('heading', { name: /timeline signals/i })).toBeVisible();
   });
 
-  test('Dissent signal updates to Rising after a rebellion choice', async ({ page }) => {
+  test('Disruption signal updates after a rebellion choice', async ({ page }) => {
     await page.goto('/play');
     // "joke that cybol technology" is tagged cue:rebellion → rebellion += 1
     await clickChoice(page, /joke that cybol technology/i);
-    const dissentSignal = page.locator('dl').getByText('Dissent').locator('../..');
-    await expect(dissentSignal.getByText('Rising')).toBeVisible();
+    const disruptionSignal = page.locator('dl').getByText('Disruption', { exact: true }).locator('../..');
+    await expect(disruptionSignal.getByText('Rising')).toBeVisible();
   });
 });
 
@@ -296,7 +296,7 @@ test.describe('Ambience control UI', () => {
     await page.getByRole('button', { name: /volume/i }).click();
     await expect(page.getByRole('slider', { name: /ambience volume/i })).toBeVisible();
 
-    await page.getByRole('button', { name: /hide/i }).click();
+    await page.getByRole('button', { name: /close/i }).click();
     await expect(page.getByRole('slider', { name: /ambience volume/i })).not.toBeVisible();
   });
 
@@ -326,10 +326,10 @@ test.describe('Help page content', () => {
     }
   });
 
-  test('mentions all five timeline signal types', async ({ page }) => {
+  test('mentions all three timeline signals', async ({ page }) => {
     await page.goto('/help');
-    for (const signal of ['stability', 'rebellion', 'memory', 'entropy', 'control']) {
-      await expect(page.getByText(new RegExp(signal, 'i'))).toBeVisible();
+    for (const signal of ['Order', 'Truth', 'Disruption']) {
+      await expect(page.getByText(signal, { exact: true }).first()).toBeVisible();
     }
   });
 
