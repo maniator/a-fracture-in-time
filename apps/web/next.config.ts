@@ -12,7 +12,7 @@ const withPWA = withPWAInit({
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@fractureline/shared-types', '@fractureline/narrative-engine'],
-  allowedDevOrigins: ['http://127.0.0.1'],
+  allowedDevOrigins: ['http://127.0.0.1:3000', 'http://localhost:3000'],
 };
 
 export default isStorybook ? nextConfig : withPWA(nextConfig);
