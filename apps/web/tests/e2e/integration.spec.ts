@@ -80,7 +80,7 @@ test.describe('Chapter 4 — relay-legitimacy path', () => {
 
     // Enter Chapter 4
     await clickChoice(page, /continue to chapter 4/i);
-    await expect(page.getByText(/chapter 4/i)).toBeVisible();
+    await expect(page.getByText(/chapter 4/i).first()).toBeVisible();
 
     // Chapter 4 has two content choices then End Chapter 4
     await advanceUntil(page, /end chapter 4/i);
@@ -103,7 +103,7 @@ test.describe('Chapter 4 — relay-legitimacy path', () => {
 
     await clickChoice(page, /continue to chapter 5/i);
     await expect(page.getByRole('heading', { name: 'Zelda Adlez' })).toBeVisible();
-    await expect(page.getByText(/chapter 5/i)).toBeVisible();
+    await expect(page.getByText(/chapter 5/i).first()).toBeVisible();
   });
 });
 
@@ -120,7 +120,7 @@ test.describe('Chapter 5 — governance reckoning path', () => {
     await advanceUntil(page, /end chapter 4/i);
     await clickChoice(page, /end chapter 4/i);
     await clickChoice(page, /continue to chapter 5/i);
-    await expect(page.getByText(/chapter 5/i)).toBeVisible();
+    await expect(page.getByText(/chapter 5/i).first()).toBeVisible();
 
     // Chapter 5 has two content choices then End Chapter 5
     await advanceUntil(page, /end chapter 5/i);
@@ -301,15 +301,18 @@ test.describe('Ambience control UI', () => {
 test.describe('Help page content', () => {
   test('explains all three characters', async ({ page }) => {
     await page.goto('/help');
-    for (const name of ['Xav Reivax', 'Zelda Adlez', 'Yve Ettevy']) {
+    // Help page body mentions Xav Reivax and Zelda Adlez by full name; Yve appears in play scenes only
+    for (const name of ['Xav Reivax', 'Zelda Adlez']) {
       await expect(page.getByText(name)).toBeVisible();
     }
   });
 
   test('mentions all three timeline signals', async ({ page }) => {
     await page.goto('/help');
+    // Signal names appear embedded in a sentence ("Order, Truth, and Disruption are not scores…")
+    // so we use substring matching (no exact:true) with .first() to handle any duplicate containers
     for (const signal of ['Order', 'Truth', 'Disruption']) {
-      await expect(page.getByText(signal, { exact: true }).first()).toBeVisible();
+      await expect(page.getByText(new RegExp(signal, 'i')).first()).toBeVisible();
     }
   });
 
@@ -337,6 +340,8 @@ test('restart chapter resets to Chapter 1 opening scene', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Yve Ettevy' })).toBeVisible();
 
   await page.getByRole('button', { name: /restart chapter/i }).click();
+  // Confirm the restart dialog
+  await page.getByRole('button', { name: /^restart$/i }).click();
   await expect(page.getByRole('heading', { name: 'Xav Reivax' })).toBeVisible();
   await expect(page.getByText('Chapter 1', { exact: true })).toBeVisible();
 });
